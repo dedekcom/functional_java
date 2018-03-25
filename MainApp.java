@@ -31,6 +31,7 @@ public class MainApp {
     FunList<Integer> i1 = FunList.newList(1,2,5,-2,3,-10, 4);
     int sum = i1.fold(0, (acc, id) -> acc + id);
     System.out.println(sum);
+    System.out.println(i1.sum());
 
     i1.partition(e -> e > 0).print();
 

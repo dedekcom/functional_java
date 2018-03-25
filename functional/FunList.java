@@ -15,6 +15,14 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+/*
+  Scala like List collection
+
+  methods starting with 'm' are mutable (they don't create a new list as a result)
+   - it makes faster computing but causes side effects
+  use them after methods which always create a new instance i.e.:
+  list.filter(e -> e > 0).mPushed(10).mReversed();
+ */
 public class FunList<T> extends LinkedList<T> implements FunObject {
   public FunList() { super(); }
 
@@ -122,6 +130,16 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
     return initial;
   }
 
+  public Number sum() {
+    if (this.isEmpty()) return 0;
+    T first = this.getFirst();
+    if (first instanceof Double) return this.foldLeft(Double.valueOf(0), (sum, el) -> sum + ((Number)el).doubleValue());
+    if (first instanceof Float) return this.foldLeft(Float.valueOf(0), (sum, el) -> sum + ((Number)el).floatValue());
+    if (first instanceof Long) return this.foldLeft(Long.valueOf(0), (sum, el) -> sum + ((Number)el).longValue());
+    if (first instanceof Integer) return this.foldLeft(Integer.valueOf(0), (sum, el) -> sum + ((Number)el).intValue());
+    throw new IllegalArgumentException();
+  }
+
   public FunList<T> sortWith(BiFunction<T, T, Integer> compare)  {
     return new FunList<>(this).mSortWith(compare);
   }
@@ -145,11 +163,11 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
     return new Tuple2<>(r1, r2);
   }
 
-  public FunList<T> added(Collection<? extends T> list) {
-    return new FunList<>(this).mAdded(list);
+  public FunList<T> addedCol(Collection<? extends T> list) {
+    return new FunList<>(this).mAddedCol(list);
   }
 
-  public FunList<T> mAdded(Collection<? extends T> col) {
+  public FunList<T> mAddedCol(Collection<? extends T> col) {
     this.addAll(col);
     return this;
   }

@@ -30,6 +30,7 @@ public class FunString implements FunObject {
   public void set(float f)    { str = String.valueOf(f); }
 
   public Integer toInteger()  { return Integer.valueOf(str);}
+  public Long toLong()        { return Long.valueOf(str);}
   public Boolean toBoolean()  { return Boolean.valueOf(str);}
   public Double toDouble()    { return Double.valueOf(str);}
   public Float toFloat()      { return Float.valueOf(str);}
@@ -39,8 +40,8 @@ public class FunString implements FunObject {
       Integer.parseInt(str);
       return true;
     } catch (NumberFormatException nfe) {
-      return false;
     }
+    return false;
   }
 
   public boolean isLong()  {
@@ -48,8 +49,8 @@ public class FunString implements FunObject {
       Long.parseLong(str);
       return true;
     } catch (NumberFormatException nfe) {
-      return false;
     }
+    return false;
   }
 
   public boolean isFloat()  {
@@ -57,8 +58,8 @@ public class FunString implements FunObject {
       Float.parseFloat(str);
       return true;
     } catch (NumberFormatException nfe) {
-      return false;
     }
+    return false;
   }
 
   public boolean isDouble()  {
@@ -66,8 +67,8 @@ public class FunString implements FunObject {
       Double.parseDouble(str);
       return true;
     } catch (NumberFormatException nfe) {
-      return false;
     }
+    return false;
   }
 
   public boolean isBoolean() { return str.equalsIgnoreCase("true") || str.equalsIgnoreCase("false"); }

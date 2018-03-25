@@ -5,9 +5,10 @@
  */
 package functional;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
-abstract class FunTuple {
+abstract class FunTuple implements Serializable {
   protected Object[] values;
 
   protected void setSize(int size) { values = new Object[size]; }
