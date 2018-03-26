@@ -1,15 +1,15 @@
 /*
- *  Copyright 2018 ADVA Optical Networking SE. All rights reserved.
  *
- *  Owner: dominikda
+ * Dominik Dagiel 03.2018
  *
- *  $Id: $
  */
 package functional;
 
 public class Fumeric {
 
   private enum Operation { Plus, Minus, Multiply, Divide }
+
+  public static Number zero() { return Integer.valueOf(0); }
 
   public static Number sum(Number n1, Number n2) { return opNumber(n1, n2, Operation.Plus); }
   public static Number sub(Number n1, Number n2) { return opNumber(n1, n2, Operation.Minus); }
@@ -83,7 +83,5 @@ public class Fumeric {
       default: return Long.valueOf(0);
     }
   }
-
-  public static Number zero() { return Integer.valueOf(0); }
 
 }
