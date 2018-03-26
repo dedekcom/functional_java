@@ -19,6 +19,7 @@ public class MainApp {
     testScalaMap();
     testScalaString();
     testScalaTuple();
+    testFumeric();
   }
 
   public static void testScalaList() {
@@ -109,5 +110,11 @@ public class MainApp {
     assert (tp1.equals(tp2));
     assert (!tp1.equals(tp3));
     tp2.swap().print();
+  }
+
+  public static void testFumeric() {
+    FunList<Number> l = FunList.newList(3.14, 1, 0, 2);
+    Number sum = l.sum();
+    System.out.println(sum.getClass() + ", " + sum);
   }
 }

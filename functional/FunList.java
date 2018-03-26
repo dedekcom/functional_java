@@ -130,15 +130,7 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
     return initial;
   }
 
-  public Number sum() {
-    if (this.isEmpty()) return 0;
-    T first = this.getFirst();
-    if (first instanceof Double) return this.foldLeft(Double.valueOf(0), (sum, el) -> sum + ((Number)el).doubleValue());
-    if (first instanceof Float) return this.foldLeft(Float.valueOf(0), (sum, el) -> sum + ((Number)el).floatValue());
-    if (first instanceof Long) return this.foldLeft(Long.valueOf(0), (sum, el) -> sum + ((Number)el).longValue());
-    if (first instanceof Integer) return this.foldLeft(Integer.valueOf(0), (sum, el) -> sum + ((Number)el).intValue());
-    throw new IllegalArgumentException();
-  }
+  public Number sum() {    return this.foldLeft(Fumeric.zero(), (sum, el) -> Fumeric.sum(sum, ((Number)el)));  }
 
   public FunList<T> sortWith(BiFunction<T, T, Integer> compare)  {
     return new FunList<>(this).mSortWith(compare);
