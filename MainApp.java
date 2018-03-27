@@ -23,13 +23,13 @@ public class MainApp {
   }
 
   public static void testScalaList() {
-    FunList<String> sl = FunList.newList();
+    FunList<String> sl = FunList.of();
     sl.print();
-    sl = FunList.newList("a", "b", "2", "3", "d", "b", "2");
+    sl = FunList.of("a", "b", "2", "3", "d", "b", "2");
     sl.print();
     sl.distinct().print();
 
-    FunList<Integer> i1 = FunList.newList(1,2,5,-2,3,-10, 4);
+    FunList<Integer> i1 = FunList.of(1,2,5,-2,3,-10, 4);
     int sum = i1.fold(0, (acc, id) -> acc + id);
     System.out.println(sum);
     System.out.println(i1.sum());
@@ -50,12 +50,15 @@ public class MainApp {
     });
     System.out.println(sum2);
     sl.pushed("last or first").print();
-    sl.tail().print();
+    sl.tail().zipWithIndex().print();
 
-    FunList.newList(2).tail().print();
+    FunList.of(2).tail().print();
 
-    FunList<Object> l2 = FunList.newList(1, 2, Optional.of(5), Optional.empty(), FunList.newList(1, 2, 3), FunList.newList(new FunList<String>()));
-    l2.flatten().print();
+    FunList<Object> l2 = FunList.of(1, 2, Optional.of(5), Optional.empty(), FunList.of(1, 2, 3), FunList.of(new FunList<String>()));
+    l2.flatten().splitAt(100).print();
+
+    assert (l2.drop(20).isEmpty());
+    l2.drop(3).print();
 
     l2.mkString("---").print();
 
@@ -65,9 +68,9 @@ public class MainApp {
     Tuple2<String, Integer> p = new Tuple2<>("k", 5);
     p.print();
 
-    FunMap<String, Object> fm = FunMap.newMap(new Tuple2<>("ctyp", "fmtrait"), new Tuple2<>("almsum", 5));
-    FunMap<String, Object> m = FunMap.newMap(new Tuple2<>("netype", "f8"), new Tuple2<>("name", "fsp3000c"),
-            new Tuple2<>("fm", fm), new Tuple2<>("layers", FunList.newList("ots", "oms", "ety6")));
+    FunMap<String, Object> fm = FunMap.of(new Tuple2<>("ctyp", "fmtrait"), new Tuple2<>("almsum", 5));
+    FunMap<String, Object> m = FunMap.of(new Tuple2<>("netype", "f8"), new Tuple2<>("name", "fsp3000c"),
+            new Tuple2<>("fm", fm), new Tuple2<>("layers", FunList.of("ots", "oms", "ety6")));
     m.print();
 
     FunMap<String,Object> m2 = m.transform((k, v) -> {
@@ -80,9 +83,9 @@ public class MainApp {
     m2.print();
 
      assert ( m2.toList().map(pair -> pair._2()).equals(
-            FunList.newList("F8", "fsp3000c", new FunMap<>(fm), FunList.newList("ots", "oms", "ety6") ) ) );
+            FunList.of("F8", "fsp3000c", new FunMap<>(fm), FunList.of("ots", "oms", "ety6") ) ) );
 
-    FunMap<String, Object> fm2 = FunMap.newMap(new Tuple2<>("almsum", 5), new Tuple2<>("ctyp", "fmtrait"));
+    FunMap<String, Object> fm2 = FunMap.of(new Tuple2<>("almsum", 5), new Tuple2<>("ctyp", "fmtrait"));
 
     assert(fm.equals(fm2));
   }
@@ -98,7 +101,7 @@ public class MainApp {
     assert(!ss.isInteger());
     assert(!ss.isBoolean());
 
-    ss = FunString.newFunString(5, "k", Math.sqrt(3));
+    ss = FunString.of(5, "k", Math.sqrt(3));
     ss.print();
   }
 
@@ -113,7 +116,7 @@ public class MainApp {
   }
 
   public static void testFumeric() {
-    FunList<Number> l = FunList.newList(3.14, 1, 0, 2);
+    FunList<Number> l = FunList.of(3.14, 1, 0, 2);
     Number sum = l.sum();
     System.out.println(sum.getClass() + ", " + sum);
   }

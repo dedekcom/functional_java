@@ -46,7 +46,7 @@ public class FunMap<K, V> extends LinkedHashMap<K, V> implements FunObject {
     return new FunMap<>(this).mUpdated(key, value);
   }
 
-  public static <K, V> FunMap<K, V> newMap(Tuple2<K, V>... params) {
+  public static <K, V> FunMap<K, V> of(Tuple2<K, V>... params) {
     FunMap<K, V> m = new FunMap<>();
     Arrays.stream(params).forEach(e -> m.put(e._1(), e._2()));
     return m;

@@ -88,7 +88,7 @@ public class FunString implements FunObject {
     return list;
   }
 
-  public static FunString newFunString(Object... params) {
+  public static FunString of(Object... params) {
     StringBuilder s = new StringBuilder("");
     for (Object p: params) {
       s.append(p.toString());

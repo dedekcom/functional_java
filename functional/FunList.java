@@ -36,6 +36,14 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
     return r;
   }
 
+  public <R> FunList<R> mapWithIndex(BiFunction<? super T, Integer, R> fun) {
+    FunList<R> r = new FunList<>();
+    for (int i=0; i<this.size(); i++) {
+      r.add(fun.apply(this.get(i), i));
+    }
+    return r;
+  }
+
   public FunList<T> filter(Predicate<? super T> predicate) {
     FunList<T> r = new FunList<>();
     for (T e: this) {
@@ -105,6 +113,10 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
     return list;
   }
 
+  public FunList<T> drop(int n) {
+    return this.slice(n, this.size());
+  }
+
   public FunList<T> reversed() {
     return new FunList<>(this).mReversed();
   }
@@ -149,11 +161,21 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
   }
 
   public Tuple2<FunList<T>,FunList<T>> partition(Predicate<? super T> predicate) {
+    return this.partition((e, i) -> predicate.test(e));
+  }
+
+  public Tuple2<FunList<T>,FunList<T>> partition(BiFunction<? super T, Integer, Boolean> fun) {
     FunList<T> r1 = new FunList<>();
     FunList<T> r2 = new FunList<>();
-    this.forEach(e ->{ if (predicate.test(e))  r1.add(e); else r2.add(e);});
+    for (int i=0; i<this.size(); i++) {
+      if (fun.apply(this.get(i), i)) r1.add(this.get(i)); else r2.add(this.get(i));
+    }
     return new Tuple2<>(r1, r2);
   }
+
+  public FunList<Tuple2<T, Integer>> zipWithIndex() { return this.mapWithIndex(Tuple2::new); }
+
+  public Tuple2<FunList<T>,FunList<T>> splitAt(int n) { return this.partition((e, i) -> i < n); }
 
   public FunList<T> addedCol(Collection<? extends T> list) {
     return new FunList<>(this).mAddedCol(list);
@@ -195,7 +217,7 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
   public boolean isHeadTailNotNil() { return this.size() > 1; }
   public boolean isNil()            { return this.size() == 0; }
 
-  public static <T> FunList<T> newList(T... params) {
+  public static <T> FunList<T> of(T... params) {
     return new FunList<>(Arrays.asList(params));
   }
 
