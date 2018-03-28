@@ -4,6 +4,7 @@
  *
  */
 
+import functional.Fumeric;
 import functional.FunList;
 import functional.FunMap;
 import functional.FunString;
@@ -41,13 +42,9 @@ public class MainApp {
     sum = i1.foldLeft(0, (acc, id) -> acc + id);
     System.out.println(sum);
 
-    int sum2 = sl.foldLeft(0, (acc, id) -> {
-      try {
-        return Integer.parseInt(id) + acc;
-      } catch (Exception e) {
-        return acc;
-      }
-    });
+    int sum2 = sl.foldLeft(0, (acc, id) ->
+      Fumeric.getInteger(id).map(intVal -> acc + intVal).orElse(acc)
+    );
     System.out.println(sum2);
     sl.pushed("last or first").print();
     sl.tail().zipWithIndex().print();
