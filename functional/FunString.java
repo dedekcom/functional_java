@@ -11,6 +11,8 @@ public class FunString implements FunObject {
   private String str;
   private final static String MAX_INT = String.valueOf(Integer.MAX_VALUE);
   private final static String MIN_INT = String.valueOf(Integer.MIN_VALUE).substring(1);
+  private final static String MAX_LONG = String.valueOf(Long.MAX_VALUE);
+  private final static String MIN_LONG = String.valueOf(Long.MIN_VALUE).substring(1);
 
   public FunString() {}
   public FunString(String s)   { this.set(s); }
@@ -38,7 +40,7 @@ public class FunString implements FunObject {
   public Float toFloat()      { return Float.valueOf(str);}
 
   private boolean isNegative() {    return str.charAt(0) == '-';  }
-  public boolean isInteger()  {
+  private boolean isDecimal(String maxValue, String minValue)  {
     if (str == null || str.isEmpty())
       return false;
     if (str.matches("[+,-]?[0]*[0-9]+")) {
@@ -46,24 +48,19 @@ public class FunString implements FunObject {
       if (number.isEmpty())
         return true;  // zero
       if (isNegative()) {
-        return (number.length() < MIN_INT.length() ||
-                (number.length() == MIN_INT.length() && number.compareTo(MIN_INT) <= 0));
+        return (number.length() < minValue.length() ||
+                (number.length() == minValue.length() && number.compareTo(minValue) <= 0));
       } else {
-        return (number.length() < MAX_INT.length() ||
-                (number.length() == MAX_INT.length() && number.compareTo(MAX_INT) <= 0));
+        return (number.length() < maxValue.length() ||
+                (number.length() == maxValue.length() && number.compareTo(maxValue) <= 0));
       }
     }
     return false;
   }
 
-  public boolean isLong()  {
-    try {
-      Long.parseLong(str);
-      return true;
-    } catch (NumberFormatException nfe) {
-    }
-    return false;
-  }
+  public boolean isInteger() { return this.isDecimal(MAX_INT, MIN_INT); }
+
+  public boolean isLong()   { return this.isDecimal(MAX_LONG, MIN_LONG); }
 
   public boolean isFloat()  {
     try {

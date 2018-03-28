@@ -108,6 +108,8 @@ public class MainApp {
     assert (ss.isInteger());
     ss.set("0000009");
     assert (ss.isInteger());
+    ss.set("0");
+    assert (ss.isInteger());
     ss.set("-");
     assert (!ss.isInteger());
     ss.set("+");
