@@ -6,6 +6,7 @@
 package functional;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 public class FunString implements FunObject {
   private String str;
@@ -25,70 +26,45 @@ public class FunString implements FunObject {
 
   public String get()         { return str; }
 
-  public void set(String s)   { str = s; }
-  public void set(int i)      { str = String.valueOf(i); }
-  public void set(long l)     { str = String.valueOf(l); }
-  public void set(boolean b)  { str = String.valueOf(b); }
-  public void set(char c)     { str = String.valueOf(c); }
-  public void set(double d)   { str = String.valueOf(d); }
-  public void set(float f)    { str = String.valueOf(f); }
+  public FunString set(String s)   { str = s; return this; }
+  public FunString set(int i)      { str = String.valueOf(i); return this; }
+  public FunString set(long l)     { str = String.valueOf(l); return this; }
+  public FunString set(boolean b)  { str = String.valueOf(b); return this; }
+  public FunString set(char c)     { str = String.valueOf(c); return this; }
+  public FunString set(double d)   { str = String.valueOf(d); return this; }
+  public FunString set(float f)    { str = String.valueOf(f); return this; }
 
-  public Integer toInteger()  { return Integer.valueOf(str);}
-  public Long toLong()        { return Long.valueOf(str);}
-  public Boolean toBoolean()  { return Boolean.valueOf(str);}
-  public Double toDouble()    { return Double.valueOf(str);}
-  public Float toFloat()      { return Float.valueOf(str);}
+  public Optional<Integer> getInteger()   {   return Fumeric.getInteger(this.str);  }
 
-  private boolean isNegative() {    return str.charAt(0) == '-';  }
-  private boolean isDecimal(String maxValue, String minValue)  {
-    if (str == null || str.isEmpty())
-      return false;
-    if (str.matches("[+,-]?[0]*[0-9]+")) {
-      String number = str.replaceFirst("[+,-]?[0]*", "");
-      if (number.isEmpty())
-        return true;  // zero
-      if (isNegative()) {
-        return (number.length() < minValue.length() ||
-                (number.length() == minValue.length() && number.compareTo(minValue) <= 0));
-      } else {
-        return (number.length() < maxValue.length() ||
-                (number.length() == maxValue.length() && number.compareTo(maxValue) <= 0));
-      }
-    }
-    return false;
-  }
+  public Optional<Long> getLong()         {   return Fumeric.getLong(this.str); }
 
-  public boolean isInteger() { return this.isDecimal(MAX_INT, MIN_INT); }
-
-  public boolean isLong()   { return this.isDecimal(MAX_LONG, MIN_LONG); }
-
-  public boolean isFloat()  {
+  public Optional<Float> getFloat()  {
     try {
-      Float.parseFloat(str);
-      return true;
+      float f = Float.parseFloat(str);
+      return Optional.of(f);
     } catch (NumberFormatException nfe) {
     }
-    return false;
+    return Optional.empty();
   }
 
-  public boolean isDouble()  {
+  public Optional<Double> getDouble()  {
     try {
-      Double.parseDouble(str);
-      return true;
+      double d = Double.parseDouble(str);
+      return Optional.of(d);
     } catch (NumberFormatException nfe) {
     }
-    return false;
+    return Optional.empty();
   }
 
-  public boolean isBoolean() { return str.equalsIgnoreCase("true") || str.equalsIgnoreCase("false"); }
+  public Optional<Boolean> getBoolean() {
+    if (str.equalsIgnoreCase("true")) return Optional.of(true);
+    else if (str.equalsIgnoreCase("false")) return Optional.of(false);
+    else return Optional.empty();
+  }
 
   public void print() { System.out.println(str); }
 
-  public FunList<String> split(String regex) {
-    FunList<String> list = new FunList<>();
-    Arrays.stream(str.split(regex)).forEach(list::add);
-    return list;
-  }
+  public FunList<String> split(String regex) {    return new FunList<>(Arrays.asList(str.split(regex)));  }
 
   public FunList<Character> toList() {
     FunList<Character> list = new FunList<>();
