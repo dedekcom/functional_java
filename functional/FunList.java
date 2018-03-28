@@ -212,6 +212,20 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
     return res;
   }
 
+  /*
+    Turbo Pascal zone
+   */
+  public boolean repeatUntil(Predicate<? super T> predicate) {
+    for (T el: this) {
+      if (predicate.test(el))
+        return true;
+    }
+    return false;
+  }
+  /*
+    End of prehistory
+   */
+
   public boolean isHeadTail()       { return this.size() > 0;  }
   public boolean isHeadNil()        { return this.size() == 1; }
   public boolean isHeadTailNotNil() { return this.size() > 1; }

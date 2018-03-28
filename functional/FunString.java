@@ -9,6 +9,8 @@ import java.util.Arrays;
 
 public class FunString implements FunObject {
   private String str;
+  private final static String MAX_INT = String.valueOf(Integer.MAX_VALUE);
+  private final static String MIN_INT = String.valueOf(Integer.MIN_VALUE).substring(1);
 
   public FunString() {}
   public FunString(String s)   { this.set(s); }
@@ -35,11 +37,21 @@ public class FunString implements FunObject {
   public Double toDouble()    { return Double.valueOf(str);}
   public Float toFloat()      { return Float.valueOf(str);}
 
+  private boolean isNegative() {    return str.charAt(0) == '-';  }
   public boolean isInteger()  {
-    try {
-      Integer.parseInt(str);
-      return true;
-    } catch (NumberFormatException nfe) {
+    if (str == null || str.isEmpty())
+      return false;
+    if (str.matches("[+,-]?[0]*[0-9]+")) {
+      String number = str.replaceFirst("[+,-]?[0]*", "");
+      if (number.isEmpty())
+        return true;  // zero
+      if (isNegative()) {
+        return (number.length() < MIN_INT.length() ||
+                (number.length() == MIN_INT.length() && number.compareTo(MIN_INT) <= 0));
+      } else {
+        return (number.length() < MAX_INT.length() ||
+                (number.length() == MAX_INT.length() && number.compareTo(MAX_INT) <= 0));
+      }
     }
     return false;
   }

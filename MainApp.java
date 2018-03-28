@@ -103,6 +103,33 @@ public class MainApp {
 
     ss = FunString.of(5, "k", Math.sqrt(3));
     ss.print();
+
+    ss.set("-0000009");
+    assert (ss.isInteger());
+    ss.set("0000009");
+    assert (ss.isInteger());
+    ss.set("-");
+    assert (!ss.isInteger());
+    ss.set("+");
+    assert (!ss.isInteger());
+    ss.set("9");
+    assert (ss.isInteger());
+    ss.set("-0000009");
+    assert (ss.isInteger());
+    ss.set("-111111111111111111111");
+    assert (!ss.isInteger());
+    ss.set(Integer.MAX_VALUE);
+    assert (ss.isInteger());
+    ss.set(Long.valueOf(Integer.MAX_VALUE)+1);
+    assert (!ss.isInteger());
+    ss.set(Integer.MIN_VALUE);
+    assert (ss.isInteger());
+    ss.set(Long.valueOf(Integer.MIN_VALUE)-1);
+    assert (!ss.isInteger());
+    ss.set("-00000000000000000" + Integer.MAX_VALUE);
+    assert (ss.isInteger());
+    ss.set("x09");
+    assert (!ss.isInteger());
   }
 
   public static void testScalaTuple() {
