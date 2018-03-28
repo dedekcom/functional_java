@@ -10,10 +10,6 @@ import java.util.Optional;
 
 public class FunString implements FunObject {
   private String str;
-  private final static String MAX_INT = String.valueOf(Integer.MAX_VALUE);
-  private final static String MIN_INT = String.valueOf(Integer.MIN_VALUE).substring(1);
-  private final static String MAX_LONG = String.valueOf(Long.MAX_VALUE);
-  private final static String MIN_LONG = String.valueOf(Long.MIN_VALUE).substring(1);
 
   public FunString() {}
   public FunString(String s)   { this.set(s); }
