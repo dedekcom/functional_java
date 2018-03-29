@@ -5,7 +5,7 @@
  */
 
 import static test.FumericTest.testFumeric;
-import static test.FunListTest.testScalaList;
+import static test.FunListTest.testFunList;
 import static test.FunMapTest.testScalaMap;
 import static test.FunStringTest.testScalaString;
 import static test.FunTupleTest.testScalaTuple;
@@ -14,7 +14,7 @@ import static test.FunTupleTest.testScalaTuple;
 public class MainApp {
 
   public static void main(String[] args) {
-    testScalaList();
+    testFunList();
     testScalaMap();
     testScalaString();
     testScalaTuple();

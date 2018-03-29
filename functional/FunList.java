@@ -38,8 +38,10 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
 
   public <R> FunList<R> mapWithIndex(BiFunction<? super T, Integer, R> fun) {
     FunList<R> r = new FunList<>();
-    for (int i=0; i<this.size(); i++) {
-      r.add(fun.apply(this.get(i), i));
+    int id = 0;
+    for (T e: this) {
+      r.add(fun.apply(e, id));
+      id ++;
     }
     return r;
   }
@@ -167,8 +169,10 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
   public Tuple2<FunList<T>,FunList<T>> partition(BiFunction<? super T, Integer, Boolean> fun) {
     FunList<T> r1 = new FunList<>();
     FunList<T> r2 = new FunList<>();
-    for (int i=0; i<this.size(); i++) {
-      if (fun.apply(this.get(i), i)) r1.add(this.get(i)); else r2.add(this.get(i));
+    int id = 0;
+    for (T e: this) {
+      if (fun.apply(e, id)) r1.add(e); else r2.add(e);
+      id ++;
     }
     return new Tuple2<>(r1, r2);
   }
@@ -189,11 +193,12 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
   public FunString mkString(String separator) {
     StringBuilder res = new StringBuilder("");
     if (this.size() > 0) {
-      for (int i=0; i < size()-1; i++) {
-        res.append(this.get(i));
-        res.append(separator);
+      T last = this.getLast();
+      for (T e: this) {
+        res.append(e);
+        if (e != last)
+          res.append(separator);
       }
-      res.append(this.getLast());
     }
     return new FunString(res.toString());
   }

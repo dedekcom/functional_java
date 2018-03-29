@@ -11,7 +11,13 @@ import functional.FunList;
 import java.util.Optional;
 
 public class FunListTest {
-  public static void testScalaList() {
+
+  public static void testFunList() {
+    testBasicFunListOps();
+    testFunListPerformance();
+  }
+
+  private static void testBasicFunListOps() {
     FunList<String> sl = FunList.of();
     sl.print();
     sl = FunList.of("a", "b", "2", "3", "d", "b", "2");
@@ -46,6 +52,23 @@ public class FunListTest {
     l2.drop(3).print();
 
     l2.mkString("---").print();
+
+  }
+
+  private static void testFunListPerformance() {
+    FunList<String> src = new FunList<>();
+    for (int i=0; i<100000; i++) { src.add(Integer.toString(i)); }
+
+    int loops = 10;
+    System.out.println("\n\nLists performance:");
+    Performance.testPerform("reversed.sorted", loops, () -> { new FunList<>(src).reversed().sorted(); });
+    Performance.testPerform("mReversed.mSortWith", loops, () -> { new FunList<>(src).mReversed().mSortWith((e1, e2) -> e1.compareTo(e2)); });
+
+    Performance.testPerform("zipWithIndex.map.sum", 1, () -> { new FunList<>(src).zipWithIndex().map(t -> t._2()).sum(); });
+    Performance.testPerform("mapWithIndex.sum", 1, () -> { new FunList<>(src).mapWithIndex((el, id) -> id).sum(); });
+    Performance.testPerform("map.foldLeft", 1, () -> {
+      new FunList<>(src).map(s -> Fumeric.getInteger(s).get()).foldLeft(0, (acc, e) -> acc + e);
+    });
 
   }
 

@@ -13,14 +13,18 @@ import java.util.Optional;
 public class FumericTest {
 
   public static void testFumeric() {
-    FunList<Number> l = FunList.of(3.14, 1, 0, 2);
-    Number sum = l.sum();
-    System.out.println(sum.getClass() + ", " + sum);
+    testBasicFumericOperations();
     testIntegerParserPerformance();
     testDoubleParserPerformance();
   }
 
-  public static void testIntegerParserPerformance() {
+  private static void testBasicFumericOperations() {
+    FunList<Number> l = FunList.of(3.14, 1, 0, 2);
+    Number sum = l.sum();
+    System.out.println(sum.getClass() + ", " + sum);
+  }
+
+  private static void testIntegerParserPerformance() {
     int loops = 1000000;
     Performance.testPerform("\n\nPrepare fumeric performance test", loops, () -> { ; });
 
@@ -40,7 +44,7 @@ public class FumericTest {
 
   }
 
-  public static void testDoubleParserPerformance() {
+  private static void testDoubleParserPerformance() {
 
     int loops = 1000000;
     System.out.println("\n\nDouble:");
