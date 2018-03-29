@@ -90,35 +90,19 @@ public class Fumeric {
     }
   }
 
+  public static Optional<Short> getShort(String str) {
+    return getLong(str, Short.MAX_VALUE).map(Long::shortValue);
+  }
+
   public static Optional<Integer> getInteger(String str) {
-    if (str == null || str.isEmpty()) return Optional.empty();
-    char c = str.charAt(0);
-    int pos = 0;
-    int len = str.length();
-    boolean positive = true;
-    if (!Character.isDigit(c)) {
-      if (c == '-') {
-        positive = false;
-        pos = 1;
-      } else if (c=='+') {
-        pos = 1;
-      } else return Optional.empty();
-      if (pos == len) return Optional.empty();
-    }
-    int tocmp = -Integer.MAX_VALUE;
-    int result = 0;
-    int limit = positive ? 0 : 1;
-    do {
-      c = str.charAt(pos);
-      if (!Character.isDigit(c)) return Optional.empty();
-      result = 10 * result + Character.digit(c, 10);
-      if (result + tocmp > limit) return Optional.empty();
-      pos ++;
-    } while (pos != len);
-    return Optional.of ( (positive ? result : -result));
+    return getLong(str, Integer.MAX_VALUE).map(Long::intValue);
   }
 
   public static Optional<Long> getLong(String str) {
+    return getLong(str, Long.MAX_VALUE);
+  }
+
+  private static Optional<Long> getLong(String str, long MAX_VALUE) {
     if (str == null || str.isEmpty()) return Optional.empty();
     char c = str.charAt(0);
     int pos = 0;
@@ -133,7 +117,7 @@ public class Fumeric {
       } else return Optional.empty();
       if (pos == len) return Optional.empty();
     }
-    long tocmp = -Long.MAX_VALUE;
+    long tocmp = -MAX_VALUE;
     long result = 0;
     long limit = positive ? 0 : 1;
     do {

@@ -34,6 +34,8 @@ public class FunString implements FunObject {
 
   public Optional<Long> getLong()         {   return Fumeric.getLong(this.str); }
 
+  public Optional<Short> getShort()     { return Fumeric.getShort(this.str); }
+
   public Optional<Float> getFloat()  {
     try {
       float f = Float.parseFloat(str);
