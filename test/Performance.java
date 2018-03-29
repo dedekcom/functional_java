@@ -1,9 +1,9 @@
-package test;/*
+/*
  *
  * Dominik Dagiel 03.2018
  *
  */
-
+package test;
 
 public class Performance {
 

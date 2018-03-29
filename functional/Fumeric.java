@@ -6,6 +6,7 @@
 package functional;
 
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 public class Fumeric {
 
@@ -128,5 +129,22 @@ public class Fumeric {
       pos ++;
     } while (pos != len);
     return Optional.of ( (positive ? result : -result));
+  }
+
+  /*
+    Consider using getDouble instead of try-catch Double.valueOf(str) only when
+    there is a high risk of many non-compatible numbers
+   */
+
+  private static Pattern DOUBLE_PATTERN = Pattern.compile("[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?");
+
+  public static Optional<Double> getDouble(String str) {
+    if (DOUBLE_PATTERN.matcher(str).matches()) {
+      try {
+        return Optional.of(Double.valueOf(str));
+      } catch (NumberFormatException nfe) { // when number beyond the limits
+      }
+    }
+    return Optional.empty();
   }
 }
