@@ -3,9 +3,10 @@
  * Dominik Dagiel 03.2018
  *
  */
+package pl.dagiel;
 
-import functional.Fumeric;
-import functional.FunList;
+import pl.dagiel.functional.Fumeric;
+import pl.dagiel.functional.FunList;
 import org.junit.Test;
 
 import java.util.Optional;

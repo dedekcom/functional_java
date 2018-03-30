@@ -3,7 +3,7 @@
  * Dominik Dagiel 03.2018
  *
  */
-package functional;
+package pl.dagiel.functional;
 
 import java.io.Serializable;
 import java.util.Arrays;

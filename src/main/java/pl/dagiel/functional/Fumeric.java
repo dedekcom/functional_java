@@ -3,7 +3,7 @@
  * Dominik Dagiel 03.2018
  *
  */
-package functional;
+package pl.dagiel.functional;
 
 import java.util.Optional;
 import java.util.regex.Pattern;

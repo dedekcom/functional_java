@@ -3,7 +3,7 @@
  * Dominik Dagiel 03.2018
  *
  */
-package functional;
+package pl.dagiel.functional;
 
 public interface FunObject {
   void print();

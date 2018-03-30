@@ -4,9 +4,11 @@
  *
  */
 
-import functional.Fumeric;
-import functional.FunList;
-import functional.Tuple2;
+package pl.dagiel;
+
+import pl.dagiel.functional.Fumeric;
+import pl.dagiel.functional.FunList;
+import pl.dagiel.functional.Tuple2;
 import org.junit.Test;
 
 import java.util.Optional;

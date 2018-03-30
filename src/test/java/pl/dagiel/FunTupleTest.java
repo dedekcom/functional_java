@@ -3,10 +3,11 @@
  * Dominik Dagiel 03.2018
  *
  */
+package pl.dagiel;
 
-import functional.FunString;
-import functional.Tuple2;
-import functional.Tuple3;
+import pl.dagiel.functional.FunString;
+import pl.dagiel.functional.Tuple2;
+import pl.dagiel.functional.Tuple3;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
