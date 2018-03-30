@@ -8,6 +8,7 @@ import functional.FunString;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 public class FunStringTest {
 
@@ -19,6 +20,7 @@ public class FunStringTest {
     ss.set(10.22);
     assertTrue(ss.getFloat().isPresent());
     assertTrue(ss.getDouble().isPresent());
+    assertEquals (ss.getDouble().get(), Double.valueOf(10.22));
     assertTrue(!ss.getInteger().isPresent());
     assertTrue(!ss.getBoolean().isPresent());
 
