@@ -42,6 +42,15 @@ public class FunMap<K, V> extends LinkedHashMap<K, V> implements FunObject {
     return this;
   }
 
+  public FunMap<K, V> mRemoved(K key) {
+    this.remove(key);
+    return this;
+  }
+
+  public FunMap<K, V> removed(K key) {
+    return new FunMap<>(this).mRemoved(key);
+  }
+
   public FunMap<K, V> updated(K key, V value) {
     return new FunMap<>(this).mUpdated(key, value);
   }

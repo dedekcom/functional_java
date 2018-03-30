@@ -7,6 +7,7 @@ package test;
 
 import functional.Fumeric;
 import functional.FunList;
+import functional.Tuple2;
 
 import java.util.Optional;
 
@@ -18,42 +19,37 @@ public class FunListTest {
   }
 
   private static void testBasicFunListOps() {
-    FunList<String> sl = FunList.of();
-    sl.print();
-    sl = FunList.of("a", "b", "2", "3", "d", "b", "2");
-    sl.print();
-    sl.distinct().print();
 
     FunList<Integer> i1 = FunList.of(1,2,5,-2,3,-10, 4);
-    int sum = i1.fold(0, (acc, id) -> acc + id);
-    System.out.println(sum);
-    System.out.println(i1.sum());
+    assert( i1.fold(0, (acc, id) -> acc + id) == 3);
+    assert ( i1.sum().intValue() == 3);
+    assert (i1.partition(e -> e > 0)._2().equals(FunList.of(-2, -10)));
 
-    i1.partition(e -> e > 0).print();
+    assert (i1.filter(e -> e > 0).sorted().map(e -> String.valueOf(e) + "k").equals(
+            FunList.of("1k", "2k", "3k", "4k", "5k")));
 
-    i1.filter(e -> e > 0).sorted().map(e -> String.valueOf(e) + "k").print();
-
-    sum = i1.foldLeft(0, (acc, id) -> acc + id);
-    System.out.println(sum);
-
+    FunList<String> sl = FunList.of("a", "b", "2", "3", "d", "b", "2");
+    assert(sl.distinct().equals(FunList.of("a", "b", "2", "3", "d")));
     int sum2 = sl.foldLeft(0, (acc, id) ->
             Fumeric.getInteger(id).map(intVal -> acc + intVal).orElse(acc)
     );
-    System.out.println(sum2);
-    sl.pushed("last or first").print();
-    sl.tail().zipWithIndex().print();
-
-    FunList.of(2).tail().print();
+    assert(sum2 == 7);
+    assert (sl.pushed("new").head().equals("new"));
+    assert (sl.tail().zipWithIndex().head().equals(new Tuple2<>("b", 0)));
+    assert(FunList.of(2).tail().isEmpty());
 
     FunList<Object> l2 = FunList.of(1, 2, Optional.of(5), Optional.empty(), FunList.of(1, 2, 3), FunList.of(new FunList<String>()));
-    l2.flatten().splitAt(100).print();
+    assert(l2.flatten().splitAt(100)._1().equals(
+            FunList.of(1, 2, 5, 1, 2, 3, new FunList<String>())
+    ));
 
     assert (l2.drop(20).isEmpty());
-    l2.drop(3).print();
+    assert (l2.drop(3).size() == 3);
+    assert (l2.slice(-5, 100).size() == l2.size());
 
     l2.mkString("---").print();
 
-    FunList.ofSize(10, 0).mapWithIndex((el, id) -> id).print();
+    assert(FunList.ofSize(5, 0).mapWithIndex((el, id) -> id).equals(FunList.of(0, 1, 2, 3, 4)));
 
   }
 
