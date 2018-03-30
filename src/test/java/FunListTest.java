@@ -53,15 +53,17 @@ public class FunListTest {
 
   @Test
   public void testFunListPerformance() {
-    FunList<String> src = new FunList<>();
-    for (int i=0; i<100000; i++) { src.add(Integer.toString(i)); }
+    FunList<String> src = FunList.ofSize(100000, "").mapWithIndex((e, id) -> Integer.toString(id));
 
     int loops = 10;
     Performance.testPerform("\n\nPrepare FunList performance test", loops, () -> { ; });
     Performance.testPerform("reversed.sorted", loops, () -> { new FunList<>(src).reversed().sorted(); });
     Performance.testPerform("mReversed.mSortWith", loops, () -> { new FunList<>(src).mReversed().mSortWith((e1, e2) -> e1.compareTo(e2)); });
 
-    Performance.testPerform("zipWithIndex.map.sum", loops, () -> { new FunList<>(src).zipWithIndex().map(t -> t._2()).sum(); });
+    Performance.testPerform("\nslice(1/4-3/4)", loops, () -> { new FunList<>(src).slice(src.size()/4,
+            3*src.size()/4); });
+
+    Performance.testPerform("\nzipWithIndex.map.sum", loops, () -> { new FunList<>(src).zipWithIndex().map(t -> t._2()).sum(); });
     Performance.testPerform("mapWithIndex.sum", loops, () -> { new FunList<>(src).mapWithIndex((el, id) -> id).sum(); });
     Performance.testPerform("map.foldLeft", loops, () -> {
       new FunList<>(src).map(s -> Fumeric.getInteger(s).get()).foldLeft(0, (acc, e) -> acc + e);

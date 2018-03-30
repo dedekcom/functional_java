@@ -18,7 +18,7 @@ public class Performance {
 
     long stopTime = System.currentTimeMillis();
     long elapsedTime = stopTime - startTime;
-    System.out.println("test: " + msg + "\nloops: " + loops + "\nmillis: "+ elapsedTime);
+    System.out.println(msg + "\nloops: " + loops + "\nmillis: "+ elapsedTime);
 
   }
 
