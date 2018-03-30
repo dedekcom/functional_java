@@ -3,28 +3,24 @@
  * Dominik Dagiel 03.2018
  *
  */
-package test;
 
 import functional.Fumeric;
 import functional.FunList;
+import org.junit.Test;
 
 import java.util.Optional;
 
 public class FumericTest {
 
-  public static void testFumeric() {
-    testBasicFumericOperations();
-    testIntegerParserPerformance();
-    testDoubleParserPerformance();
-  }
-
-  private static void testBasicFumericOperations() {
+  @Test
+  public void testBasicFumericOperations() {
     FunList<Number> l = FunList.of(3.14, 1, 0, 2);
     Number sum = l.sum();
     System.out.println(sum.getClass() + ", " + sum);
   }
 
-  private static void testIntegerParserPerformance() {
+  @Test
+  public void testIntegerParserPerformance() {
     int loops = 1000000;
     Performance.testPerform("\n\nPrepare fumeric performance test", loops, () -> { ; });
 
@@ -44,7 +40,8 @@ public class FumericTest {
 
   }
 
-  private static void testDoubleParserPerformance() {
+  @Test
+  public void testDoubleParserPerformance() {
 
     int loops = 1000000;
     System.out.println("\n\nDouble:");

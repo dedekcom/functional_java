@@ -3,14 +3,18 @@
  * Dominik Dagiel 03.2018
  *
  */
-package test;
 
 import functional.FunList;
 import functional.FunMap;
 import functional.Tuple2;
+import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
 
 public class FunMapTest {
-  public static void testScalaMap() {
+
+  @Test
+  public void testScalaMap() {
     Tuple2<String, Integer> p = new Tuple2<>("k", 5);
     p.print();
 
@@ -28,11 +32,11 @@ public class FunMapTest {
     });
     m2.print();
 
-    assert ( m2.toList().map(pair -> pair._2()).equals(
+    assertTrue ( m2.toList().map(pair -> pair._2()).equals(
             FunList.of("F8", "fsp3000c", new FunMap<>(fm), FunList.of("ots", "oms", "ety6") ) ) );
 
     FunMap<String, Object> fm2 = FunMap.of(new Tuple2<>("almsum", 5), new Tuple2<>("ctyp", "fmtrait"));
 
-    assert(fm.equals(fm2));
+    assertTrue(fm.equals(fm2));
   }
 }

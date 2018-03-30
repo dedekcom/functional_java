@@ -3,7 +3,6 @@
  * Dominik Dagiel 03.2018
  *
  */
-package test;
 
 public class Performance {
   public static boolean testPerformance = true;
