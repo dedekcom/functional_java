@@ -25,7 +25,7 @@ abstract class FunTuple implements Serializable {
   public String toString() {
     String res = "(";
     for (int i=0; i < values.length-1; i++) {
-      res += values[i] + ",";
+      res += values[i] + ", ";
     }
     return res + values[values.length-1] + ")";
   }

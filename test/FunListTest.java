@@ -53,6 +53,8 @@ public class FunListTest {
 
     l2.mkString("---").print();
 
+    FunList.ofSize(10, 0).mapWithIndex((el, id) -> id).print();
+
   }
 
   private static void testFunListPerformance() {
@@ -64,9 +66,9 @@ public class FunListTest {
     Performance.testPerform("reversed.sorted", loops, () -> { new FunList<>(src).reversed().sorted(); });
     Performance.testPerform("mReversed.mSortWith", loops, () -> { new FunList<>(src).mReversed().mSortWith((e1, e2) -> e1.compareTo(e2)); });
 
-    Performance.testPerform("zipWithIndex.map.sum", 1, () -> { new FunList<>(src).zipWithIndex().map(t -> t._2()).sum(); });
-    Performance.testPerform("mapWithIndex.sum", 1, () -> { new FunList<>(src).mapWithIndex((el, id) -> id).sum(); });
-    Performance.testPerform("map.foldLeft", 1, () -> {
+    Performance.testPerform("zipWithIndex.map.sum", loops, () -> { new FunList<>(src).zipWithIndex().map(t -> t._2()).sum(); });
+    Performance.testPerform("mapWithIndex.sum", loops, () -> { new FunList<>(src).mapWithIndex((el, id) -> id).sum(); });
+    Performance.testPerform("map.foldLeft", loops, () -> {
       new FunList<>(src).map(s -> Fumeric.getInteger(s).get()).foldLeft(0, (acc, e) -> acc + e);
     });
 

@@ -55,6 +55,17 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
     return r;
   }
 
+  public FunList<T> filterWithIndex(BiFunction<? super T, Integer, Boolean> fun) {
+    FunList<T> r = new FunList<>();
+    int id = 0;
+    for (T e: this) {
+      if (fun.apply(e, id))
+        r.add(e);
+      id ++;
+    }
+    return r;
+  }
+
   public FunList<T> filterNot(Predicate<? super T> predicate) {
     FunList<T> r = new FunList<>();
     for (T e: this) {
@@ -64,7 +75,9 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
     return r;
   }
 
-  public T head()     { return this.get(0); }
+  public T head()     { return this.getFirst(); }
+
+  public Optional<T>  headOpt() { return this.isEmpty() ? Optional.empty() : Optional.of(this.getFirst()); }
 
   public FunList<T> tail() {
     return new FunList<>(this).mTail();
@@ -104,15 +117,8 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
     return this.slice(this.size() - n,  this.size());
   }
 
-  public FunList<T> slice(int start, int stop) {
-    FunList<T> list = new FunList<>();
-    if (start < 0) start = 0;
-    if (stop > this.size()) stop = this.size();
-    while(start < stop) {
-      list.add(this.get(start));
-      start ++;
-    }
-    return list;
+  public FunList<T> slice(final int start, final int stop) {
+    return this.filterWithIndex((e, id) -> id >= start && id < stop);
   }
 
   public FunList<T> drop(int n) {
@@ -128,13 +134,11 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
     return this;
   }
 
-  public <R> R fold(R initial, BiFunction<R, T, R> fun) {
-    return _fold(0, this.size(), initial, fun);
-  }
+  public <R> R fold(R initial, BiFunction<R, T, R> fun) {    return _fold(this, initial, fun);  }
 
-  private <R> R _fold(int pos, int length, R result, BiFunction<R, T, R> fun)  {
-    if (pos == length) return result;
-    return _fold(pos + 1, length, fun.apply(result, this.get(pos)), fun);
+  private <R> R _fold(FunList<T> list, R result, BiFunction<R, T, R> fun)  {
+    if (list.isEmpty()) return result;
+    else return _fold(list.tail(), fun.apply(result, list.head()), fun);
   }
 
   public <R> R foldLeft(R initial, BiFunction<R, T, R> fun) {
@@ -166,7 +170,7 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
     return this.partition((e, i) -> predicate.test(e));
   }
 
-  public Tuple2<FunList<T>,FunList<T>> partition(BiFunction<? super T, Integer, Boolean> fun) {
+  public Tuple2<FunList<T>, FunList<T>> partition(BiFunction<? super T, Integer, Boolean> fun) {
     FunList<T> r1 = new FunList<>();
     FunList<T> r2 = new FunList<>();
     int id = 0;
@@ -235,9 +239,16 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
   public boolean isHeadNil()        { return this.size() == 1; }
   public boolean isHeadTailNotNil() { return this.size() > 1; }
   public boolean isNil()            { return this.size() == 0; }
+  public boolean nonEmpty()         { return this.size() != 0; }
 
   public static <T> FunList<T> of(T... params) {
     return new FunList<>(Arrays.asList(params));
+  }
+
+  public static <T> FunList<T> ofSize(int n, T value) {
+    FunList<T> res = new FunList<>();
+    for (int i=0; i<n; i++) res.add(value);
+    return res;
   }
 
 }
