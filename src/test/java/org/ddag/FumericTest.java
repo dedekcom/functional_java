@@ -3,10 +3,10 @@
  * Dominik Dagiel 03.2018
  *
  */
-package pl.dagiel;
+package org.ddag;
 
-import pl.dagiel.fun.Fumeric;
-import pl.dagiel.fun.FunList;
+import org.ddag.fun.Fumeric;
+import org.ddag.fun.FunList;
 import org.junit.Test;
 
 import java.util.Optional;

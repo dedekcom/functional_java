@@ -3,7 +3,7 @@
  * Dominik Dagiel 03.2018
  *
  */
-package pl.dagiel;
+package org.ddag;
 
 public class Performance {
   public static boolean testPerformance = true;

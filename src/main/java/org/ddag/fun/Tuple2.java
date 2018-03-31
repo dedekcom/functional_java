@@ -3,7 +3,7 @@
  * Dominik Dagiel 03.2018
  *
  */
-package pl.dagiel.fun;
+package org.ddag.fun;
 
 public class Tuple2<T1, T2> extends FunTuple {
 

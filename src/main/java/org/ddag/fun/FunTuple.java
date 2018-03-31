@@ -3,7 +3,7 @@
  * Dominik Dagiel 03.2018
  *
  */
-package pl.dagiel.fun;
+package org.ddag.fun;
 
 import java.io.Serializable;
 import java.util.Arrays;

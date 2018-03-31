@@ -3,11 +3,11 @@
  * Dominik Dagiel 03.2018
  *
  */
-package pl.dagiel;
+package org.ddag;
 
-import pl.dagiel.fun.FunList;
-import pl.dagiel.fun.FunMap;
-import pl.dagiel.fun.Tuple2;
+import org.ddag.fun.FunList;
+import org.ddag.fun.FunMap;
+import org.ddag.fun.Tuple2;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;

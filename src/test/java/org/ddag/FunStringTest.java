@@ -3,9 +3,9 @@
  * Dominik Dagiel 03.2018
  *
  */
-package pl.dagiel;
+package org.ddag;
 
-import pl.dagiel.fun.FunString;
+import org.ddag.fun.FunString;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;

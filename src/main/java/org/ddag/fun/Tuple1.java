@@ -1,11 +1,9 @@
 /*
- *  Copyright 2018 ADVA Optical Networking SE. All rights reserved.
  *
- *  Owner: dominikda
+ * Dominik Dagiel 03.2018
  *
- *  $Id: $
  */
-package pl.dagiel.fun;
+package org.ddag.fun;
 
 public class Tuple1<T1> extends FunTuple {
 

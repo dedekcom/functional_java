@@ -3,7 +3,7 @@
  * Dominik Dagiel 03.2018
  *
  */
-package pl.dagiel.fun;
+package org.ddag.fun;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -16,7 +16,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 /*
-  Scala like List collection
+  Scala-like List collection
 
   methods starting with 'm' are mutable (they don't create a new list as a result)
    - it makes faster computing but causes side effects

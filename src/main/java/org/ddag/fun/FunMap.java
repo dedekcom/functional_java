@@ -3,7 +3,7 @@
  * Dominik Dagiel 03.2018
  *
  */
-package pl.dagiel.fun;
+package org.ddag.fun;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;

@@ -4,11 +4,11 @@
  *
  */
 
-package pl.dagiel;
+package org.ddag;
 
-import pl.dagiel.fun.Fumeric;
-import pl.dagiel.fun.FunList;
-import pl.dagiel.fun.Tuple2;
+import org.ddag.fun.Fumeric;
+import org.ddag.fun.FunList;
+import org.ddag.fun.Tuple2;
 import org.junit.Test;
 
 import java.util.Optional;
