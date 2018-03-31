@@ -5,7 +5,7 @@
  *
  *  $Id: $
  */
-package pl.dagiel.functional;
+package pl.dagiel.fun;
 
 public class Tuple1<T1> extends FunTuple {
 

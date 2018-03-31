@@ -3,7 +3,7 @@
  * Dominik Dagiel 03.2018
  *
  */
-package pl.dagiel.functional;
+package pl.dagiel.fun;
 
 public class Tuple5<T1, T2, T3, T4, T5> extends FunTuple {
 

@@ -3,7 +3,7 @@
  * Dominik Dagiel 03.2018
  *
  */
-package pl.dagiel.functional;
+package pl.dagiel.fun;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.function.BiFunction;
 
 /*
-  Scala like Map collection
+  Scala-like Map collection
 
   methods starting with 'm' are mutable - it makes faster computing but causes side effects
  */

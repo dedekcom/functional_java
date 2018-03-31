@@ -5,9 +5,9 @@
  */
 package pl.dagiel;
 
-import pl.dagiel.functional.FunString;
-import pl.dagiel.functional.Tuple2;
-import pl.dagiel.functional.Tuple3;
+import pl.dagiel.fun.FunString;
+import pl.dagiel.fun.Tuple2;
+import pl.dagiel.fun.Tuple3;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;

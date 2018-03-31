@@ -5,8 +5,8 @@
  */
 package pl.dagiel;
 
-import pl.dagiel.functional.Fumeric;
-import pl.dagiel.functional.FunList;
+import pl.dagiel.fun.Fumeric;
+import pl.dagiel.fun.FunList;
 import org.junit.Test;
 
 import java.util.Optional;

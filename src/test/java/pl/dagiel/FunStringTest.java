@@ -5,7 +5,7 @@
  */
 package pl.dagiel;
 
-import pl.dagiel.functional.FunString;
+import pl.dagiel.fun.FunString;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
