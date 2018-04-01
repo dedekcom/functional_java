@@ -163,6 +163,8 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
 
   public Number sum() {    return this.foldLeft(Fumeric.zero(), (sum, el) -> Fumeric.sum(sum, ((Number)el)));  }
 
+  public double avg() {    return Fumeric.div(this.sum(), Double.valueOf(this.size())).doubleValue();  }
+
   public FunList<T> sortWith(BiFunction<T, T, Integer> compare)  {
     return new FunList<>(this).mSortWith(compare);
   }
