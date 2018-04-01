@@ -80,6 +80,8 @@ public class FunListTest {
     assertTrue (sl.matches(FunList.class, "a", "b", FunList.class));
     assertTrue (!sl.matches(FunList.class, "a", "b", FunList.of()));
 
+    assertTrue(FunObject.matchesObject(Optional.empty(), Optional.empty()));
+
     assertTrue (FunList.of(1).tail().matches(FunList.class, FunList.of()));
 
     assertTrue (FunList.of(1).matches(FunList.class, 1, FunList.of()));
