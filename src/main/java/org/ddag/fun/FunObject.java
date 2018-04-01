@@ -39,8 +39,6 @@ public interface FunObject {
         } else {
           return o.equals(params[0]);
         }
-      } else if (params.length == 2 && params[0] instanceof Optional) {
-        return matchesOptionalOf(o, params[1]);
       } else
         return false;
     }
