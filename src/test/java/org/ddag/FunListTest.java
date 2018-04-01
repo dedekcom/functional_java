@@ -8,6 +8,7 @@ package org.ddag;
 
 import org.ddag.fun.Fumeric;
 import org.ddag.fun.FunList;
+import org.ddag.fun.FunObject;
 import org.ddag.fun.FunTuple;
 import org.ddag.fun.Tuple2;
 import org.junit.Test;
@@ -47,6 +48,17 @@ public class FunListTest {
     assertTrue(l2.flatten().splitAt(100)._1().equals(
             FunList.of(1, 2, 5, 1, 2, 3, new FunList<String>())
     ));
+
+    assertEquals(l2.pushed("x").mPushed(Optional.of("x")).map( e -> {
+      if (FunObject.matchesObject(e, Integer.class))              return (Integer)e;
+      else if (FunObject.matchesObject(e, Optional.empty()))      return -10;
+      else if (FunObject.matchesOptionalOf(e, Integer.class))     return (Integer)(((Optional)e).get());
+      else if (FunObject.matchesObject(e, FunList.class, 1, FunList.class))         return -3;
+      else if (FunObject.matchesObject(e, FunList.class))         return -1;
+      else if (FunObject.matchesObject(e, "x"))          return 100;
+      else if (FunObject.matchesOptionalOf(e, "x"))         return -100;
+      else return 0;
+    }), FunList.of(-100, 100, 1, 2, 5, -10, -3, -1) );
 
     assertTrue (l2.drop(20).isEmpty());
     assertTrue (l2.drop(3).size() == 3);
@@ -92,6 +104,19 @@ public class FunListTest {
     Performance.testPerform("mapWithIndex.sum", loops, () -> { new FunList<>(src).mapWithIndex((el, id) -> id).sum(); });
     Performance.testPerform("map.foldLeft", loops, () -> {
       new FunList<>(src).map(s -> Fumeric.getInteger(s).get()).foldLeft(0, (acc, e) -> acc + e);
+    });
+
+    Performance.testPerform("pattern matching on list", loops, () -> {
+      new FunList<Object>(src).map(e -> {
+        if (FunObject.matchesObject(e, Integer.class)) return (Integer) e;
+        else if (FunObject.matchesObject(e, Optional.empty())) return -10;
+        else if (FunObject.matchesOptionalOf(e, Integer.class)) return (Integer) (((Optional) e).get());
+        else if (FunObject.matchesObject(e, FunList.class, 1, FunList.class)) return -3;
+        else if (FunObject.matchesObject(e, FunList.class)) return -1;
+        else if (FunObject.matchesObject(e, "x")) return 100;
+        else if (FunObject.matchesOptionalOf(e, "x")) return -100;
+        else return 0;
+      });
     });
 
   }
