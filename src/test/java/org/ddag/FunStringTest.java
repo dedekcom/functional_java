@@ -5,6 +5,7 @@
  */
 package org.ddag;
 
+import org.ddag.fun.FunList;
 import org.ddag.fun.FunString;
 import org.junit.Test;
 
@@ -60,4 +61,13 @@ public class FunStringTest {
     assertTrue (!ss.getInteger().isPresent());
   }
 
+  @Test
+  public void testFunStringMatches() {
+    FunString ss = new FunString(5);
+
+    assertTrue(ss.matches(FunString.class));
+    assertTrue(ss.matches(FunString.class, "5"));
+    assertTrue(!ss.matches(FunString.class, 5));
+    assertTrue(!ss.matches(FunList.class, "5"));
+  }
 }

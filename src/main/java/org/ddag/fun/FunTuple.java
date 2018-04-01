@@ -8,7 +8,7 @@ package org.ddag.fun;
 import java.io.Serializable;
 import java.util.Arrays;
 
-abstract public class FunTuple implements Serializable {
+abstract public class FunTuple implements Serializable, FunObject {
   protected Object[] values;
 
   protected void setSize(int size) { values = new Object[size]; }
@@ -20,6 +20,28 @@ abstract public class FunTuple implements Serializable {
   public void print() { System.out.println(this.toString()); }
 
   public FunList<Object> toList() { return new FunList<>(Arrays.asList(values)); }
+
+  public boolean matches(Object... params) {
+    if (params.length > 0 && (params[0] instanceof Class) && ((Class)params[0]).isInstance(this)) {
+      if (params.length == 1)
+        return true;    // match only FunObject type
+      int last = params.length - 1;
+      if (this.size() != last)
+        return false;   // wrong tuple size
+      for (int i=1; i<=last; i++) {
+        if (params[i] instanceof Class )  {
+          if (!((Class)params[i]).isInstance(this._id(i-1)))
+            return false;
+        } else {
+          if (!this._id(i-1).equals(params[i]))
+            return false;
+        }
+      }
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   @Override
   public String toString() {

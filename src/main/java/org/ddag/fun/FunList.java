@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.function.BiFunction;
@@ -24,6 +25,8 @@ import java.util.function.Predicate;
   list.filter(e -> e > 0).mPushed(10).mReversed();
  */
 public class FunList<T> extends LinkedList<T> implements FunObject {
+  final private static FunList emptyList = new FunList();
+
   public FunList() { super(); }
 
   public FunList(Collection<? extends T> c) {    super(c);  }
@@ -251,6 +254,34 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
   public boolean isNil()            { return this.size() == 0; }
   public boolean nonEmpty()         { return this.size() != 0; }
 
+  public boolean matches(Object... params) {
+    if (params.length > 0 && (params[0] instanceof Class) && ((Class)params[0]).isInstance(this)) {
+      if (params.length == 1)
+        return true;  // match only collection type
+      Iterator it = this.iterator();
+      int last = params.length - 1;
+      for (int i=1; i<last; i++) {
+        if (i > this.size())
+          return false;
+        Object n = it.next();
+        if (params[i] instanceof Class) {
+          if (!((Class)params[i]).isInstance(n))
+            return false;
+        }  else if (!n.equals(params[i]))
+          return false;
+      }
+      if (params[last].equals(FunList.of()))  {
+        return !it.hasNext();
+      } else if (params[last] instanceof Class && ((Class)params[last]).isInstance(this)) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
   public static <T> FunList<T> of(T... params) {
     return new FunList<>(Arrays.asList(params));
   }
@@ -261,4 +292,5 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
     return res;
   }
 
+  public static FunList of() { return emptyList; }
 }

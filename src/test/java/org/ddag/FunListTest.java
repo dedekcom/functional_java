@@ -8,6 +8,7 @@ package org.ddag;
 
 import org.ddag.fun.Fumeric;
 import org.ddag.fun.FunList;
+import org.ddag.fun.FunTuple;
 import org.ddag.fun.Tuple2;
 import org.junit.Test;
 
@@ -55,6 +56,24 @@ public class FunListTest {
 
     assertTrue(FunList.ofSize(5, 0).mapWithIndex((el, id) -> id).equals(FunList.of(0, 1, 2, 3, 4)));
 
+  }
+
+  @Test
+  public void testFunListMatches() {
+    FunList<String> sl = FunList.of("a", "b", "2", "3", "d", "b", "2");
+
+    assertTrue (sl.matches(FunList.class)) ;
+    assertTrue (sl.matches(FunList.class, String.class, FunList.class));
+    assertTrue (sl.matches(FunList.class, FunList.class));
+    assertTrue (sl.matches(FunList.class, "a", "b", FunList.class));
+    assertTrue (!sl.matches(FunList.class, "a", "b", FunList.of()));
+
+    assertTrue (FunList.of(1).tail().matches(FunList.class, FunList.of()));
+
+    assertTrue (FunList.of(1).matches(FunList.class, 1, FunList.of()));
+
+    assertTrue(FunList.of(1, 2, "3", new Tuple2<>("a", 5)).
+            matches(FunList.class, Integer.class, Integer.class, String.class, FunTuple.class, FunList.of()));
   }
 
   @Test

@@ -19,6 +19,7 @@ public class FunString implements FunObject {
   public FunString(char c)     {this.set(c); }
   public FunString(double d)   {this.set(d); }
   public FunString(float f)    {this.set(f); }
+  public FunString(Object o)    {this.set(o.toString()); }
 
   public String get()         { return str; }
 
@@ -69,6 +70,18 @@ public class FunString implements FunObject {
     char[] chars = str.toCharArray();
     for (char c: chars) { list.add(new Character(c)); }
     return list;
+  }
+
+  public boolean matches(Object... params) {
+    if (params.length > 0 && (params[0] instanceof Class) && ((Class)params[0]).isInstance(this)) {
+      if (params.length == 1)
+        return true;  // test only class type
+      else if (params.length == 2)
+        return this.str.equals(params[1]);
+      else return false;
+    } else {
+      return false;
+    }
   }
 
   public static FunString of(Object... params) {
