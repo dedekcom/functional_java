@@ -6,6 +6,7 @@
 package org.ddag;
 
 import org.ddag.fun.FunList;
+import org.ddag.fun.FunObject;
 import org.ddag.fun.FunString;
 import org.ddag.fun.FunTuple;
 import org.ddag.fun.Tuple1;
@@ -43,7 +44,7 @@ public class FunTupleTest {
     }).print();
 
     assertTrue(new Tuple3<>(1,2,3).matches(FunTuple.class, 1, 2, 3));
-    assertTrue(new Tuple3<>(1,2,3).matches(FunTuple.class, 1, Integer.class, Object.class));
+    assertTrue(new Tuple3<>(1,2,3).matches(FunTuple.class, 1, Integer.class, FunObject.Any));
     assertTrue(! list.head().matches(String.class));
   }
 }

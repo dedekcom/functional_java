@@ -6,6 +6,7 @@
 package org.ddag.fun;
 
 public interface FunObject {
+  Object Any = Object.class;
 
   void print();
 
