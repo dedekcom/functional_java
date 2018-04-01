@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import java.util.Optional;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class FunListTest {
@@ -29,6 +30,9 @@ public class FunListTest {
             FunList.of("1k", "2k", "3k", "4k", "5k")));
 
     FunList<String> sl = FunList.of("a", "b", "2", "3", "d", "b", "2");
+
+    assertEquals(sl.find(e -> e.equals("d")), Optional.of("d"));
+    assertTrue(sl.exists(e -> e.equalsIgnoreCase("D")));
     assertTrue(sl.distinct().equals(FunList.of("a", "b", "2", "3", "d")));
     int sum2 = sl.foldLeft(0, (acc, id) ->
             Fumeric.getInteger(id).map(intVal -> acc + intVal).orElse(acc)

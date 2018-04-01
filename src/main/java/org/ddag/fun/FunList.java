@@ -75,6 +75,16 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
     return r;
   }
 
+  public Optional<T> find(Predicate<? super T> predicate) {
+    for (T e: this) {
+      if (predicate.test(e))
+        return Optional.of(e);
+    }
+    return Optional.empty();
+  }
+
+  public boolean exists(Predicate<? super T> predicate) { return this.find(predicate).isPresent(); }
+
   public T head()     { return this.getFirst(); }
 
   public Optional<T>  headOpt() { return this.isEmpty() ? Optional.empty() : Optional.of(this.getFirst()); }
