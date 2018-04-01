@@ -60,6 +60,17 @@ public class FunListTest {
       else return 0;
     }), FunList.of(-100, 100, 1, 2, 5, -10, -3, -1) );
 
+    assertEquals(l2.pushed("x").mPushed(Optional.of("x")).map( e -> {
+      if (FunObject.matchesObject(e, Integer.class))              return (Integer)e;
+      else if (FunObject.matchesObject(e, Optional.empty()))      return -10;
+      else if (FunObject.matchesObject(e, Optional.class, Integer.class))     return (Integer)(((Optional)e).get());
+      else if (FunObject.matchesObject(e, FunList.class, 1, FunList.class))         return -3;
+      else if (FunObject.matchesObject(e, FunList.class))         return -1;
+      else if (FunObject.matchesObject(e, "x"))          return 100;
+      else if (FunObject.matchesObject(e, Optional.class, "x"))      return -100;
+      else return 0;
+    }), FunList.of(-100, 100, 1, 2, 5, -10, -3, -1) );
+
     assertTrue (l2.drop(20).isEmpty());
     assertTrue (l2.drop(3).size() == 3);
     assertTrue (l2.slice(-5, 100).size() == l2.size());

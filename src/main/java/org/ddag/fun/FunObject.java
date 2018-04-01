@@ -35,10 +35,12 @@ public interface FunObject {
     } else {
       if (params.length == 1) {
         if (params[0] instanceof Class) {
-          return ((Class)params[0]).isInstance(o);
+          return ((Class) params[0]).isInstance(o);
         } else {
           return o.equals(params[0]);
         }
+      } else if (params.length == 2 && params[0].equals(Optional.class)) {
+        return matchesOptionalOf(o, params[1]);
       } else
         return false;
     }
