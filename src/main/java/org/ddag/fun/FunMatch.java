@@ -29,6 +29,7 @@ public interface FunMatch {
   /*
     Possible cases:
       if (FunMatch.caseObject(o, FunTuple.class))               return "tuple";
+      else if ( FunMatch.caseObject(o, FunTuple.class, 5, String.class))               return "tuple2<Int: 5, String>";
       else if ( FunMatch.caseObject(o, 5) )                     return "int: 5";
       else if ( FunMatch.caseObject(o, FunMap.of()) )           return "empty map";
       else if ( FunMatch.caseObject(o, FunMap.class) )          return "map";
