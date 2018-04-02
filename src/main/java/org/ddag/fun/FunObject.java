@@ -14,7 +14,7 @@ public interface FunObject {
 
   boolean matches(Object... params);
 
-  static boolean matchesOptionalOf(Object o, Object value) {
+  static boolean matchOptionalOf(Object o, Object value) {
     if (o instanceof Optional)  {
       Optional<Object> opt = (Optional)o;
       if (opt.isPresent()) {
@@ -29,7 +29,7 @@ public interface FunObject {
     } else return false;
   }
 
-  static boolean matchesObject(Object o, Object... params) {
+  static boolean match(Object o, Object... params) {
     if (FunObject.class.isInstance(o))  {
       return ((FunObject)o).matches(params);
     } else {
@@ -40,7 +40,7 @@ public interface FunObject {
           return o.equals(params[0]);
         }
       } else if (params.length == 2 && params[0].equals(Optional.class)) {
-        return matchesOptionalOf(o, params[1]);
+        return matchOptionalOf(o, params[1]);
       } else
         return false;
     }

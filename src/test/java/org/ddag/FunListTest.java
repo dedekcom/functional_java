@@ -50,24 +50,24 @@ public class FunListTest {
     ));
 
     assertEquals(l2.pushed("x").mPushed(Optional.of("x")).map( e -> {
-      if (FunObject.matchesObject(e, Integer.class))              return (Integer)e;
-      else if (FunObject.matchesObject(e, Optional.empty()))      return -10;
-      else if (FunObject.matchesOptionalOf(e, Integer.class))     return (Integer)(((Optional)e).get());
-      else if (FunObject.matchesObject(e, FunList.class, 1, FunList.class))         return -3;
-      else if (FunObject.matchesObject(e, FunList.class))         return -1;
-      else if (FunObject.matchesObject(e, "x"))          return 100;
-      else if (FunObject.matchesOptionalOf(e, "x"))         return -100;
+      if (FunObject.match(e, Integer.class))              return (Integer)e;
+      else if (FunObject.match(e, Optional.empty()))      return -10;
+      else if (FunObject.matchOptionalOf(e, Integer.class))     return (Integer)(((Optional)e).get());
+      else if (FunObject.match(e, FunList.class, 1, FunList.class))         return -3;
+      else if (FunObject.match(e, FunList.class))         return -1;
+      else if (FunObject.match(e, "x"))          return 100;
+      else if (FunObject.matchOptionalOf(e, "x"))         return -100;
       else return 0;
     }), FunList.of(-100, 100, 1, 2, 5, -10, -3, -1) );
 
     assertEquals(l2.pushed("x").mPushed(Optional.of("x")).map( e -> {
-      if (FunObject.matchesObject(e, Integer.class))              return (Integer)e;
-      else if (FunObject.matchesObject(e, Optional.empty()))      return -10;
-      else if (FunObject.matchesObject(e, Optional.class, Integer.class))     return (Integer)(((Optional)e).get());
-      else if (FunObject.matchesObject(e, FunList.class, 1, FunList.class))         return -3;
-      else if (FunObject.matchesObject(e, FunList.class))         return -1;
-      else if (FunObject.matchesObject(e, "x"))          return 100;
-      else if (FunObject.matchesObject(e, Optional.class, "x"))      return -100;
+      if (FunObject.match(e, Integer.class))              return (Integer)e;
+      else if (FunObject.match(e, Optional.empty()))      return -10;
+      else if (FunObject.match(e, Optional.class, Integer.class))     return (Integer)(((Optional)e).get());
+      else if (FunObject.match(e, FunList.class, 1, FunList.class))         return -3;
+      else if (FunObject.match(e, FunList.class))         return -1;
+      else if (FunObject.match(e, "x"))          return 100;
+      else if (FunObject.match(e, Optional.class, "x"))      return -100;
       else return 0;
     }), FunList.of(-100, 100, 1, 2, 5, -10, -3, -1) );
 
@@ -91,7 +91,7 @@ public class FunListTest {
     assertTrue (sl.matches(FunList.class, "a", "b", FunList.class));
     assertTrue (!sl.matches(FunList.class, "a", "b", FunList.of()));
 
-    assertTrue(FunObject.matchesObject(Optional.empty(), Optional.empty()));
+    assertTrue(FunObject.match(Optional.empty(), Optional.empty()));
 
     assertTrue (FunList.of(1).tail().matches(FunList.class, FunList.of()));
 
@@ -121,13 +121,13 @@ public class FunListTest {
 
     Performance.testPerform("pattern matching on list", loops, () -> {
       new FunList<Object>(src).map(e -> {
-        if (FunObject.matchesObject(e, Integer.class)) return (Integer) e;
-        else if (FunObject.matchesObject(e, Optional.empty())) return -10;
-        else if (FunObject.matchesOptionalOf(e, Integer.class)) return (Integer) (((Optional) e).get());
-        else if (FunObject.matchesObject(e, FunList.class, 1, FunList.class)) return -3;
-        else if (FunObject.matchesObject(e, FunList.class)) return -1;
-        else if (FunObject.matchesObject(e, "x")) return 100;
-        else if (FunObject.matchesOptionalOf(e, "x")) return -100;
+        if (FunObject.match(e, Integer.class)) return (Integer) e;
+        else if (FunObject.match(e, Optional.empty())) return -10;
+        else if (FunObject.matchOptionalOf(e, Integer.class)) return (Integer) (((Optional) e).get());
+        else if (FunObject.match(e, FunList.class, 1, FunList.class)) return -3;
+        else if (FunObject.match(e, FunList.class)) return -1;
+        else if (FunObject.match(e, "x")) return 100;
+        else if (FunObject.matchOptionalOf(e, "x")) return -100;
         else return 0;
       });
     });
