@@ -96,51 +96,40 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
     return new FunList<>(this).mTail();
   }
 
-  public FunList<T> distinct() {
-    FunList<T> r = new FunList<>();
-    this.forEach( e -> {
-      if (!r.contains(e)) r.add(e);
-    });
-    return r;
-  }
+  public FunList<T> distinct() { return foldLeft(new FunList<>(), (list, e) -> list.contains(e) ? list : list.mAdded(e) ); }
+
+  public int count(Predicate<? super T> predicate) { return foldLeft(0, (sum, el) -> predicate.test(el) ? sum + 1 : sum);  }
 
   public FunList<T> mTail() {
     this.removeFirst();
     return this;
   }
 
-  public void print() {
-    System.out.println(this.toString());
-  }
+  public void print() {    System.out.println(this.toString());  }
 
-  public FunList<T> pushed(T el) {
-    return new FunList<>(this).mPushed(el);
-  }
+  public FunList<T> pushed(T el) {    return new FunList<>(this).mPushed(el);  }
+
+  public FunList<T> added(T el) {    return new FunList<>(this).mAdded(el);  }
 
   public FunList<T> mPushed(T el) {
     this.push(el);
     return this;
   }
 
-  public FunList<T> take(int n) {
-    return this.slice(0, n);
+  public FunList<T> mAdded(T el) {
+    this.add(el);
+    return this;
   }
 
-  public FunList<T> takeRight(int n) {
-    return this.slice(this.size() - n,  this.size());
-  }
+  public FunList<T> take(int n) {    return this.slice(0, n);  }
 
-  public FunList<T> slice(final int start, final int stop) {
-    return this.filterWithIndex((e, id) -> id >= start && id < stop);
-  }
+  public FunList<T> takeRight(int n) {    return this.slice(this.size() - n,  this.size());  }
 
-  public FunList<T> drop(int n) {
-    return this.slice(n, this.size());
-  }
+  public FunList<T> slice(final int start, final int stop) {    return this.filterWithIndex((e, id) -> id >= start && id < stop);  }
 
-  public FunList<T> reversed() {
-    return new FunList<>(this).mReversed();
-  }
+  public FunList<T> drop(int n) {    return this.slice(n, this.size());  }
+
+  public FunList<T> reversed() {    return new FunList<>(this).mReversed();  }
 
   public FunList<T> mReversed() {
     Collections.reverse(this);
@@ -264,7 +253,7 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
       int last = params.length - 1;
       for (int i=1; i<last; i++) {
         if (i > this.size())
-          return false;
+          return false;   // more elements in pattern than in a list
         Object n = it.next();
         if (params[i] instanceof Class) {
           if (!((Class)params[i]).isInstance(n))
@@ -272,12 +261,10 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
         }  else if (!n.equals(params[i]))
           return false;
       }
-      if (params[last].equals(FunList.of()))  {
+      if (params[last].equals(FunList.of()))  {   // test Nil on the last position of the pattern
         return !it.hasNext();
-      } else if (params[last] instanceof Class && ((Class)params[last]).isInstance(this)) {
-        return true;
-      } else {
-        return false;
+      } else {    // test tail
+        return (params[last] instanceof Class && ((Class) params[last]).isInstance(this));
       }
     } else {
       return (params.length == 1 && this.equals(params[0]));

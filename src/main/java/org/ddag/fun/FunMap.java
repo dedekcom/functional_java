@@ -51,9 +51,7 @@ public class FunMap<K, V> extends LinkedHashMap<K, V> implements FunObject {
 
   public boolean matches(Object... params) {
     if (params.length > 0 && (params[0] instanceof Class) && ((Class)params[0]).isInstance(this)) {
-      if (params.length == 1)
-        return true;
-      return params.length == 2 && this.equals(params[1]);
+      return (params.length == 1) || (params.length == 2 && this.equals(params[1]));
     } else {
       return params.length == 1 && this.equals(params[0]);
     }

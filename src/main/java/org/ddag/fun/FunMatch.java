@@ -12,18 +12,11 @@ import java.util.function.Function;
 public interface FunMatch {
 
   static boolean caseOptOf(Object o, Object value) {
-    if (o instanceof Optional)  {
-      Optional<Object> opt = (Optional)o;
-      if (opt.isPresent()) {
-        if (value instanceof Class) {
-          return ((Class)value).isInstance(opt.get());
-        } else {
-          return opt.get().equals(value);
-        }
-      } else {
-        return false;
-      }
-    } else return false;
+    if (o instanceof Optional && ((Optional)o).isPresent())  {
+      Object optVal = ((Optional)o).get();
+      return (value instanceof Class) ? ((Class)value).isInstance(optVal) : optVal.equals(value);
+    } else
+      return false;
   }
 
   /*
@@ -44,17 +37,10 @@ public interface FunMatch {
   static boolean caseObject(Object o, Object... params) {
     if (FunObject.class.isInstance(o))  {
       return ((FunObject)o).matches(params);
+    } else if (params.length == 1) {
+      return (params[0] instanceof Class) ? ((Class) params[0]).isInstance(o) : o.equals(params[0]);
     } else {
-      if (params.length == 1) {
-        if (params[0] instanceof Class) {
-          return ((Class) params[0]).isInstance(o);
-        } else {
-          return o.equals(params[0]);
-        }
-      } else if (params.length == 2 && params[0].equals(Optional.class)) {
-        return caseOptOf(o, params[1]);
-      } else
-        return false;
+      return params.length == 2 && params[0].equals(Optional.class) && caseOptOf(o, params[1]);
     }
   }
 

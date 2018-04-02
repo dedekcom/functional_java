@@ -35,6 +35,8 @@ public class FunListTest {
 
     FunList<String> sl = FunList.of("a", "b", "2", "3", "d", "b", "2");
 
+    assertEquals(sl.count(el -> new FunString(el).getInteger().isPresent()), 3);
+
     assertEquals(sl.find(e -> e.equals("d")), Optional.of("d"));
     assertTrue(sl.exists(e -> e.equalsIgnoreCase("D")));
     assertTrue(sl.distinct().equals(FunList.of("a", "b", "2", "3", "d")));
