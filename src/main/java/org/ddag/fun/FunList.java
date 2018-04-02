@@ -58,10 +58,14 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
     return r;
   }
 
-  public FunList<T> filterWithIndex(BiFunction<? super T, Integer, Boolean> fun) {
+  public FunList<T> filterWithIndex(BiFunction<? super T, Integer, Boolean> fun) {    return filterWithIndex(fun, this.size());  }
+
+  public FunList<T> filterWithIndex(BiFunction<? super T, Integer, Boolean> fun, final int stopIndex) {
     FunList<T> r = new FunList<>();
     int id = 0;
     for (T e: this) {
+      if (id >= stopIndex)
+        return r;
       if (fun.apply(e, id))
         r.add(e);
       id ++;
@@ -100,10 +104,7 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
 
   public int count(Predicate<? super T> predicate) { return foldLeft(0, (sum, el) -> predicate.test(el) ? sum + 1 : sum);  }
 
-  public FunList<T> mTail() {
-    this.removeFirst();
-    return this;
-  }
+  public FunList<T> mTail() {   this.removeFirst();    return this;  }
 
   public void print() {    System.out.println(this.toString());  }
 
@@ -111,30 +112,25 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
 
   public FunList<T> added(T el) {    return new FunList<>(this).mAdded(el);  }
 
-  public FunList<T> mPushed(T el) {
-    this.push(el);
-    return this;
-  }
+  public FunList<T> removed(T el) {    return new FunList<>(this).mRemoved(el);  }
 
-  public FunList<T> mAdded(T el) {
-    this.add(el);
-    return this;
-  }
+  public FunList<T> mPushed(T el) {    this.push(el);    return this;  }
 
-  public FunList<T> take(int n) {    return this.slice(0, n);  }
+  public FunList<T> mAdded(T el) {    this.add(el);    return this;  }
+
+  public FunList<T> mRemoved(T el) {    this.remove(el);    return this;  }
+
+  public FunList<T> take(int n)     {    return this.slice(0, n);  }
 
   public FunList<T> takeRight(int n) {    return this.slice(this.size() - n,  this.size());  }
 
-  public FunList<T> slice(final int start, final int stop) {    return this.filterWithIndex((e, id) -> id >= start && id < stop);  }
+  public FunList<T> slice(final int start, final int stop) { return filterWithIndex((el, id) -> id >= start, stop);  }
 
   public FunList<T> drop(int n) {    return this.slice(n, this.size());  }
 
   public FunList<T> reversed() {    return new FunList<>(this).mReversed();  }
 
-  public FunList<T> mReversed() {
-    Collections.reverse(this);
-    return this;
-  }
+  public FunList<T> mReversed() {    Collections.reverse(this);    return this;  }
 
   public <R> R fold(R initial, BiFunction<R, T, R> fun) {    return _fold(this, initial, fun);  }
 
@@ -154,14 +150,9 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
 
   public double avg() {    return Fumeric.div(this.sum(), Double.valueOf(this.size())).doubleValue();  }
 
-  public FunList<T> sortWith(BiFunction<T, T, Integer> compare)  {
-    return new FunList<>(this).mSortWith(compare);
-  }
+  public FunList<T> sortWith(BiFunction<T, T, Integer> compare)  {    return new FunList<>(this).mSortWith(compare);  }
 
-  public FunList<T> mSortWith(BiFunction<T, T, Integer> compare)  {
-    this.sort(compare::apply);
-    return this;
-  }
+  public FunList<T> mSortWith(BiFunction<T, T, Integer> compare)  {    this.sort(compare::apply);    return this;  }
 
   public <T extends Comparable<? super T>> FunList<T> sorted() {
     FunList<T> list = new FunList<>();
@@ -189,26 +180,14 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
 
   public Tuple2<FunList<T>,FunList<T>> splitAt(int n) { return this.partition((e, i) -> i < n); }
 
-  public FunList<T> addedCol(Collection<? extends T> list) {
-    return new FunList<>(this).mAddedCol(list);
-  }
+  public FunList<T> addedCol(Collection<? extends T> list) {    return new FunList<>(this).mAddedCol(list);  }
 
-  public FunList<T> mAddedCol(Collection<? extends T> col) {
-    this.addAll(col);
-    return this;
-  }
+  public FunList<T> mAddedCol(Collection<? extends T> col) {    this.addAll(col);    return this;  }
 
-  public FunString mkString(String separator) {
-    StringBuilder res = new StringBuilder("");
-    if (this.size() > 0) {
-      T last = this.getLast();
-      for (T e: this) {
-        res.append(e);
-        if (e != last)
-          res.append(separator);
-      }
-    }
-    return new FunString(res.toString());
+  public FunString mkFunString(String separator) {  return new FunString( mkString(separator) );  }
+
+  public String mkString(String separator) {
+    return foldLeft( new StringBuilder(""), (acc, el) -> el == getLast() ? acc.append(el) : acc.append(el).append(separator)).toString();
   }
 
   public FunList<Object> flatten() {
@@ -224,20 +203,6 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
     });
     return res;
   }
-
-  /*
-    Turbo Pascal zone
-   */
-  public boolean repeatUntil(Predicate<? super T> predicate) {
-    for (T el: this) {
-      if (predicate.test(el))
-        return true;
-    }
-    return false;
-  }
-  /*
-    End of prehistory
-   */
 
   public boolean isHeadTail()       { return this.size() > 0;  }
   public boolean isHeadNil()        { return this.size() == 1; }

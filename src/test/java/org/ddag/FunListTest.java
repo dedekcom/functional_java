@@ -9,7 +9,6 @@ package org.ddag;
 import org.ddag.fun.Fumeric;
 import org.ddag.fun.FunList;
 import org.ddag.fun.FunMatch;
-import org.ddag.fun.FunObject;
 import org.ddag.fun.FunString;
 import org.ddag.fun.FunTuple;
 import org.ddag.fun.Tuple2;
@@ -78,8 +77,13 @@ public class FunListTest {
     assertTrue (l2.drop(20).isEmpty());
     assertTrue (l2.drop(3).size() == 3);
     assertTrue (l2.slice(-5, 100).size() == l2.size());
+    assertEquals(FunList.of(1,2,3,4).drop(2), FunList.of(3,4));
+    assertEquals(FunList.of(1,2,3,4).take(2), FunList.of(1, 2));
+    assertEquals(FunList.of(1,2,3,4).takeRight(2), FunList.of(3,4));
+    assertTrue(FunList.of().slice(1,2).isEmpty());
 
-    l2.mkString("---").print();
+    assertEquals(FunList.of("1","2","3").mkFunString("---").get(), "1---2---3");
+    assertEquals(FunList.of().mkString("---"), "");
 
     assertTrue(FunList.ofSize(5, 0).mapWithIndex((el, id) -> id).equals(FunList.of(0, 1, 2, 3, 4)));
 
