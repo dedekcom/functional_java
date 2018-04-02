@@ -17,6 +17,8 @@ import java.util.function.BiFunction;
  */
 
 public class FunMap<K, V> extends LinkedHashMap<K, V> implements FunObject {
+  private final static FunMap emptyMap = new FunMap();
+
   public FunMap() { super(); }
 
   public FunMap(Map<? extends K, ? extends V> m) { super(m); }
@@ -48,10 +50,12 @@ public class FunMap<K, V> extends LinkedHashMap<K, V> implements FunObject {
   }
 
   public boolean matches(Object... params) {
-    if (params.length == 1 && (params[0] instanceof Class) && ((Class)params[0]).isInstance(this)) {
-      return true;
+    if (params.length > 0 && (params[0] instanceof Class) && ((Class)params[0]).isInstance(this)) {
+      if (params.length == 1)
+        return true;
+      return params.length == 2 && this.equals(params[1]);
     } else {
-      return false;
+      return params.length == 1 && this.equals(params[0]);
     }
   }
 
@@ -63,6 +67,9 @@ public class FunMap<K, V> extends LinkedHashMap<K, V> implements FunObject {
     return new FunMap<>(this).mUpdated(key, value);
   }
 
+  public static FunMap of() { return emptyMap; }
+
+  @SafeVarargs
   public static <K, V> FunMap<K, V> of(Tuple2<K, V>... params) {
     FunMap<K, V> m = new FunMap<>();
     Arrays.stream(params).forEach(e -> m.put(e._1(), e._2()));

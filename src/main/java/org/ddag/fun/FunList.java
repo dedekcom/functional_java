@@ -280,10 +280,13 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
         return false;
       }
     } else {
-      return false;
+      return (params.length == 1 && this.equals(params[0]));
     }
   }
 
+  public static FunList of() { return emptyList; }
+
+  @SafeVarargs
   public static <T> FunList<T> of(T... params) {
     return new FunList<>(Arrays.asList(params));
   }
@@ -294,5 +297,4 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
     return res;
   }
 
-  public static FunList of() { return emptyList; }
 }

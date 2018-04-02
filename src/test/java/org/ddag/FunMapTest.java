@@ -7,9 +7,12 @@ package org.ddag;
 
 import org.ddag.fun.FunList;
 import org.ddag.fun.FunMap;
+import org.ddag.fun.FunMatch;
+import org.ddag.fun.FunTuple;
 import org.ddag.fun.Tuple2;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class FunMapTest {
@@ -39,5 +42,26 @@ public class FunMapTest {
     FunMap<String, Object> fm2 = FunMap.of(new Tuple2<>("almsum", 5), new Tuple2<>("ctyp", "fmtrait"));
 
     assertTrue(fm.equals(fm2));
+  }
+
+  @Test
+  public void testMapMatches() {
+    FunMap<String, Object> m = FunMap.of(new Tuple2<>("k1", 1), new Tuple2<>("k2", 2));
+
+    assertEquals(FunMatch.match(m, o -> {
+      if (FunMatch.caseObject(o, FunList.class)) return "list";
+      else if (FunMatch.caseObject(o, 5)) return "int";
+      else if (FunMatch.caseObject(o, FunMap.of())) return "empty map";
+      else if (FunMatch.caseObject(o, FunMap.class)) return "map";
+      else return "unknown";
+    }), "map");
+
+    assertEquals(FunMatch.match(new FunMap<String, Object>(), o -> {
+      if (FunMatch.caseObject(o, FunList.class)) return "list";
+      else if (FunMatch.caseObject(o, 5)) return "int";
+      else if (FunMatch.caseObject(o, FunMap.of())) return "empty map";
+      else if (FunMatch.caseObject(o, FunMap.class)) return "map";
+      else return "unknown";
+    }), "empty map");
   }
 }

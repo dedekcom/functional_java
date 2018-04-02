@@ -8,7 +8,9 @@ package org.ddag;
 
 import org.ddag.fun.Fumeric;
 import org.ddag.fun.FunList;
+import org.ddag.fun.FunMatch;
 import org.ddag.fun.FunObject;
+import org.ddag.fun.FunString;
 import org.ddag.fun.FunTuple;
 import org.ddag.fun.Tuple2;
 import org.junit.Test;
@@ -50,24 +52,24 @@ public class FunListTest {
     ));
 
     assertEquals(l2.pushed("x").mPushed(Optional.of("x")).map( e -> {
-      if (FunObject.match(e, Integer.class))              return (Integer)e;
-      else if (FunObject.match(e, Optional.empty()))      return -10;
-      else if (FunObject.matchOptionalOf(e, Integer.class))     return (Integer)(((Optional)e).get());
-      else if (FunObject.match(e, FunList.class, 1, FunList.class))         return -3;
-      else if (FunObject.match(e, FunList.class))         return -1;
-      else if (FunObject.match(e, "x"))          return 100;
-      else if (FunObject.matchOptionalOf(e, "x"))         return -100;
+      if (FunMatch.caseObject(e, Integer.class))              return (Integer)e;
+      else if (FunMatch.caseObject(e, Optional.empty()))      return -10;
+      else if (FunMatch.caseOptOf(e, Integer.class))     return (Integer)(((Optional)e).get());
+      else if (FunMatch.caseObject(e, FunList.class, 1, FunList.class))         return -3;
+      else if (FunMatch.caseObject(e, FunList.class))         return -1;
+      else if (FunMatch.caseObject(e, "x"))          return 100;
+      else if (FunMatch.caseOptOf(e, "x"))         return -100;
       else return 0;
     }), FunList.of(-100, 100, 1, 2, 5, -10, -3, -1) );
 
     assertEquals(l2.pushed("x").mPushed(Optional.of("x")).map( e -> {
-      if (FunObject.match(e, Integer.class))              return (Integer)e;
-      else if (FunObject.match(e, Optional.empty()))      return -10;
-      else if (FunObject.match(e, Optional.class, Integer.class))     return (Integer)(((Optional)e).get());
-      else if (FunObject.match(e, FunList.class, 1, FunList.class))         return -3;
-      else if (FunObject.match(e, FunList.class))         return -1;
-      else if (FunObject.match(e, "x"))          return 100;
-      else if (FunObject.match(e, Optional.class, "x"))      return -100;
+      if (FunMatch.caseObject(e, Integer.class))              return (Integer)e;
+      else if (FunMatch.caseObject(e, Optional.empty()))      return -10;
+      else if (FunMatch.caseObject(e, Optional.class, Integer.class))     return (Integer)(((Optional)e).get());
+      else if (FunMatch.caseObject(e, FunList.class, 1, FunList.class))         return -3;
+      else if (FunMatch.caseObject(e, FunList.class))         return -1;
+      else if (FunMatch.caseObject(e, "x"))          return 100;
+      else if (FunMatch.caseObject(e, Optional.class, "x"))      return -100;
       else return 0;
     }), FunList.of(-100, 100, 1, 2, 5, -10, -3, -1) );
 
@@ -91,7 +93,7 @@ public class FunListTest {
     assertTrue (sl.matches(FunList.class, "a", "b", FunList.class));
     assertTrue (!sl.matches(FunList.class, "a", "b", FunList.of()));
 
-    assertTrue(FunObject.match(Optional.empty(), Optional.empty()));
+    assertTrue(FunMatch.caseObject(Optional.empty(), Optional.empty()));
 
     assertTrue (FunList.of(1).tail().matches(FunList.class, FunList.of()));
 
@@ -99,6 +101,31 @@ public class FunListTest {
 
     assertTrue(FunList.of(1, 2, "3", new Tuple2<>("a", 5)).
             matches(FunList.class, Integer.class, Integer.class, String.class, FunTuple.class, FunList.of()));
+
+    FunList<String> el = new FunList<>();
+    String s = FunMatch.match(el, o -> {
+      if ( FunMatch.caseObject(o, FunList.class, "x", FunList.of())) return "h::Nil";
+      else if ( FunMatch.caseObject(o, FunList.class, "x", FunList.class)) return "h::tail";
+      else if ( FunMatch.caseObject(o, FunList.class, FunList.of())) return "Nil";
+      else return "unknown";
+      } );
+    assertEquals(s, "Nil");
+
+    String s2 = FunMatch.match(el, o -> {
+      if ( FunMatch.caseObject(o, FunList.class, "x", FunList.of())) return "h::Nil";
+      else if ( FunMatch.caseObject(o, FunList.class, "x", FunList.class)) return "h::tail";
+      else if ( FunMatch.caseObject(o, FunList.of())) return "Nil";
+      else return "unknown";
+    } );
+    assertEquals(s2, "Nil");
+
+    String s3 = FunMatch.match( FunList.of("x", 2), o -> {
+      if ( FunMatch.caseObject(o, FunList.class, "x", FunList.of())) return "h::Nil";
+      else if ( FunMatch.caseObject(o, FunList.class, "x", FunList.class)) return "h::tail";
+      else if ( FunMatch.caseObject(o, FunList.of())) return "Nil";
+      else return "unknown";
+    } );
+    assertEquals(s3, "h::tail");
   }
 
   @Test
@@ -121,13 +148,13 @@ public class FunListTest {
 
     Performance.testPerform("pattern matching on list", loops, () -> {
       new FunList<Object>(src).map(e -> {
-        if (FunObject.match(e, Integer.class)) return (Integer) e;
-        else if (FunObject.match(e, Optional.empty())) return -10;
-        else if (FunObject.matchOptionalOf(e, Integer.class)) return (Integer) (((Optional) e).get());
-        else if (FunObject.match(e, FunList.class, 1, FunList.class)) return -3;
-        else if (FunObject.match(e, FunList.class)) return -1;
-        else if (FunObject.match(e, "x")) return 100;
-        else if (FunObject.matchOptionalOf(e, "x")) return -100;
+        if (FunMatch.caseObject(e, Integer.class)) return (Integer) e;
+        else if (FunMatch.caseObject(e, Optional.empty())) return -10;
+        else if (FunMatch.caseOptOf(e, Integer.class)) return (Integer) (((Optional) e).get());
+        else if (FunMatch.caseObject(e, FunList.class, 1, FunList.class)) return -3;
+        else if (FunMatch.caseObject(e, FunList.class)) return -1;
+        else if (FunMatch.caseObject(e, "x")) return 100;
+        else if (FunMatch.caseOptOf(e, "x")) return -100;
         else return 0;
       });
     });

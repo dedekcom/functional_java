@@ -39,7 +39,7 @@ abstract public class FunTuple implements Serializable, FunObject {
       }
       return true;
     } else {
-      return false;
+      return params.length == 1 && this.equals(params[0]);
     }
   }
 
