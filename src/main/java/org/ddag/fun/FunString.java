@@ -11,17 +11,32 @@ import java.util.Optional;
 public class FunString implements FunObject {
   private String str;
 
-  public FunString() {}
-  public FunString(String s)   { this.set(s); }
+  public FunString()           {this.set(""); }
+  public FunString(String s)   {this.set(s); }
   public FunString(int i)      {this.set(i); }
   public FunString(long l)     {this.set(l); }
   public FunString(boolean b)  {this.set(b); }
   public FunString(char c)     {this.set(c); }
   public FunString(double d)   {this.set(d); }
   public FunString(float f)    {this.set(f); }
-  public FunString(Object o)    {this.set(o.toString()); }
+  public FunString(Object o)   {this.set(o); }
 
   public String get()         { return str; }
+
+  @Override
+  public String toString() { return this.get(); }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    } else if (o instanceof FunString) {
+      return this.get().equals(((FunString) o).get());
+    } else if (o instanceof String) {
+      return this.get().equals(o);
+    } else
+      return false;
+  }
 
   public FunString set(String s)   { str = s; return this; }
   public FunString set(int i)      { str = String.valueOf(i); return this; }
@@ -30,6 +45,7 @@ public class FunString implements FunObject {
   public FunString set(char c)     { str = String.valueOf(c); return this; }
   public FunString set(double d)   { str = String.valueOf(d); return this; }
   public FunString set(float f)    { str = String.valueOf(f); return this; }
+  public FunString set(Object o)   { str = o.toString();      return this; }
 
   public Optional<Integer> getInteger()   {   return Fumeric.getInteger(this.str);  }
 
@@ -76,11 +92,11 @@ public class FunString implements FunObject {
     if (params.length > 0 && (params[0] instanceof Class) && ((Class)params[0]).isInstance(this)) {
       if (params.length == 1)
         return true;  // test only class type
-      else if (params.length == 2)
-        return this.str.equals(params[1]);
-      else return false;
+      else if (params.length == 2) {
+        return this.equals(params[1]);
+      } else return false;
     } else {
-      return false;
+      return params.length == 1 && this.equals(params[0]);
     }
   }
 

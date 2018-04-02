@@ -6,7 +6,9 @@
 package org.ddag;
 
 import org.ddag.fun.FunList;
+import org.ddag.fun.FunMatch;
 import org.ddag.fun.FunString;
+import org.ddag.fun.Tuple2;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
@@ -69,5 +71,10 @@ public class FunStringTest {
     assertTrue(ss.matches(FunString.class, "5"));
     assertTrue(!ss.matches(FunString.class, 5));
     assertTrue(!ss.matches(FunList.class, "5"));
+
+    assertEquals(new FunString("(1, 5)"), new Tuple2<>(1, "5").toString());
+
+    assertTrue( FunMatch.match(new FunString("[1, 2, 3]"),
+            o -> FunMatch.caseObject(o, FunList.of(1,2,3).toString())) );
   }
 }
