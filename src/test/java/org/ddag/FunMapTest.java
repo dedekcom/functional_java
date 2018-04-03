@@ -8,7 +8,7 @@ package org.ddag;
 import org.ddag.fun.FunList;
 import org.ddag.fun.FunMap;
 import org.ddag.fun.FunMatch;
-import org.ddag.fun.FunTuple;
+import static org.ddag.fun.FunTuple.T2;
 import org.ddag.fun.Tuple2;
 import org.junit.Test;
 
@@ -22,9 +22,9 @@ public class FunMapTest {
     Tuple2<String, Integer> p = new Tuple2<>("k", 5);
     p.print();
 
-    FunMap<String, Object> fm = FunMap.of(new Tuple2<>("ctyp", "fmtrait"), new Tuple2<>("almsum", 5));
-    FunMap<String, Object> m = FunMap.of(new Tuple2<>("netype", "f8"), new Tuple2<>("name", "fsp3000c"),
-            new Tuple2<>("fm", fm), new Tuple2<>("layers", FunList.of("ots", "oms", "ety6")));
+    FunMap<String, Object> fm = FunMap.of(T2("ctyp", "fmtrait"), T2("almsum", 5));
+    FunMap<String, Object> m = FunMap.of(T2("netype", "f8"), T2("name", "fsp3000c"),
+            T2("fm", fm), T2("layers", FunList.of("ots", "oms", "ety6")));
     m.print();
 
     FunMap<String,Object> m2 = m.transform((k, v) -> {
@@ -39,14 +39,14 @@ public class FunMapTest {
     assertTrue ( m2.toList().map(pair -> pair._2()).equals(
             FunList.of("F8", "fsp3000c", new FunMap<>(fm), FunList.of("ots", "oms", "ety6") ) ) );
 
-    FunMap<String, Object> fm2 = FunMap.of(new Tuple2<>("almsum", 5), new Tuple2<>("ctyp", "fmtrait"));
+    FunMap<String, Object> fm2 = FunMap.of(T2("almsum", 5), T2("ctyp", "fmtrait"));
 
     assertTrue(fm.equals(fm2));
   }
 
   @Test
   public void testMapMatches() {
-    FunMap<String, Object> m = FunMap.of(new Tuple2<>("k1", 1), new Tuple2<>("k2", 2));
+    FunMap<String, Object> m = FunMap.of(T2("k1", 1), T2("k2", 2));
 
     assertEquals(FunMatch.match(m, o -> {
       if (FunMatch.caseObject(o, FunList.class)) return "list";
