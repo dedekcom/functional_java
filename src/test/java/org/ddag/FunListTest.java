@@ -13,9 +13,9 @@ import org.ddag.fun.FunString;
 import org.ddag.fun.FunTuple;
 import org.ddag.fun.Tuple2;
 import org.junit.Test;
-import static org.ddag.fun.FunMatch.match;
-import static org.ddag.fun.FunMatch.caseObject;
-import static org.ddag.fun.FunMatch.caseOptOf;
+import static org.ddag.fun.match.FunMatch.match;
+import static org.ddag.fun.match.FunMatch.caseObject;
+import static org.ddag.fun.match.FunMatch.caseOptOf;
 
 import java.util.Optional;
 

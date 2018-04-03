@@ -6,7 +6,7 @@
 package org.ddag;
 
 import org.ddag.fun.FunList;
-import org.ddag.fun.FunMatch;
+import org.ddag.fun.match.FunMatch;
 import org.ddag.fun.FunString;
 import org.ddag.fun.Tuple2;
 import org.junit.Test;

@@ -6,8 +6,8 @@
 package org.ddag;
 
 import org.ddag.fun.FunList;
-import static org.ddag.fun.FunMatch.match;
-import static org.ddag.fun.FunMatch.caseObject;
+import static org.ddag.fun.match.FunMatch.match;
+import static org.ddag.fun.match.FunMatch.caseObject;
 import org.ddag.fun.FunObject;
 import org.ddag.fun.FunString;
 import org.ddag.fun.FunTuple;
