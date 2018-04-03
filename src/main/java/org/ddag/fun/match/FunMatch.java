@@ -47,39 +47,41 @@ public interface FunMatch {
     }
   }
 
+  static Supplier<Boolean> caseOf(Object o, Object... params) { return () -> caseObject(o, params); }
+
   static <T> T match(Object o, Function<Object, T> caseFun) {
     return caseFun.apply(o);
   }
 
-  static <T> T match(boolean p1, Supplier<T> sup1, boolean p2, Supplier<T> sup2) {
-    if (p1) return sup1.get();
-    else if (p2) return sup2.get();
+  static <T> T match(Supplier<Boolean> p1, Supplier<T> sup1, Supplier<Boolean> p2, Supplier<T> sup2) {
+    if (p1.get()) return sup1.get();
+    else if (p2.get()) return sup2.get();
     else throw new FunMatchException();
   }
 
-  static <T> T match(boolean p1, Supplier<T> sup1, boolean p2, Supplier<T> sup2, boolean p3, Supplier<T> sup3) {
-    if (p1) return sup1.get();
-    else if (p2) return sup2.get();
-    else if (p3) return sup3.get();
+  static <T> T match(Supplier<Boolean> p1, Supplier<T> sup1, Supplier<Boolean> p2, Supplier<T> sup2, Supplier<Boolean> p3, Supplier<T> sup3) {
+    if (p1.get()) return sup1.get();
+    else if (p2.get()) return sup2.get();
+    else if (p3.get()) return sup3.get();
     else throw new FunMatchException();
   }
 
-  static <T> T match(boolean p1, Supplier<T> sup1, boolean p2, Supplier<T> sup2, boolean p3, Supplier<T> sup3,
-                     boolean p4, Supplier<T> sup4) {
-    if (p1) return sup1.get();
-    else if (p2) return sup2.get();
-    else if (p3) return sup3.get();
-    else if (p4) return sup4.get();
+  static <T> T match(Supplier<Boolean> p1, Supplier<T> sup1, Supplier<Boolean> p2, Supplier<T> sup2, Supplier<Boolean> p3, Supplier<T> sup3,
+                     Supplier<Boolean> p4, Supplier<T> sup4) {
+    if (p1.get()) return sup1.get();
+    else if (p2.get()) return sup2.get();
+    else if (p3.get()) return sup3.get();
+    else if (p4.get()) return sup4.get();
     else throw new FunMatchException();
   }
 
-  static <T> T match(boolean p1, Supplier<T> sup1, boolean p2, Supplier<T> sup2, boolean p3, Supplier<T> sup3,
-                     boolean p4, Supplier<T> sup4, boolean p5, Supplier<T> sup5) {
-    if (p1) return sup1.get();
-    else if (p2) return sup2.get();
-    else if (p3) return sup3.get();
-    else if (p4) return sup4.get();
-    else if (p5) return sup5.get();
+  static <T> T match(Supplier<Boolean> p1, Supplier<T> sup1, Supplier<Boolean> p2, Supplier<T> sup2, Supplier<Boolean> p3, Supplier<T> sup3,
+                     Supplier<Boolean> p4, Supplier<T> sup4, Supplier<Boolean> p5, Supplier<T> sup5) {
+    if (p1.get()) return sup1.get();
+    else if (p2.get()) return sup2.get();
+    else if (p3.get()) return sup3.get();
+    else if (p4.get()) return sup4.get();
+    else if (p5.get()) return sup5.get();
     else throw new FunMatchException();
   }
 
