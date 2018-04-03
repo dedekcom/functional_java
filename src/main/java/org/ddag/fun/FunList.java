@@ -25,7 +25,7 @@ import java.util.function.Predicate;
   list.filter(e -> e > 0).mPushed(10).mReversed();
  */
 public class FunList<T> extends LinkedList<T> implements FunObject {
-  final private static FunList emptyList = new FunList();
+  final public static FunList Nil = new FunList();
 
   public FunList() { super(); }
 
@@ -236,7 +236,7 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
     }
   }
 
-  public static FunList of() { return emptyList; }
+  public static FunList of() { return Nil; }
 
   @SafeVarargs
   public static <T> FunList<T> of(T... params) {
