@@ -25,7 +25,7 @@ import java.util.function.Predicate;
   list.filter(e -> e > 0).mPushed(10).mReversed();
  */
 public class FunList<T> extends LinkedList<T> implements FunObject {
-  final public static FunList Nil = new FunList();
+  public static FunList Nil() { return new FunList(); }
 
   public FunList() { super(); }
 
@@ -226,7 +226,7 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
         }  else if (!n.equals(params[i]))
           return false;
       }
-      if (params[last].equals(Nil))  {   // test Nil on the last position of the pattern
+      if (params[last].equals(Nil()))  {   // test Nil on the last position of the pattern
         return !it.hasNext();
       } else {    // test tail
         return (params[last] instanceof Class && ((Class) params[last]).isInstance(this));
@@ -235,8 +235,6 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
       return false;
     }
   }
-
-  public static FunList of() { return Nil; }
 
   @SafeVarargs
   public static <T> FunList<T> of(T... params) {

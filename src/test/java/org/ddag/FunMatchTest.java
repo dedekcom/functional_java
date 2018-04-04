@@ -32,7 +32,7 @@ public class FunMatchTest {
             match(
                     caseOf(list, 5), () -> "5",
                     caseOf(list, FunString.class), () -> "fun string",
-                    caseOf(list, 1, 2, Nil), () -> "1::2::Nil",
+                    caseOf(list, 1, 2, Nil()), () -> "1::2::Nil",
                     caseOf(list, Any, FunList.class), () -> "head::tail"
             )
     );

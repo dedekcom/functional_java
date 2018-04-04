@@ -102,45 +102,47 @@ public class FunListTest {
     assertTrue (sl.matches(String.class, FunList.class));
     assertTrue (sl.matches(FunList.class));
     assertTrue (sl.matches("a", "b", FunList.class));
-    assertTrue (!sl.matches("a", "b", Nil));
+    assertTrue (!sl.matches("a", "b", Nil()));
 
     assertTrue(caseObject(Optional.empty(), Optional.empty()));
 
-    assertTrue (FunList.of(1).tail().matches(Nil));
+    assertTrue (FunList.of(1).tail().matches(Nil()));
 
-    assertTrue (FunList.of(1).matches(1, Nil));
+    assertTrue (FunList.of(1).matches(1, Nil()));
 
     assertTrue(FunList.of(1, 2, "3", new Tuple2<>("a", 5)).
-            matches(Integer.class, Integer.class, String.class, FunTuple.class, Nil));
+            matches(Integer.class, Integer.class, String.class, FunTuple.class, Nil()));
 
     assertTrue(FunList.of(1, 2, "3", new Tuple2<>("a", 5)).
             matches(Integer.class, Integer.class, String.class, FunTuple.class, FunList.class));
 
     FunList<String> el = new FunList<>();
     String s = match(el, o -> {
-      if ( caseObject(o, "x", Nil)) return "h::Nil";
+      if ( caseObject(o, "x", Nil())) return "h::Nil";
       else if ( caseObject(o, "x", FunList.class)) return "h::tail";
-      else if ( caseObject(o, Nil)) return "Nil";
+      else if ( caseObject(o, Nil())) return "Nil";
       else return "unknown";
       } );
     assertEquals(s, "Nil");
 
     String s2 = match(FunList.of("x"), o -> {
-      if ( caseObject(o, Nil)) return "Nil";
+      if ( caseObject(o, Nil())) return "Nil";
       else if ( caseObject(o, "x", FunList.class)) return "h::tail";
       else return "unknown";
     } );
     assertEquals(s2, "h::tail");
 
     String s3 = match( FunList.of("x", 2), o -> {
-      if ( caseObject(o, "x", Nil)) return "h::Nil";
+      if ( caseObject(o, "x", Nil())) return "h::Nil";
       else if ( caseObject(o, "x", FunList.class)) return "h::tail";
-      else if ( caseObject(o, Nil)) return "Nil";
+      else if ( caseObject(o, Nil())) return "Nil";
       else return "unknown";
     } );
     assertEquals(s3, "h::tail");
 
     assertTrue(FunList.of(1, 2, 3, 4).matches(FunList.of(2,3,4).pushed(1)));
+
+    assertEquals(FunList.of(), Nil());
   }
 
   @Test
