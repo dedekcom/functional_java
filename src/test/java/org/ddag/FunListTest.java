@@ -163,19 +163,6 @@ public class FunListTest {
       new FunList<>(src).map(s -> Fumeric.getInteger(s).get()).foldLeft(0, (acc, e) -> acc + e);
     });
 
-    Performance.testPerform("pattern matching on list", loops, () -> {
-      new FunList<Object>(src).map(e -> {
-        if (caseObject(e, Integer.class)) return (Integer) e;
-        else if (caseObject(e, Optional.empty())) return -10;
-        else if (caseOptOf(e, Integer.class)) return (Integer) (((Optional) e).get());
-        else if (caseObject(e, 1, FunList.class)) return -3;
-        else if (caseObject(e, FunList.class)) return -1;
-        else if (caseObject(e, "x")) return 100;
-        else if (caseOptOf(e, "x")) return -100;
-        else return 0;
-      });
-    });
-
   }
 
 }
