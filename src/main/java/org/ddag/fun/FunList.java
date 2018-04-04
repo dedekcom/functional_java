@@ -128,7 +128,7 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
 
   public FunList<T> drop(int n) {    return this.slice(n, this.size());  }
 
-  public FunList<T> reversed() {    return new FunList<>(this).mReversed();  }
+  public FunList<T> reversed() {    return foldLeft(new FunList<>(), (list, el) -> list.mPushed(el));  }
 
   public FunList<T> mReversed() {    Collections.reverse(this);    return this;  }
 

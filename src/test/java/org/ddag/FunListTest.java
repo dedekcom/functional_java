@@ -90,6 +90,8 @@ public class FunListTest {
 
     assertTrue(FunList.ofSize(5, 0).mapWithIndex((el, id) -> id).equals(FunList.of(0, 1, 2, 3, 4)));
 
+    assertEquals(FunList.of(1, 2, 3), FunList.of(3, 2, 1).reversed());
+
   }
 
   @Test
