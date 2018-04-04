@@ -128,16 +128,17 @@ public class FunMatchTest {
     });
 
     Performance.testPerform("pattern matching based on Case", loops, () -> {
-      new FunList<Object>(src).map(e -> match(e,
-        Case( (i) -> i,                             Integer.class),
-        Case( (i) -> -10,                           Optional.empty()),
-        Case( (o) -> (((Optional) o).get()),        Optional.class, Integer.class),
-        Case( (i) -> -3,                   1, FunList.class),
-        Case( (l) -> -1,                            FunList.class),
-        Case( (s) -> 100,                 "x"),
-        Case( (sopt) -> -100,              Optional.class, "x"),
-        Case( (a) -> 0,                             Any))
-      );
+      new FunList<Object>(src).map(e ->
+        match(e,
+          Case( (i) -> i,                             Integer.class),
+          Case( (i) -> -10,                           Optional.empty()),
+          Case( (o) -> (((Optional) o).get()),        Optional.class, Integer.class),
+          Case( (i) -> -3,                   1, FunList.class),
+          Case( (l) -> -1,                            FunList.class),
+          Case( (s) -> 100,                 "x"),
+          Case( (sopt) -> -100,              Optional.class, "x"),
+          Case( (a) -> 0,                             Any))
+        );
     });
   }
 
