@@ -59,7 +59,7 @@ public class FunListTest {
       if (caseObject(e, Integer.class))              return (Integer)e;
       else if (caseObject(e, Optional.empty()))      return -10;
       else if (caseOptOf(e, Integer.class))     return (Integer)(((Optional)e).get());
-      else if (caseObject(e, FunList.class, 1, FunList.class))         return -3;
+      else if (caseObject(e, 1, FunList.class))         return -3;
       else if (caseObject(e, FunList.class))         return -1;
       else if (caseObject(e, "x"))          return 100;
       else if (caseOptOf(e, "x"))         return -100;
@@ -70,7 +70,7 @@ public class FunListTest {
       if (caseObject(e, Integer.class))              return (Integer)e;
       else if (caseObject(e, Optional.empty()))      return -10;
       else if (caseObject(e, Optional.class, Integer.class))     return (Integer)(((Optional)e).get());
-      else if (caseObject(e, FunList.class, 1, FunList.class))         return -3;
+      else if (caseObject(e, 1, FunList.class))         return -3;
       else if (caseObject(e, FunList.class))         return -1;
       else if (caseObject(e, "x"))          return 100;
       else if (caseObject(e, Optional.class, "x"))      return -100;
@@ -97,44 +97,48 @@ public class FunListTest {
     FunList<String> sl = FunList.of("a", "b", "2", "3", "d", "b", "2");
 
     assertTrue (sl.matches(FunList.class)) ;
-    assertTrue (sl.matches(FunList.class, String.class, FunList.class));
-    assertTrue (sl.matches(FunList.class, FunList.class));
-    assertTrue (sl.matches(FunList.class, "a", "b", FunList.class));
-    assertTrue (!sl.matches(FunList.class, "a", "b", Nil));
+    assertTrue (sl.matches(String.class, FunList.class));
+    assertTrue (sl.matches(FunList.class));
+    assertTrue (sl.matches("a", "b", FunList.class));
+    assertTrue (!sl.matches("a", "b", Nil));
 
     assertTrue(caseObject(Optional.empty(), Optional.empty()));
 
-    assertTrue (FunList.of(1).tail().matches(FunList.class, Nil));
+    assertTrue (FunList.of(1).tail().matches(Nil));
 
-    assertTrue (FunList.of(1).matches(FunList.class, 1, Nil));
+    assertTrue (FunList.of(1).matches(1, Nil));
 
     assertTrue(FunList.of(1, 2, "3", new Tuple2<>("a", 5)).
-            matches(FunList.class, Integer.class, Integer.class, String.class, FunTuple.class, Nil));
+            matches(Integer.class, Integer.class, String.class, FunTuple.class, Nil));
+
+    assertTrue(FunList.of(1, 2, "3", new Tuple2<>("a", 5)).
+            matches(Integer.class, Integer.class, String.class, FunTuple.class, FunList.class));
 
     FunList<String> el = new FunList<>();
     String s = match(el, o -> {
-      if ( caseObject(o, FunList.class, "x", Nil)) return "h::Nil";
-      else if ( caseObject(o, FunList.class, "x", FunList.class)) return "h::tail";
-      else if ( caseObject(o, FunList.class, Nil)) return "Nil";
+      if ( caseObject(o, "x", Nil)) return "h::Nil";
+      else if ( caseObject(o, "x", FunList.class)) return "h::tail";
+      else if ( caseObject(o, Nil)) return "Nil";
       else return "unknown";
       } );
     assertEquals(s, "Nil");
 
-    String s2 = match(el, o -> {
-      if ( caseObject(o, FunList.class, "x", Nil)) return "h::Nil";
-      else if ( caseObject(o, FunList.class, "x", FunList.class)) return "h::tail";
-      else if ( caseObject(o, Nil)) return "Nil";
+    String s2 = match(FunList.of("x"), o -> {
+      if ( caseObject(o, Nil)) return "Nil";
+      else if ( caseObject(o, "x", FunList.class)) return "h::tail";
       else return "unknown";
     } );
-    assertEquals(s2, "Nil");
+    assertEquals(s2, "h::tail");
 
     String s3 = match( FunList.of("x", 2), o -> {
-      if ( caseObject(o, FunList.class, "x", Nil)) return "h::Nil";
-      else if ( caseObject(o, FunList.class, "x", FunList.class)) return "h::tail";
+      if ( caseObject(o, "x", Nil)) return "h::Nil";
+      else if ( caseObject(o, "x", FunList.class)) return "h::tail";
       else if ( caseObject(o, Nil)) return "Nil";
       else return "unknown";
     } );
     assertEquals(s3, "h::tail");
+
+    assertTrue(FunList.of(1, 2, 3, 4).matches(FunList.of(2,3,4).pushed(1)));
   }
 
   @Test
@@ -160,7 +164,7 @@ public class FunListTest {
         if (caseObject(e, Integer.class)) return (Integer) e;
         else if (caseObject(e, Optional.empty())) return -10;
         else if (caseOptOf(e, Integer.class)) return (Integer) (((Optional) e).get());
-        else if (caseObject(e, FunList.class, 1, FunList.class)) return -3;
+        else if (caseObject(e, 1, FunList.class)) return -3;
         else if (caseObject(e, FunList.class)) return -1;
         else if (caseObject(e, "x")) return 100;
         else if (caseOptOf(e, "x")) return -100;

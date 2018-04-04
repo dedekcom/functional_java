@@ -29,8 +29,8 @@ public interface FunMatch {
       else if ( caseObject(o, 5) )                     return "int: 5";
       else if ( caseObject(o, FunMap.of()) )           return "empty map";
       else if ( caseObject(o, FunMap.class) )          return "map";
-      else if ( caseObject(o, FunList.class, "x", FunList.of()) ) return "h::Nil";
-      else if ( caseObject(o, FunList.class, "x", FunList.class) ) return "h::tail";
+      else if ( caseObject(o, "x", FunList.of()) )     return "h::Nil";
+      else if ( caseObject(o, "x", FunList.class) )    return "h::tail";
       else if ( caseObject(o, FunList.of()) )          return "Nil";
       else if ( caseObject(e, Integer.class))          return "int";
       else if ( caseObject(e, Optional.empty()))       return "Optional: empty";

@@ -32,10 +32,18 @@ public class FunMatchTest {
             match(
                     caseOf(list, 5), () -> "5",
                     caseOf(list, FunString.class), () -> "fun string",
-                    caseOf(list, FunList.class, 1, 2, Nil), () -> "1::2::Nil",
-                    caseOf(list, FunList.class, Any, FunList.class), () -> "head::tail"
+                    caseOf(list, 1, 2, Nil), () -> "1::2::Nil",
+                    caseOf(list, Any, FunList.class), () -> "head::tail"
             )
     );
+
+    Double d = 0.0;
+    int res = match(
+            caseOf(d, 1.0), () -> d.intValue() + 1,
+            caseOf(d, 2.0), () -> d.intValue() + 2,
+            caseOf(d, Any), () -> 0
+      );
+    assertEquals(0, res);
   }
 
   @Test (expected = FunMatchException.class)

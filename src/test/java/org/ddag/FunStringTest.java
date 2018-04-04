@@ -68,8 +68,8 @@ public class FunStringTest {
     FunString ss = new FunString(5);
 
     assertTrue(ss.matches(FunString.class));
-    assertTrue(ss.matches(FunString.class, "5"));
-    assertTrue(!ss.matches(FunString.class, 5));
+    assertTrue(ss.matches("5"));
+    assertTrue(!ss.matches(5));
     assertTrue(!ss.matches(FunList.class, "5"));
 
     assertEquals(new FunString("(1, 5)"), new Tuple2<>(1, "5").toString());

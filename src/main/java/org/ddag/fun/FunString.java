@@ -89,15 +89,10 @@ public class FunString implements FunObject {
   }
 
   public boolean matches(Object... params) {
-    if (params.length > 0 && (params[0] instanceof Class) && ((Class)params[0]).isInstance(this)) {
-      if (params.length == 1)
-        return true;  // test only class type
-      else if (params.length == 2) {
-        return this.equals(params[1]);
-      } else return false;
-    } else {
-      return params.length == 1 && this.equals(params[0]);
-    }
+    return params.length == 1 && (
+            ((params[0] instanceof Class) && ((Class)params[0]).isInstance(this)) ||
+                    this.equals(params[0])
+    );
   }
 
   public static FunString of(Object... params) {

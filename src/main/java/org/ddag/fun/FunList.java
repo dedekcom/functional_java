@@ -211,13 +211,13 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
   public boolean nonEmpty()         { return this.size() != 0; }
 
   public boolean matches(Object... params) {
-    if (params.length > 0 && (params[0] instanceof Class) && ((Class)params[0]).isInstance(this)) {
-      if (params.length == 1)
-        return true;  // match only collection type
+    if (params.length == 1) {
+      return ((params[0] instanceof Class) && ((Class)params[0]).isInstance(this)) || this.equals(params[0]);
+    } else if (params.length > 1) {
       Iterator it = this.iterator();
       int last = params.length - 1;
-      for (int i=1; i<last; i++) {
-        if (i > this.size())
+      for (int i=0; i<last; i++) {
+        if (i >= this.size())
           return false;   // more elements in pattern than in a list
         Object n = it.next();
         if (params[i] instanceof Class) {
@@ -226,13 +226,13 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
         }  else if (!n.equals(params[i]))
           return false;
       }
-      if (params[last].equals(FunList.of()))  {   // test Nil on the last position of the pattern
+      if (params[last].equals(Nil))  {   // test Nil on the last position of the pattern
         return !it.hasNext();
       } else {    // test tail
         return (params[last] instanceof Class && ((Class) params[last]).isInstance(this));
       }
     } else {
-      return (params.length == 1 && this.equals(params[0]));
+      return false;
     }
   }
 
