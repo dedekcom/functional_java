@@ -9,12 +9,12 @@ package org.ddag.fun.match;
 import java.util.Optional;
 import java.util.function.Function;
 
-public class FunDoIf {
+public class FunGetIf {
   private Object first;
   private Object[] args;
   private Function<Object, Object> fun;
 
-  FunDoIf(Function<Object, Object> fun, Object firstArg, Object... args) {
+  FunGetIf(Function<Object, Object> fun, Object firstArg, Object... args) {
     this.first = firstArg;
     this.fun = fun;
     this.args = args;

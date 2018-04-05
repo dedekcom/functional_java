@@ -8,6 +8,8 @@ package org.ddag.fun.col;
 import org.ddag.fun.Fumeric;
 import org.ddag.fun.FunObject;
 import org.ddag.fun.FunString;
+import static org.ddag.fun.match.FunMatch.match;
+import static org.ddag.fun.match.FunMatch.Case;
 import org.ddag.fun.tuple.Tuple2;
 
 import java.util.Arrays;
@@ -144,7 +146,7 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
     else return _fold(list.tail(), fun.apply(result, list.head()), fun);
   }
 
-  public <R> R foldLeft(R initial, BiFunction<R, T, R> fun) {
+  public <R> R foldLeft(R initial, BiFunction<R,? super T, R> fun) {
     for (T el: this)  {
       initial = fun.apply(initial, el);
     }
@@ -197,15 +199,20 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
 
   public FunList<Object> flatten() {
     FunList<Object> res = new FunList<>();
-    forEach(e -> {
-      if (e instanceof Optional) {
-        if (((Optional) e).isPresent()) res.add(((Optional) e).get());
-      } else if (e instanceof Collection) {
-        res.addAll((Collection)e);
-      } else {
-        res.add(e);
-      }
-    });
+    forEach(e -> match( e,
+            Case (Optional.class, Any),
+                (o) -> res.add(((Optional) o).get()),
+
+            Case (Collection.class),
+                (o) -> res.addAll((Collection)o),
+
+            Case (Optional.empty()),
+                (o) -> {},
+
+            Case (Any),
+                (o) -> res.add(o)
+          )
+    );
     return res;
   }
 

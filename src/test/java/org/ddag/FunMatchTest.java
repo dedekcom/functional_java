@@ -8,7 +8,8 @@ package org.ddag;
 import static org.ddag.fun.col.FunList.Nil;
 import static org.ddag.fun.match.FunMatch.matches;
 import static org.ddag.fun.match.FunMatch.matchesOptOf;
-import static org.ddag.fun.match.FunMatch.doIf;
+import static org.ddag.fun.match.FunMatch.getIf;
+import static org.ddag.fun.match.FunMatch.runIf;
 import static org.ddag.fun.match.FunMatch.match;
 import static org.ddag.fun.match.FunMatch.Case;
 import static org.ddag.fun.FunObject.Any;
@@ -63,9 +64,9 @@ public class FunMatchTest {
   public void testMatch2() {
 
     int res = match( 0.0,
-            doIf((dd) -> (double)dd + 1, 1.0),
-            doIf((dd) -> (double)dd + 2, 2.0),
-            doIf((dd) -> 0, Any)
+            getIf((dd) -> (double)dd + 1, 1.0),
+            getIf((dd) -> (double)dd + 2, 2.0),
+            getIf((dd) -> 0, Any)
     );
     assertEquals(0, res);
   }
@@ -88,17 +89,31 @@ public class FunMatchTest {
       });
     });
 
-    Performance.testPerform("pattern matching based on match-Object", loops, () -> {
+    Performance.testPerform("pattern matching based on getIf", loops, () -> {
       new FunList<Object>(src).map(e ->
               match(e,
-                      doIf( (i) -> i,                             Integer.class),
-                      doIf( (i) -> -10,                           Optional.empty()),
-                      doIf( (o) -> (((Optional) o).get()),        Optional.class, Integer.class),
-                      doIf( (i) -> -3,                   FunList.class),
-                      doIf( (l) -> -1,                            FunList.class),
-                      doIf( (s) -> 100,                 "x"),
-                      doIf( (sopt) -> -100,              Optional.class, "x"),
-                      doIf( (a) -> 0,                             Any))
+                      getIf( (i) -> i,                             Integer.class),
+                      getIf( (i) -> -10,                           Optional.empty()),
+                      getIf( (o) -> (((Optional) o).get()),        Optional.class, Integer.class),
+                      getIf( (i) -> -3,                   FunList.class),
+                      getIf( (l) -> -1,                            FunList.class),
+                      getIf( (s) -> 100,                 "x"),
+                      getIf( (sopt) -> -100,              Optional.class, "x"),
+                      getIf( (a) -> 0,                             Any))
+      );
+    });
+
+    Performance.testPerform("pattern matching based on runIf", loops, () -> {
+      new FunList<Object>(src).forEach(e ->
+              match(e,
+                      runIf( (i) -> {},                             Integer.class),
+                      runIf( (i) -> {},                           Optional.empty()),
+                      runIf( (o) -> {},        Optional.class, Integer.class),
+                      runIf( (i) -> {},                   FunList.class),
+                      runIf( (l) -> {},                            FunList.class),
+                      runIf( (s) -> {},                 "x"),
+                      runIf( (sopt) -> {},              Optional.class, "x"),
+                      runIf( (a) -> {},                             Any))
       );
     });
 

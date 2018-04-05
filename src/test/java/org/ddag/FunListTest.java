@@ -51,9 +51,8 @@ public class FunListTest {
     assertTrue(FunList.of(2).tail().isEmpty());
 
     FunList<Object> l2 = FunList.of(1, 2, Optional.of(5), Optional.empty(), FunList.of(1, 2, 3), FunList.of(new FunList<String>()));
-    assertTrue(l2.flatten().splitAt(100)._1().equals(
-            FunList.of(1, 2, 5, 1, 2, 3, new FunList<String>())
-    ));
+    assertEquals(FunList.of(1, 2, 5, 1, 2, 3, new FunList<String>()),
+            l2.flatten().splitAt(100)._1());
 
     assertEquals(l2.pushed("x").mPushed(Optional.of("x")).map( e -> {
       if (matches(e, Integer.class))              return (Integer)e;
@@ -153,6 +152,8 @@ public class FunListTest {
     Performance.testPerform("\n\nPrepare FunList performance test", loops, () -> { ; });
     Performance.testPerform("reversed.sorted", loops, () -> { new FunList<>(src).reversed().sorted(); });
     Performance.testPerform("mReversed.mSortWith", loops, () -> { new FunList<>(src).mReversed().mSortWith((e1, e2) -> e1.compareTo(e2)); });
+
+    Performance.testPerform("flatten", loops, () -> { new FunList<>(src).flatten(); });
 
     Performance.testPerform("\nslice(1/4-3/4)", loops, () -> { new FunList<>(src).slice(src.size()/4,
             3*src.size()/4); });

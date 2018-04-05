@@ -9,6 +9,7 @@ package org.ddag.fun.match;
 import org.ddag.fun.FunObject;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -47,7 +48,47 @@ public interface FunMatch {
     }
   }
 
+  /*
+    simple matching with if
+   */
+
   static <T, R> R match(T o, Function<T, R> caseFun) {    return caseFun.apply(o);  }
+
+  /*
+    generic matching
+ */
+  static FunGetIf getIf(Function<Object, Object> executeIfMatches, Object firstPattern, Object... pattern) {
+    return new FunGetIf(executeIfMatches, firstPattern, pattern);
+  }
+
+  static <R> R match(Object o, FunGetIf firstCase, FunGetIf... cases) {
+    Optional<Object> res = firstCase.getOpt(o);
+    if (res.isPresent()) return (R)res.get();
+    for (FunGetIf c: cases) {
+      res = c.getOpt(o);
+      if (res.isPresent())
+        return (R)res.get();
+    }
+    throw new FunMatchException();
+  }
+
+  static FunRunIf runIf(Consumer<Object> executeIfMatches, Object firstPattern, Object... pattern) {
+    return new FunRunIf(executeIfMatches, firstPattern, pattern);
+  }
+
+  static void match(Object o, FunRunIf firstCase, FunRunIf... cases) {
+    boolean res = firstCase.get(o);
+    if (res) return;
+    for (FunRunIf c: cases) {
+      res = c.get(o);
+      if (res) return;
+    }
+    throw new FunMatchException();
+  }
+
+  /*
+    matching with types
+   */
 
   static Supplier<FunCase> Case(Object firstParam, Object... params) { return () -> new FunCase(firstParam, params); }
 
@@ -126,22 +167,64 @@ public interface FunMatch {
     else throw new FunMatchException();
   }
 
-  /*
-      generic matching
-   */
-  static FunDoIf doIf(Function<Object, Object> executeIfMatches, Object firstPattern, Object... pattern) {
-    return new FunDoIf(executeIfMatches, firstPattern, pattern);
+  static <T> void match(T o, Supplier<FunCase> p1, Consumer<T> fun1, Supplier<FunCase> p2, Consumer<T> fun2) {
+    if (p1.get().get(o)) fun1.accept(o);
+    else if (p2.get().get(o)) fun2.accept(o);
+    else throw new FunMatchException();
   }
 
-  static <R> R match(Object o, FunDoIf firstCase, FunDoIf... cases) {
-    Optional<Object> res = firstCase.getOpt(o);
-    if (res.isPresent()) return (R)res.get();
-    for (FunDoIf c: cases) {
-      res = c.getOpt(o);
-      if (res.isPresent())
-        return (R)res.get();
-    }
-    throw new FunMatchException();
+  static <T> void match(T o, Supplier<FunCase> p1, Consumer<T> fun1, Supplier<FunCase> p2, Consumer<T> fun2,
+                        Supplier<FunCase> p3, Consumer<T> fun3) {
+    if (p1.get().get(o)) fun1.accept(o);
+    else if (p2.get().get(o)) fun2.accept(o);
+    else if (p3.get().get(o)) fun3.accept(o);
+    else throw new FunMatchException();
   }
 
+  static <T> void match(T o, Supplier<FunCase> p1, Consumer<T> fun1, Supplier<FunCase> p2, Consumer<T> fun2,
+                        Supplier<FunCase> p3, Consumer<T> fun3, Supplier<FunCase> p4, Consumer<T> fun4) {
+    if (p1.get().get(o)) fun1.accept(o);
+    else if (p2.get().get(o)) fun2.accept(o);
+    else if (p3.get().get(o)) fun3.accept(o);
+    else if (p4.get().get(o)) fun4.accept(o);
+    else throw new FunMatchException();
+  }
+
+  static <T> void match(T o, Supplier<FunCase> p1, Consumer<T> fun1, Supplier<FunCase> p2, Consumer<T> fun2,
+                        Supplier<FunCase> p3, Consumer<T> fun3, Supplier<FunCase> p4, Consumer<T> fun4,
+                        Supplier<FunCase> p5, Consumer<T> fun5) {
+    if (p1.get().get(o)) fun1.accept(o);
+    else if (p2.get().get(o)) fun2.accept(o);
+    else if (p3.get().get(o)) fun3.accept(o);
+    else if (p4.get().get(o)) fun4.accept(o);
+    else if (p5.get().get(o)) fun5.accept(o);
+    else throw new FunMatchException();
+  }
+
+  static <T> void match(T o, Supplier<FunCase> p1, Consumer<T> fun1, Supplier<FunCase> p2, Consumer<T> fun2,
+                        Supplier<FunCase> p3, Consumer<T> fun3, Supplier<FunCase> p4, Consumer<T> fun4,
+                        Supplier<FunCase> p5, Consumer<T> fun5, Supplier<FunCase> p6, Consumer<T> fun6) {
+    if (p1.get().get(o)) fun1.accept(o);
+    else if (p2.get().get(o)) fun2.accept(o);
+    else if (p3.get().get(o)) fun3.accept(o);
+    else if (p4.get().get(o)) fun4.accept(o);
+    else if (p5.get().get(o)) fun5.accept(o);
+    else if (p6.get().get(o)) fun6.accept(o);
+    else throw new FunMatchException();
+  }
+
+  static <T> void match(T o, Supplier<FunCase> p1, Consumer<T> fun1, Supplier<FunCase> p2, Consumer<T> fun2,
+                        Supplier<FunCase> p3, Consumer<T> fun3, Supplier<FunCase> p4, Consumer<T> fun4,
+                        Supplier<FunCase> p5, Consumer<T> fun5, Supplier<FunCase> p6, Consumer<T> fun6,
+                        Supplier<FunCase> p7, Consumer<T> fun7, Supplier<FunCase> p8, Consumer<T> fun8) {
+    if (p1.get().get(o)) fun1.accept(o);
+    else if (p2.get().get(o)) fun2.accept(o);
+    else if (p3.get().get(o)) fun3.accept(o);
+    else if (p4.get().get(o)) fun4.accept(o);
+    else if (p5.get().get(o)) fun5.accept(o);
+    else if (p6.get().get(o)) fun6.accept(o);
+    else if (p7.get().get(o)) fun7.accept(o);
+    else if (p8.get().get(o)) fun8.accept(o);
+    else throw new FunMatchException();
+  }
 }
