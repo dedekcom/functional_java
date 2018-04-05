@@ -11,6 +11,7 @@ import org.ddag.fun.FunString;
 import static org.ddag.fun.match.FunMatch.match;
 import static org.ddag.fun.match.FunMatch.Case;
 import org.ddag.fun.tuple.Tuple2;
+import static org.ddag.fun.tuple.FunTuple.T2;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -18,6 +19,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -67,11 +69,11 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
 
   public FunList<T> filterWithIndex(BiFunction<? super T, Integer, Boolean> fun) {    return filterWithIndex(fun, this.size());  }
 
-  public FunList<T> filterWithIndex(BiFunction<? super T, Integer, Boolean> fun, final int stopIndex) {
+  public FunList<T> filterWithIndex(BiFunction<? super T, Integer, Boolean> fun, final int limit) {
     FunList<T> r = new FunList<>();
     int id = 0;
     for (T e: this) {
-      if (id >= stopIndex)
+      if (id >= limit)
         return r;
       if (fun.apply(e, id))
         r.add(e);
@@ -184,6 +186,12 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
   }
 
   public FunList<Tuple2<T, Integer>> zipWithIndex() { return this.mapWithIndex(Tuple2::new); }
+
+  public <U> FunList<Tuple2<T, U>> zip(List<U> list) {
+    return foldLeft( T2(new FunList<Tuple2<T, U>>(), list.iterator()),
+            (acc, el) -> acc._2().hasNext() ? T2(acc._1().mAdded(T2(el, acc._2().next())), acc._2()) : acc
+            )._1();
+  }
 
   public Tuple2<FunList<T>,FunList<T>> splitAt(int n) { return this.partition((e, i) -> i < n); }
 

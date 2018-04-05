@@ -11,6 +11,7 @@ import org.ddag.fun.col.FunList;
 import static org.ddag.fun.col.FunList.Nil;
 import org.ddag.fun.FunString;
 import org.ddag.fun.tuple.FunTuple;
+import static org.ddag.fun.tuple.FunTuple.T2;
 import org.ddag.fun.tuple.Tuple2;
 import org.junit.Test;
 import static org.ddag.fun.match.FunMatch.match;
@@ -94,6 +95,8 @@ public class FunListTest {
 
     assertEquals(FunList.of(1, 2, 3), FunList.of(3, 2, 1).reversed());
 
+    assertEquals(FunList.of(T2(1, "a"), T2(2, "b")),  FunList.of(1, 2, 3).zip(FunList.of("a", "b")));
+    assertEquals(FunList.of(T2(1, "a"), T2(2, "b")),  FunList.of(1, 2).zip(FunList.of("a", "b", "c")));
   }
 
   @Test
