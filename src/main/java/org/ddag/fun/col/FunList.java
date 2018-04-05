@@ -206,22 +206,13 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
   }
 
   public <R> FunList<R> flatten() {
-    FunList<R> res = new FunList<>();
-    forEach(e -> match( e,
-            Case (Optional.class, Any),
-                o -> res.add((R)((Optional) o).get()),
-
-            Case (Collection.class),
-                o -> res.addAll((Collection)o),
-
-            Case (Optional.empty()),
-                o -> {},
-
-            Case (Any),
-                o -> res.add((R)o)
-          )
+    return foldLeft(new FunList<R>(), (acc, e) -> match( e,
+            Case(Optional.class, Any), o -> acc.mAdded((R) ((Optional) o).get()),
+            Case(Collection.class), o -> acc.mAddedCol((Collection<? extends R>) o),
+            Case(Optional.empty()), o -> acc,
+            Case(Any), o -> acc.mAdded((R) o)
+            )
     );
-    return res;
   }
 
   public boolean isHeadTail()       { return this.size() > 0;  }
