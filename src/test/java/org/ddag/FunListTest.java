@@ -54,6 +54,8 @@ public class FunListTest {
     assertEquals(FunList.of(1, 2, 5, 1, 2, 3, new FunList<String>()),
             l2.flatten().splitAt(100)._1());
 
+    assertEquals(FunList.of(1,2,3,4,5), FunList.of(1, 2, 3, 4, Optional.empty(), Optional.of(5)).flatten());
+
     assertEquals(l2.pushed("x").mPushed(Optional.of("x")).map( e -> {
       if (matches(e, Integer.class))              return (Integer)e;
       else if (matches(e, Optional.empty()))      return -10;

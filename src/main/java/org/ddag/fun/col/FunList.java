@@ -197,11 +197,11 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
     return foldLeft( new StringBuilder(""), (acc, el) -> el == getLast() ? acc.append(el) : acc.append(el).append(separator)).toString();
   }
 
-  public FunList<Object> flatten() {
-    FunList<Object> res = new FunList<>();
+  public <R> FunList<R> flatten() {
+    FunList<R> res = new FunList<>();
     forEach(e -> match( e,
             Case (Optional.class, Any),
-                (o) -> res.add(((Optional) o).get()),
+                (o) -> res.add((R)((Optional) o).get()),
 
             Case (Collection.class),
                 (o) -> res.addAll((Collection)o),
@@ -210,7 +210,7 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
                 (o) -> {},
 
             Case (Any),
-                (o) -> res.add(o)
+                (o) -> res.add((R)o)
           )
     );
     return res;
