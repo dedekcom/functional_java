@@ -49,90 +49,95 @@ public interface FunMatch {
 
   static <T> T match(Object o, Function<Object, T> caseFun) {    return caseFun.apply(o);  }
 
-  static FunCaseOf Case(Object firstParam, Object... params) { return new FunCaseOf(firstParam, params); }
+  static Supplier<FunCase> Case(Object firstParam, Object... params) { return () -> new FunCase(firstParam, params); }
 
-  static <T, R> R match(T o, FunCaseOf p1, Function<T, R> fun1, FunCaseOf p2, Function<T, R> fun2) {
-    if (p1.get(o)) return fun1.apply(o);
-    else if (p2.get(o)) return fun2.apply(o);
+  static <T, R> R match(T o, Supplier<FunCase> p1, Function<T, R> fun1, Supplier<FunCase> p2, Function<T, R> fun2) {
+    if (p1.get().get(o)) return fun1.apply(o);
+    else if (p2.get().get(o)) return fun2.apply(o);
     else throw new FunMatchException();
   }
 
-  static <T, R> R match(T o, FunCaseOf p1, Function<T, R> fun1, FunCaseOf p2, Function<T, R> fun2, FunCaseOf p3, Function<T, R> fun3) {
-    if (p1.get(o)) return fun1.apply(o);
-    else if (p2.get(o)) return fun2.apply(o);
-    else if (p3.get(o)) return fun3.apply(o);
+  static <T, R> R match(T o, Supplier<FunCase> p1, Function<T, R> fun1, Supplier<FunCase> p2, Function<T, R> fun2,
+                        Supplier<FunCase> p3, Function<T, R> fun3) {
+    if (p1.get().get(o)) return fun1.apply(o);
+    else if (p2.get().get(o)) return fun2.apply(o);
+    else if (p3.get().get(o)) return fun3.apply(o);
     else throw new FunMatchException();
   }
 
-  static <T, R> R match(T o, FunCaseOf p1, Function<T, R> fun1, FunCaseOf p2, Function<T, R> fun2, FunCaseOf p3, Function<T, R> fun3,
-                     FunCaseOf p4, Function<T, R> fun4) {
-    if (p1.get(o)) return fun1.apply(o);
-    else if (p2.get(o)) return fun2.apply(o);
-    else if (p3.get(o)) return fun3.apply(o);
-    else if (p4.get(o)) return fun4.apply(o);
+  static <T, R> R match(T o, Supplier<FunCase> p1, Function<T, R> fun1, Supplier<FunCase> p2, Function<T, R> fun2,
+                        Supplier<FunCase> p3, Function<T, R> fun3, Supplier<FunCase> p4, Function<T, R> fun4) {
+    if (p1.get().get(o)) return fun1.apply(o);
+    else if (p2.get().get(o)) return fun2.apply(o);
+    else if (p3.get().get(o)) return fun3.apply(o);
+    else if (p4.get().get(o)) return fun4.apply(o);
     else throw new FunMatchException();
   }
 
-  static <T, R> R match(T o, FunCaseOf p1, Function<T, R> fun1, FunCaseOf p2, Function<T, R> fun2, FunCaseOf p3, Function<T, R> fun3,
-                     FunCaseOf p4, Function<T, R> fun4, FunCaseOf p5, Function<T, R> fun5) {
-    if (p1.get(o)) return fun1.apply(o);
-    else if (p2.get(o)) return fun2.apply(o);
-    else if (p3.get(o)) return fun3.apply(o);
-    else if (p4.get(o)) return fun4.apply(o);
-    else if (p5.get(o)) return fun5.apply(o);
+  static <T, R> R match(T o, Supplier<FunCase> p1, Function<T, R> fun1, Supplier<FunCase> p2, Function<T, R> fun2,
+                        Supplier<FunCase> p3, Function<T, R> fun3, Supplier<FunCase> p4, Function<T, R> fun4,
+                        Supplier<FunCase> p5, Function<T, R> fun5) {
+    if (p1.get().get(o)) return fun1.apply(o);
+    else if (p2.get().get(o)) return fun2.apply(o);
+    else if (p3.get().get(o)) return fun3.apply(o);
+    else if (p4.get().get(o)) return fun4.apply(o);
+    else if (p5.get().get(o)) return fun5.apply(o);
     else throw new FunMatchException();
   }
 
-  static <T, R> R match(T o, FunCaseOf p1, Function<T, R> fun1, FunCaseOf p2, Function<T, R> fun2, FunCaseOf p3, Function<T, R> fun3,
-                     FunCaseOf p4, Function<T, R> fun4, FunCaseOf p5, Function<T, R> fun5, FunCaseOf p6, Function<T, R> fun6) {
-    if (p1.get(o)) return fun1.apply(o);
-    else if (p2.get(o)) return fun2.apply(o);
-    else if (p3.get(o)) return fun3.apply(o);
-    else if (p4.get(o)) return fun4.apply(o);
-    else if (p5.get(o)) return fun5.apply(o);
-    else if (p6.get(o)) return fun6.apply(o);
+  static <T, R> R match(T o, Supplier<FunCase> p1, Function<T, R> fun1, Supplier<FunCase> p2, Function<T, R> fun2,
+                        Supplier<FunCase> p3, Function<T, R> fun3, Supplier<FunCase> p4, Function<T, R> fun4,
+                        Supplier<FunCase> p5, Function<T, R> fun5, Supplier<FunCase> p6, Function<T, R> fun6) {
+    if (p1.get().get(o)) return fun1.apply(o);
+    else if (p2.get().get(o)) return fun2.apply(o);
+    else if (p3.get().get(o)) return fun3.apply(o);
+    else if (p4.get().get(o)) return fun4.apply(o);
+    else if (p5.get().get(o)) return fun5.apply(o);
+    else if (p6.get().get(o)) return fun6.apply(o);
     else throw new FunMatchException();
   }
 
-  static <T, R> R match(T o, FunCaseOf p1, Function<T, R> fun1, FunCaseOf p2, Function<T, R> fun2, FunCaseOf p3, Function<T, R> fun3,
-                    FunCaseOf p4, Function<T, R> fun4, FunCaseOf p5, Function<T, R> fun5, FunCaseOf p6, Function<T, R> fun6,
-                    FunCaseOf p7, Function<T, R> fun7) {
-    if (p1.get(o)) return fun1.apply(o);
-    else if (p2.get(o)) return fun2.apply(o);
-    else if (p3.get(o)) return fun3.apply(o);
-    else if (p4.get(o)) return fun4.apply(o);
-    else if (p5.get(o)) return fun5.apply(o);
-    else if (p6.get(o)) return fun6.apply(o);
-    else if (p7.get(o)) return fun7.apply(o);
+  static <T, R> R match(T o, Supplier<FunCase> p1, Function<T, R> fun1, Supplier<FunCase> p2, Function<T, R> fun2,
+                        Supplier<FunCase> p3, Function<T, R> fun3, Supplier<FunCase> p4, Function<T, R> fun4,
+                        Supplier<FunCase> p5, Function<T, R> fun5, Supplier<FunCase> p6, Function<T, R> fun6,
+                        Supplier<FunCase> p7, Function<T, R> fun7) {
+    if (p1.get().get(o)) return fun1.apply(o);
+    else if (p2.get().get(o)) return fun2.apply(o);
+    else if (p3.get().get(o)) return fun3.apply(o);
+    else if (p4.get().get(o)) return fun4.apply(o);
+    else if (p5.get().get(o)) return fun5.apply(o);
+    else if (p6.get().get(o)) return fun6.apply(o);
+    else if (p7.get().get(o)) return fun7.apply(o);
     else throw new FunMatchException();
   }
 
-  static <T, R> R match(T o, FunCaseOf p1, Function<T, R> fun1, FunCaseOf p2, Function<T, R> fun2, FunCaseOf p3, Function<T, R> fun3,
-                     FunCaseOf p4, Function<T, R> fun4, FunCaseOf p5, Function<T, R> fun5, FunCaseOf p6, Function<T, R> fun6,
-                     FunCaseOf p7, Function<T, R> fun7, FunCaseOf p8, Function<T, R> fun8) {
-    if (p1.get(o)) return fun1.apply(o);
-    else if (p2.get(o)) return fun2.apply(o);
-    else if (p3.get(o)) return fun3.apply(o);
-    else if (p4.get(o)) return fun4.apply(o);
-    else if (p5.get(o)) return fun5.apply(o);
-    else if (p6.get(o)) return fun6.apply(o);
-    else if (p7.get(o)) return fun7.apply(o);
-    else if (p8.get(o)) return fun8.apply(o);
+  static <T, R> R match(T o, Supplier<FunCase> p1, Function<T, R> fun1, Supplier<FunCase> p2, Function<T, R> fun2,
+                        Supplier<FunCase> p3, Function<T, R> fun3, Supplier<FunCase> p4, Function<T, R> fun4,
+                        Supplier<FunCase> p5, Function<T, R> fun5, Supplier<FunCase> p6, Function<T, R> fun6,
+                        Supplier<FunCase> p7, Function<T, R> fun7, Supplier<FunCase> p8, Function<T, R> fun8) {
+    if (p1.get().get(o)) return fun1.apply(o);
+    else if (p2.get().get(o)) return fun2.apply(o);
+    else if (p3.get().get(o)) return fun3.apply(o);
+    else if (p4.get().get(o)) return fun4.apply(o);
+    else if (p5.get().get(o)) return fun5.apply(o);
+    else if (p6.get().get(o)) return fun6.apply(o);
+    else if (p7.get().get(o)) return fun7.apply(o);
+    else if (p8.get().get(o)) return fun8.apply(o);
     else throw new FunMatchException();
   }
 
   /*
       matching case 2
    */
-  static FunCaseObject doIf(Function<Object, Object> executeIfMatches, Object firstPattern, Object... pattern) {
-    return new FunCaseObject(executeIfMatches, firstPattern, pattern);
+  static FunDoIf doIf(Function<Object, Object> executeIfMatches, Object firstPattern, Object... pattern) {
+    return new FunDoIf(executeIfMatches, firstPattern, pattern);
   }
 
-  static <R> R match(Object o, FunCaseObject first, FunCaseObject... c) {
+  static <R> R match(Object o, FunDoIf first, FunDoIf... cases) {
     Optional<Object> res = first.getOpt(o);
     if (res.isPresent()) return (R)res.get();
-    for (int i=0; i<c.length; i++) {
-      res = c[i].getOpt(o);
+    for (FunDoIf c: cases) {
+      res = c.getOpt(o);
       if (res.isPresent())
         return (R)res.get();
     }

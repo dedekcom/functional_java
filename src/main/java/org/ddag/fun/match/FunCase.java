@@ -5,14 +5,14 @@
  */
 package org.ddag.fun.match;
 
-class FunCaseOf {
+class FunCase {
   private Object first;
   private Object[] args;
 
-  FunCaseOf(Object firstArg, Object... args) {
+  FunCase(Object firstArg, Object... args) {
     this.first = firstArg;
     this.args = args;
-  };
+  }
 
   boolean get(Object o) {    return FunMatch.matches(o, first, args);  }
 }
