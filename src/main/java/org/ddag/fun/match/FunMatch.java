@@ -167,6 +167,41 @@ public interface FunMatch {
     else throw new FunMatchException();
   }
 
+  static <T, R> R match(T o, Supplier<FunCase> p1, Function<T, R> fun1, Supplier<FunCase> p2, Function<T, R> fun2,
+                        Supplier<FunCase> p3, Function<T, R> fun3, Supplier<FunCase> p4, Function<T, R> fun4,
+                        Supplier<FunCase> p5, Function<T, R> fun5, Supplier<FunCase> p6, Function<T, R> fun6,
+                        Supplier<FunCase> p7, Function<T, R> fun7, Supplier<FunCase> p8, Function<T, R> fun8,
+                        Supplier<FunCase> p9, Function<T, R> fun9) {
+    if (p1.get().get(o)) return fun1.apply(o);
+    else if (p2.get().get(o)) return fun2.apply(o);
+    else if (p3.get().get(o)) return fun3.apply(o);
+    else if (p4.get().get(o)) return fun4.apply(o);
+    else if (p5.get().get(o)) return fun5.apply(o);
+    else if (p6.get().get(o)) return fun6.apply(o);
+    else if (p7.get().get(o)) return fun7.apply(o);
+    else if (p8.get().get(o)) return fun8.apply(o);
+    else if (p9.get().get(o)) return fun9.apply(o);
+    else throw new FunMatchException();
+  }
+
+  static <T, R> R match(T o, Supplier<FunCase> p1, Function<T, R> fun1, Supplier<FunCase> p2, Function<T, R> fun2,
+                        Supplier<FunCase> p3, Function<T, R> fun3, Supplier<FunCase> p4, Function<T, R> fun4,
+                        Supplier<FunCase> p5, Function<T, R> fun5, Supplier<FunCase> p6, Function<T, R> fun6,
+                        Supplier<FunCase> p7, Function<T, R> fun7, Supplier<FunCase> p8, Function<T, R> fun8,
+                        Supplier<FunCase> p9, Function<T, R> fun9, Supplier<FunCase> p10, Function<T, R> fun10) {
+    if (p1.get().get(o)) return fun1.apply(o);
+    else if (p2.get().get(o)) return fun2.apply(o);
+    else if (p3.get().get(o)) return fun3.apply(o);
+    else if (p4.get().get(o)) return fun4.apply(o);
+    else if (p5.get().get(o)) return fun5.apply(o);
+    else if (p6.get().get(o)) return fun6.apply(o);
+    else if (p7.get().get(o)) return fun7.apply(o);
+    else if (p8.get().get(o)) return fun8.apply(o);
+    else if (p9.get().get(o)) return fun9.apply(o);
+    else if (p10.get().get(o)) return fun10.apply(o);
+    else throw new FunMatchException();
+  }
+
   static <T> void match(T o, Supplier<FunCase> p1, Consumer<T> fun1, Supplier<FunCase> p2, Consumer<T> fun2) {
     if (p1.get().get(o)) fun1.accept(o);
     else if (p2.get().get(o)) fun2.accept(o);
@@ -225,6 +260,41 @@ public interface FunMatch {
     else if (p6.get().get(o)) fun6.accept(o);
     else if (p7.get().get(o)) fun7.accept(o);
     else if (p8.get().get(o)) fun8.accept(o);
+    else throw new FunMatchException();
+  }
+
+  static <T> void match(T o, Supplier<FunCase> p1, Consumer<T> fun1, Supplier<FunCase> p2, Consumer<T> fun2,
+                        Supplier<FunCase> p3, Consumer<T> fun3, Supplier<FunCase> p4, Consumer<T> fun4,
+                        Supplier<FunCase> p5, Consumer<T> fun5, Supplier<FunCase> p6, Consumer<T> fun6,
+                        Supplier<FunCase> p7, Consumer<T> fun7, Supplier<FunCase> p8, Consumer<T> fun8,
+                        Supplier<FunCase> p9, Consumer<T> fun9) {
+    if (p1.get().get(o)) fun1.accept(o);
+    else if (p2.get().get(o)) fun2.accept(o);
+    else if (p3.get().get(o)) fun3.accept(o);
+    else if (p4.get().get(o)) fun4.accept(o);
+    else if (p5.get().get(o)) fun5.accept(o);
+    else if (p6.get().get(o)) fun6.accept(o);
+    else if (p7.get().get(o)) fun7.accept(o);
+    else if (p8.get().get(o)) fun8.accept(o);
+    else if (p9.get().get(o)) fun9.accept(o);
+    else throw new FunMatchException();
+  }
+
+  static <T> void match(T o, Supplier<FunCase> p1, Consumer<T> fun1, Supplier<FunCase> p2, Consumer<T> fun2,
+                        Supplier<FunCase> p3, Consumer<T> fun3, Supplier<FunCase> p4, Consumer<T> fun4,
+                        Supplier<FunCase> p5, Consumer<T> fun5, Supplier<FunCase> p6, Consumer<T> fun6,
+                        Supplier<FunCase> p7, Consumer<T> fun7, Supplier<FunCase> p8, Consumer<T> fun8,
+                        Supplier<FunCase> p9, Consumer<T> fun9, Supplier<FunCase> p10, Consumer<T> fun10) {
+    if (p1.get().get(o)) fun1.accept(o);
+    else if (p2.get().get(o)) fun2.accept(o);
+    else if (p3.get().get(o)) fun3.accept(o);
+    else if (p4.get().get(o)) fun4.accept(o);
+    else if (p5.get().get(o)) fun5.accept(o);
+    else if (p6.get().get(o)) fun6.accept(o);
+    else if (p7.get().get(o)) fun7.accept(o);
+    else if (p8.get().get(o)) fun8.accept(o);
+    else if (p9.get().get(o)) fun9.accept(o);
+    else if (p10.get().get(o)) fun10.accept(o);
     else throw new FunMatchException();
   }
 }
