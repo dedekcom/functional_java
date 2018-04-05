@@ -3,7 +3,10 @@
  * Dominik Dagiel 03.2018
  *
  */
-package org.ddag.fun;
+package org.ddag.fun.col;
+
+import org.ddag.fun.FunObject;
+import org.ddag.fun.tuple.Tuple2;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;

@@ -5,6 +5,8 @@
  */
 package org.ddag.fun;
 
+import org.ddag.fun.col.FunList;
+
 import java.util.Arrays;
 import java.util.Optional;
 

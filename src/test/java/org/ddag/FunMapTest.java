@@ -5,11 +5,11 @@
  */
 package org.ddag;
 
-import org.ddag.fun.FunList;
-import org.ddag.fun.FunMap;
+import org.ddag.fun.col.FunList;
+import org.ddag.fun.col.FunMap;
 import org.ddag.fun.match.FunMatch;
-import static org.ddag.fun.FunTuple.T2;
-import org.ddag.fun.Tuple2;
+import static org.ddag.fun.tuple.FunTuple.T2;
+import org.ddag.fun.tuple.Tuple2;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

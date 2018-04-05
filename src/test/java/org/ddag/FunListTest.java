@@ -7,11 +7,11 @@
 package org.ddag;
 
 import org.ddag.fun.Fumeric;
-import org.ddag.fun.FunList;
-import static org.ddag.fun.FunList.Nil;
+import org.ddag.fun.col.FunList;
+import static org.ddag.fun.col.FunList.Nil;
 import org.ddag.fun.FunString;
-import org.ddag.fun.FunTuple;
-import org.ddag.fun.Tuple2;
+import org.ddag.fun.tuple.FunTuple;
+import org.ddag.fun.tuple.Tuple2;
 import org.junit.Test;
 import static org.ddag.fun.match.FunMatch.match;
 import static org.ddag.fun.match.FunMatch.matches;

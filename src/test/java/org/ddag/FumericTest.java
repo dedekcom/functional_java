@@ -6,7 +6,7 @@
 package org.ddag;
 
 import org.ddag.fun.Fumeric;
-import org.ddag.fun.FunList;
+import org.ddag.fun.col.FunList;
 import org.junit.Test;
 
 import java.util.Optional;

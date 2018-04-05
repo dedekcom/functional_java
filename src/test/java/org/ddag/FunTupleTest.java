@@ -5,15 +5,15 @@
  */
 package org.ddag;
 
-import org.ddag.fun.FunList;
+import org.ddag.fun.col.FunList;
 import static org.ddag.fun.match.FunMatch.match;
 import static org.ddag.fun.match.FunMatch.matches;
 import org.ddag.fun.FunObject;
 import org.ddag.fun.FunString;
-import org.ddag.fun.FunTuple;
-import org.ddag.fun.Tuple1;
-import org.ddag.fun.Tuple2;
-import org.ddag.fun.Tuple3;
+import org.ddag.fun.tuple.FunTuple;
+import org.ddag.fun.tuple.Tuple1;
+import org.ddag.fun.tuple.Tuple2;
+import org.ddag.fun.tuple.Tuple3;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

@@ -5,7 +5,7 @@
  */
 package org.ddag;
 
-import static org.ddag.fun.FunList.Nil;
+import static org.ddag.fun.col.FunList.Nil;
 import static org.ddag.fun.match.FunMatch.matches;
 import static org.ddag.fun.match.FunMatch.matchesOptOf;
 import static org.ddag.fun.match.FunMatch.doIf;
@@ -13,7 +13,7 @@ import static org.ddag.fun.match.FunMatch.match;
 import static org.ddag.fun.match.FunMatch.Case;
 import static org.ddag.fun.FunObject.Any;
 
-import org.ddag.fun.FunList;
+import org.ddag.fun.col.FunList;
 import org.ddag.fun.FunString;
 import org.ddag.fun.match.FunMatchException;
 import org.junit.Test;

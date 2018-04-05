@@ -3,7 +3,10 @@
  * Dominik Dagiel 03.2018
  *
  */
-package org.ddag.fun;
+package org.ddag.fun.tuple;
+
+import org.ddag.fun.FunObject;
+import org.ddag.fun.col.FunList;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -73,5 +76,20 @@ abstract public class FunTuple implements Serializable, FunObject {
 
   public static <T1, T2, T3, T4, T5> Tuple5<T1, T2, T3, T4, T5> T5(T1 val1, T2 val2, T3 val3, T4 val4, T5 val5) {
     return new Tuple5<>(val1, val2, val3, val4, val5);
+  }
+
+  public static <T1, T2, T3, T4, T5, T6> Tuple6<T1, T2, T3, T4, T5, T6> T6(T1 val1, T2 val2, T3 val3, T4 val4, T5 val5,
+                                                                           T6 val6) {
+    return new Tuple6<>(val1, val2, val3, val4, val5, val6);
+  }
+
+  public static <T1, T2, T3, T4, T5, T6, T7> Tuple7<T1, T2, T3, T4, T5, T6, T7> T7(T1 val1, T2 val2, T3 val3, T4 val4, T5 val5,
+                                                                           T6 val6, T7 val7) {
+    return new Tuple7<>(val1, val2, val3, val4, val5, val6, val7);
+  }
+
+  public static <T1, T2, T3, T4, T5, T6, T7, T8> Tuple8<T1, T2, T3, T4, T5, T6, T7, T8> T8(T1 val1, T2 val2, T3 val3, T4 val4, T5 val5,
+                                                                            T6 val6, T7 val7, T8 val8) {
+    return new Tuple8<>(val1, val2, val3, val4, val5, val6, val7, val8);
   }
 }
