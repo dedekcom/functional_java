@@ -47,7 +47,7 @@ public interface FunMatch {
     }
   }
 
-  static <T> T match(Object o, Function<Object, T> caseFun) {    return caseFun.apply(o);  }
+  static <T, R> R match(T o, Function<T, R> caseFun) {    return caseFun.apply(o);  }
 
   static Supplier<FunCase> Case(Object firstParam, Object... params) { return () -> new FunCase(firstParam, params); }
 
@@ -127,14 +127,14 @@ public interface FunMatch {
   }
 
   /*
-      matching case 2
+      generic matching
    */
   static FunDoIf doIf(Function<Object, Object> executeIfMatches, Object firstPattern, Object... pattern) {
     return new FunDoIf(executeIfMatches, firstPattern, pattern);
   }
 
-  static <R> R match(Object o, FunDoIf first, FunDoIf... cases) {
-    Optional<Object> res = first.getOpt(o);
+  static <R> R match(Object o, FunDoIf firstCase, FunDoIf... cases) {
+    Optional<Object> res = firstCase.getOpt(o);
     if (res.isPresent()) return (R)res.get();
     for (FunDoIf c: cases) {
       res = c.getOpt(o);
