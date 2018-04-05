@@ -201,16 +201,16 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
     FunList<R> res = new FunList<>();
     forEach(e -> match( e,
             Case (Optional.class, Any),
-                (o) -> res.add((R)((Optional) o).get()),
+                o -> res.add((R)((Optional) o).get()),
 
             Case (Collection.class),
-                (o) -> res.addAll((Collection)o),
+                o -> res.addAll((Collection)o),
 
             Case (Optional.empty()),
-                (o) -> {},
+                o -> {},
 
             Case (Any),
-                (o) -> res.add((R)o)
+                o -> res.add((R)o)
           )
     );
     return res;

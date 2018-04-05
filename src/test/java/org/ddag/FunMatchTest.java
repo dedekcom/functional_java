@@ -92,42 +92,42 @@ public class FunMatchTest {
     Performance.testPerform("pattern matching based on getIf", loops, () -> {
       new FunList<Object>(src).map(e ->
               match(e,
-                      getIf ( (i) -> i,                             Integer.class),
-                      getIf ( (i) -> -10,                           Optional.empty()),
-                      getIf ( (o) -> (((Optional) o).get()),        Optional.class, Integer.class),
-                      getIf ( (i) -> -3,                   FunList.class),
-                      getIf ( (l) -> -1,                            FunList.class),
-                      getIf ( (s) -> 100,                 "x"),
-                      getIf ( (sopt) -> -100,              Optional.class, "x"),
-                      getIf ( (a) -> 0,                             Any))
+                      getIf ( i -> i,                             Integer.class),
+                      getIf ( i -> -10,                           Optional.empty()),
+                      getIf ( o -> (((Optional) o).get()),        Optional.class, Integer.class),
+                      getIf ( i -> -3,                   FunList.class),
+                      getIf ( l -> -1,                            FunList.class),
+                      getIf ( s -> 100,                 "x"),
+                      getIf ( sopt -> -100,              Optional.class, "x"),
+                      getIf ( a -> 0,                             Any))
       );
     });
 
     Performance.testPerform("pattern matching based on runIf", loops, () -> {
       new FunList<Object>(src).forEach(e ->
               match(e,
-                      runIf ( (i) -> {},                             Integer.class),
-                      runIf ( (i) -> {},                           Optional.empty()),
-                      runIf ( (o) -> {},        Optional.class, Integer.class),
-                      runIf ( (i) -> {},                   FunList.class),
-                      runIf ( (l) -> {},                            FunList.class),
-                      runIf ( (s) -> {},                 "x"),
-                      runIf ( (sopt) -> {},              Optional.class, "x"),
-                      runIf ( (a) -> {},                             Any))
+                      runIf ( i -> {},                             Integer.class),
+                      runIf ( i -> {},                           Optional.empty()),
+                      runIf ( o -> {},        Optional.class, Integer.class),
+                      runIf ( i -> {},                   FunList.class),
+                      runIf ( l -> {},                            FunList.class),
+                      runIf ( s -> {},                 "x"),
+                      runIf ( sopt -> {},              Optional.class, "x"),
+                      runIf ( a -> {},                             Any))
       );
     });
 
     Performance.testPerform("pattern matching based on Case", loops, () -> {
       new FunList<Object>(src).map(e ->
               match(e,
-                      Case (Integer.class),                (o) -> (Integer)o,
-                      Case (Optional.empty()),             (o) -> -10,
-                      Case (Optional.class, Integer.class),(o) -> (Integer) (((Optional) o).get()),
-                      Case (1, FunList.class),    (o) -> -3,
-                      Case (FunList.class),                (o) -> -1,
-                      Case ("x"),                 (o) -> 100,
-                      Case (Optional.class, "x"), (o) -> -100,
-                      Case (Any),                          (o) -> 0
+                      Case (Integer.class),                 o -> (Integer)o,
+                      Case (Optional.empty()),              o -> -10,
+                      Case (Optional.class, Integer.class), o -> (Integer) (((Optional) o).get()),
+                      Case (1, FunList.class),    o -> -3,
+                      Case (FunList.class),                 o -> -1,
+                      Case ("x"),                 o -> 100,
+                      Case (Optional.class, "x"),  o -> -100,
+                      Case (Any),                           o -> 0
               )
       );
     });
