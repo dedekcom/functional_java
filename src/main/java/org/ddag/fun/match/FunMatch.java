@@ -49,7 +49,7 @@ public interface FunMatch {
 
   static <T> T match(Object o, Function<Object, T> caseFun) {    return caseFun.apply(o);  }
 
-  static FunCaseOf caseOf(Object firstParam, Object... params) { return new FunCaseOf(firstParam, params); }
+  static FunCaseOf Case(Object firstParam, Object... params) { return new FunCaseOf(firstParam, params); }
 
   static <T, R> R match(T o, FunCaseOf p1, Function<T, R> fun1, FunCaseOf p2, Function<T, R> fun2) {
     if (p1.get(o)) return fun1.apply(o);
@@ -136,116 +136,6 @@ public interface FunMatch {
       if (res.isPresent())
         return (R)res.get();
     }
-    throw new FunMatchException();
-  }
-
-
-  /*
-      matching case 3
-   */
-
-  static <T, R> FunCase<T, R> Case(Function<T, R> executeIfMatches, Object firstPat, Object... pattern) {
-    return new FunCase<>(executeIfMatches, firstPat, pattern);
-  }
-
-  static <T, R> R match(T o, FunCase<T, R> c1, FunCase<T, R> c2) {
-    Optional<R> res = c1.getOpt(o);
-    if (res.isPresent()) return res.get();
-    res = c2.getOpt(o);
-    if (res.isPresent()) return res.get();
-    throw new FunMatchException();
-  }
-
-  static <T, R> R match(T o, FunCase<T, R> c1, FunCase<T, R> c2, FunCase<T, R> c3) {
-    Optional<R> res = c1.getOpt(o);
-    if (res.isPresent()) return res.get();
-    res = c2.getOpt(o);
-    if (res.isPresent()) return res.get();
-    res = c3.getOpt(o);
-    if (res.isPresent()) return res.get();
-    throw new FunMatchException();
-  }
-
-  static <T, R> R match(T o, FunCase<T, R> c1, FunCase<T, R> c2, FunCase<T, R> c3, FunCase<T, R> c4) {
-    Optional<R> res = c1.getOpt(o);
-    if (res.isPresent()) return res.get();
-    res = c2.getOpt(o);
-    if (res.isPresent()) return res.get();
-    res = c3.getOpt(o);
-    if (res.isPresent()) return res.get();
-    res = c4.getOpt(o);
-    if (res.isPresent()) return res.get();
-    throw new FunMatchException();
-  }
-
-  static <T, R> R match(T o, FunCase<T, R> c1, FunCase<T, R> c2, FunCase<T, R> c3, FunCase<T, R> c4, FunCase<T, R> c5) {
-    Optional<R> res = c1.getOpt(o);
-    if (res.isPresent()) return res.get();
-    res = c2.getOpt(o);
-    if (res.isPresent()) return res.get();
-    res = c3.getOpt(o);
-    if (res.isPresent()) return res.get();
-    res = c4.getOpt(o);
-    if (res.isPresent()) return res.get();
-    res = c5.getOpt(o);
-    if (res.isPresent()) return res.get();
-    throw new FunMatchException();
-  }
-
-  static <T, R> R match(T o, FunCase<T, R> c1, FunCase<T, R> c2, FunCase<T, R> c3, FunCase<T, R> c4, FunCase<T, R> c5,
-                        FunCase<T, R> c6) {
-    Optional<R> res = c1.getOpt(o);
-    if (res.isPresent()) return res.get();
-    res = c2.getOpt(o);
-    if (res.isPresent()) return res.get();
-    res = c3.getOpt(o);
-    if (res.isPresent()) return res.get();
-    res = c4.getOpt(o);
-    if (res.isPresent()) return res.get();
-    res = c5.getOpt(o);
-    if (res.isPresent()) return res.get();
-    res = c6.getOpt(o);
-    if (res.isPresent()) return res.get();
-    throw new FunMatchException();
-  }
-
-  static <T, R> R match(T o, FunCase<T, R> c1, FunCase<T, R> c2, FunCase<T, R> c3, FunCase<T, R> c4, FunCase<T, R> c5,
-                        FunCase<T, R> c6, FunCase<T, R> c7) {
-    Optional<R> res = c1.getOpt(o);
-    if (res.isPresent()) return res.get();
-    res = c2.getOpt(o);
-    if (res.isPresent()) return res.get();
-    res = c3.getOpt(o);
-    if (res.isPresent()) return res.get();
-    res = c4.getOpt(o);
-    if (res.isPresent()) return res.get();
-    res = c5.getOpt(o);
-    if (res.isPresent()) return res.get();
-    res = c6.getOpt(o);
-    if (res.isPresent()) return res.get();
-    res = c7.getOpt(o);
-    if (res.isPresent()) return res.get();
-    throw new FunMatchException();
-  }
-
-  static <T, R> R match(T o, FunCase<T, R> c1, FunCase<T, R> c2, FunCase<T, R> c3, FunCase<T, R> c4, FunCase<T, R> c5,
-                        FunCase<T, R> c6, FunCase<T, R> c7, FunCase<T, R> c8) {
-    Optional<R> res = c1.getOpt(o);
-    if (res.isPresent()) return res.get();
-    res = c2.getOpt(o);
-    if (res.isPresent()) return res.get();
-    res = c3.getOpt(o);
-    if (res.isPresent()) return res.get();
-    res = c4.getOpt(o);
-    if (res.isPresent()) return res.get();
-    res = c5.getOpt(o);
-    if (res.isPresent()) return res.get();
-    res = c6.getOpt(o);
-    if (res.isPresent()) return res.get();
-    res = c7.getOpt(o);
-    if (res.isPresent()) return res.get();
-    res = c8.getOpt(o);
-    if (res.isPresent()) return res.get();
     throw new FunMatchException();
   }
 
