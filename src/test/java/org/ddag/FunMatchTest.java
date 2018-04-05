@@ -44,8 +44,8 @@ public class FunMatchTest {
 
     Double d = 0.0;
     int res = match(d,
-            Case(1.0), (o) -> d.intValue() + 1,
-            Case(2.0), (o) -> d.intValue() + 2,
+            Case(1.0), (o) -> o.intValue() + 1,
+            Case(2.0), (o) -> o.intValue() + 2,
             Case(Any), (o) -> 0
       );
     assertEquals(0, res);
