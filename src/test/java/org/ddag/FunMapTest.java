@@ -49,18 +49,18 @@ public class FunMapTest {
     FunMap<String, Object> m = FunMap.of(T2("k1", 1), T2("k2", 2));
 
     assertEquals(FunMatch.match(m, o -> {
-      if (FunMatch.caseObject(o, FunList.class)) return "list";
-      else if (FunMatch.caseObject(o, 5)) return "int";
-      else if (FunMatch.caseObject(o, FunMap.of())) return "empty map";
-      else if (FunMatch.caseObject(o, FunMap.class)) return "map";
+      if (FunMatch.matches(o, FunList.class)) return "list";
+      else if (FunMatch.matches(o, 5)) return "int";
+      else if (FunMatch.matches(o, FunMap.of())) return "empty map";
+      else if (FunMatch.matches(o, FunMap.class)) return "map";
       else return "unknown";
     }), "map");
 
     assertEquals(FunMatch.match(new FunMap<String, Object>(), o -> {
-      if (FunMatch.caseObject(o, FunList.class)) return "list";
-      else if (FunMatch.caseObject(o, 5)) return "int";
-      else if (FunMatch.caseObject(o, FunMap.of())) return "empty map";
-      else if (FunMatch.caseObject(o, FunMap.class)) return "map";
+      if (FunMatch.matches(o, FunList.class)) return "list";
+      else if (FunMatch.matches(o, 5)) return "int";
+      else if (FunMatch.matches(o, FunMap.of())) return "empty map";
+      else if (FunMatch.matches(o, FunMap.class)) return "map";
       else return "unknown";
     }), "empty map");
   }

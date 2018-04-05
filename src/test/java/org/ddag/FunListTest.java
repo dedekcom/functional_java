@@ -14,8 +14,8 @@ import org.ddag.fun.FunTuple;
 import org.ddag.fun.Tuple2;
 import org.junit.Test;
 import static org.ddag.fun.match.FunMatch.match;
-import static org.ddag.fun.match.FunMatch.caseObject;
-import static org.ddag.fun.match.FunMatch.caseOptOf;
+import static org.ddag.fun.match.FunMatch.matches;
+import static org.ddag.fun.match.FunMatch.matchesOptOf;
 
 import java.util.Optional;
 
@@ -56,24 +56,24 @@ public class FunListTest {
     ));
 
     assertEquals(l2.pushed("x").mPushed(Optional.of("x")).map( e -> {
-      if (caseObject(e, Integer.class))              return (Integer)e;
-      else if (caseObject(e, Optional.empty()))      return -10;
-      else if (caseOptOf(e, Integer.class))     return (Integer)(((Optional)e).get());
-      else if (caseObject(e, 1, FunList.class))         return -3;
-      else if (caseObject(e, FunList.class))         return -1;
-      else if (caseObject(e, "x"))          return 100;
-      else if (caseOptOf(e, "x"))         return -100;
+      if (matches(e, Integer.class))              return (Integer)e;
+      else if (matches(e, Optional.empty()))      return -10;
+      else if (matchesOptOf(e, Integer.class))     return (Integer)(((Optional)e).get());
+      else if (matches(e, 1, FunList.class))         return -3;
+      else if (matches(e, FunList.class))         return -1;
+      else if (matches(e, "x"))          return 100;
+      else if (matchesOptOf(e, "x"))         return -100;
       else return 0;
     }), FunList.of(-100, 100, 1, 2, 5, -10, -3, -1) );
 
     assertEquals(l2.pushed("x").mPushed(Optional.of("x")).map( e -> {
-      if (caseObject(e, Integer.class))              return (Integer)e;
-      else if (caseObject(e, Optional.empty()))      return -10;
-      else if (caseObject(e, Optional.class, Integer.class))     return (Integer)(((Optional)e).get());
-      else if (caseObject(e, 1, FunList.class))         return -3;
-      else if (caseObject(e, FunList.class))         return -1;
-      else if (caseObject(e, "x"))          return 100;
-      else if (caseObject(e, Optional.class, "x"))      return -100;
+      if (matches(e, Integer.class))              return (Integer)e;
+      else if (matches(e, Optional.empty()))      return -10;
+      else if (matches(e, Optional.class, Integer.class))     return (Integer)(((Optional)e).get());
+      else if (matches(e, 1, FunList.class))         return -3;
+      else if (matches(e, FunList.class))         return -1;
+      else if (matches(e, "x"))          return 100;
+      else if (matches(e, Optional.class, "x"))      return -100;
       else return 0;
     }), FunList.of(-100, 100, 1, 2, 5, -10, -3, -1) );
 
@@ -104,7 +104,7 @@ public class FunListTest {
     assertTrue (sl.matches("a", "b", FunList.class));
     assertTrue (!sl.matches("a", "b", Nil()));
 
-    assertTrue(caseObject(Optional.empty(), Optional.empty()));
+    assertTrue(matches(Optional.empty(), Optional.empty()));
 
     assertTrue (FunList.of(1).tail().matches(Nil()));
 
@@ -118,24 +118,24 @@ public class FunListTest {
 
     FunList<String> el = new FunList<>();
     String s = match(el, o -> {
-      if ( caseObject(o, "x", Nil())) return "h::Nil";
-      else if ( caseObject(o, "x", FunList.class)) return "h::tail";
-      else if ( caseObject(o, Nil())) return "Nil";
+      if ( matches(o, "x", Nil())) return "h::Nil";
+      else if ( matches(o, "x", FunList.class)) return "h::tail";
+      else if ( matches(o, Nil())) return "Nil";
       else return "unknown";
       } );
     assertEquals(s, "Nil");
 
     String s2 = match(FunList.of("x"), o -> {
-      if ( caseObject(o, Nil())) return "Nil";
-      else if ( caseObject(o, "x", FunList.class)) return "h::tail";
+      if ( matches(o, Nil())) return "Nil";
+      else if ( matches(o, "x", FunList.class)) return "h::tail";
       else return "unknown";
     } );
     assertEquals(s2, "h::tail");
 
     String s3 = match( FunList.of("x", 2), o -> {
-      if ( caseObject(o, "x", Nil())) return "h::Nil";
-      else if ( caseObject(o, "x", FunList.class)) return "h::tail";
-      else if ( caseObject(o, Nil())) return "Nil";
+      if ( matches(o, "x", Nil())) return "h::Nil";
+      else if ( matches(o, "x", FunList.class)) return "h::tail";
+      else if ( matches(o, Nil())) return "Nil";
       else return "unknown";
     } );
     assertEquals(s3, "h::tail");

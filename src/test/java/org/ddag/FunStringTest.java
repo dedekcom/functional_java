@@ -75,6 +75,6 @@ public class FunStringTest {
     assertEquals(new FunString("(1, 5)"), new Tuple2<>(1, "5").toString());
 
     assertTrue( FunMatch.match(new FunString("[1, 2, 3]"),
-            o -> FunMatch.caseObject(o, FunList.of(1,2,3).toString())) );
+            o -> FunMatch.matches(o, FunList.of(1,2,3).toString())) );
   }
 }

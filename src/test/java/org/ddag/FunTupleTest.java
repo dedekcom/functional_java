@@ -7,7 +7,7 @@ package org.ddag;
 
 import org.ddag.fun.FunList;
 import static org.ddag.fun.match.FunMatch.match;
-import static org.ddag.fun.match.FunMatch.caseObject;
+import static org.ddag.fun.match.FunMatch.matches;
 import org.ddag.fun.FunObject;
 import org.ddag.fun.FunString;
 import org.ddag.fun.FunTuple;
@@ -51,21 +51,21 @@ public class FunTupleTest {
     assertTrue(! list.head().matches(String.class));
 
     assertEquals(match(new Tuple2<>(1, "a"), o -> {
-      if (caseObject(o, FunTuple.class, 1, "a")) {
+      if (matches(o, FunTuple.class, 1, "a")) {
         return "t2 1-a";
-      } else if (caseObject(o, Tuple1.class, Integer.class)) {
+      } else if (matches(o, Tuple1.class, Integer.class)) {
         return "single int";
-      } else if (caseObject(o, Tuple2.class)) {
+      } else if (matches(o, Tuple2.class)) {
         return "other tuple2";
       } else return "unknown";
     }), "t2 1-a");
 
     assertEquals(match(new Tuple2<>(1, "a"), o -> {
-      if (caseObject(o, FunTuple.class, 1, "b")) {
+      if (matches(o, FunTuple.class, 1, "b")) {
         return "t2 1-a";
-      } else if (caseObject(o, Tuple1.class, Integer.class)) {
+      } else if (matches(o, Tuple1.class, Integer.class)) {
         return "single int";
-      } else if (caseObject(o, Tuple2.class)) {
+      } else if (matches(o, Tuple2.class)) {
         return "other tuple2";
       } else return "unknown";
     }), "other tuple2");

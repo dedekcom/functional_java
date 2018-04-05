@@ -210,29 +210,31 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
   public boolean isNil()            { return this.size() == 0; }
   public boolean nonEmpty()         { return this.size() != 0; }
 
-  public boolean matches(Object... params) {
-    if (params.length == 1) {
-      return ((params[0] instanceof Class) && ((Class)params[0]).isInstance(this)) || this.equals(params[0]);
-    } else if (params.length > 1) {
+  public boolean matches(Object first, Object... params) {
+    if (params.length == 0) {
+      return ((first instanceof Class) && ((Class)first).isInstance(this)) || this.equals(first);
+    } else {
       Iterator it = this.iterator();
       int last = params.length - 1;
-      for (int i=0; i<last; i++) {
+      Object testOb = first;
+      int i = 0;
+      do {
         if (i >= this.size())
           return false;   // more elements in pattern than in a list
         Object n = it.next();
-        if (params[i] instanceof Class) {
-          if (!((Class)params[i]).isInstance(n))
+        if (testOb instanceof Class) {
+          if (!((Class)testOb).isInstance(n))
             return false;
-        }  else if (!n.equals(params[i]))
+        }  else if (!n.equals(testOb))
           return false;
-      }
+        testOb = params[i];
+        i++;
+      } while(i<=last);
       if (params[last].equals(Nil()))  {   // test Nil on the last position of the pattern
         return !it.hasNext();
       } else {    // test tail
         return (params[last] instanceof Class && ((Class) params[last]).isInstance(this));
       }
-    } else {
-      return false;
     }
   }
 

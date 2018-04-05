@@ -6,8 +6,9 @@
 package org.ddag;
 
 import static org.ddag.fun.FunList.Nil;
-import static org.ddag.fun.match.FunMatch.caseObject;
-import static org.ddag.fun.match.FunMatch.caseOptOf;
+import static org.ddag.fun.match.FunMatch.matches;
+import static org.ddag.fun.match.FunMatch.matchesOptOf;
+import static org.ddag.fun.match.FunMatch.doIf;
 import static org.ddag.fun.match.FunMatch.match;
 import static org.ddag.fun.match.FunMatch.caseOf;
 import static org.ddag.fun.match.FunMatch.Case;
@@ -26,38 +27,36 @@ public class FunMatchTest {
 
   @Test
   public void testMatch() {
-    Integer o = 5;
-    String s = match(
-            caseOf(o, Integer.class), () -> "is int",
-            caseOf(o, Any), () -> "any"
+    String s = match(5,
+            caseOf(Integer.class), (o) -> "is int",
+            caseOf(Any), (o) -> "any"
     );
     assertEquals (s, "is int");
 
     FunList<Integer> list = FunList.of(1, 2, 3, 4, 5);
     assertEquals("head::tail",
-            match(
-                    caseOf(list, 5), () -> "5",
-                    caseOf(list, FunString.class), () -> "fun string",
-                    caseOf(list, 1, 2, Nil()), () -> "1::2::Nil",
-                    caseOf(list, Any, FunList.class), () -> "head::tail"
+            match( list,
+                    caseOf(5), (o) -> "5",
+                    caseOf(FunString.class), (o) -> "fun string",
+                    caseOf(1, 2, Nil()), (o) -> "1::2::Nil",
+                    caseOf(Any, FunList.class), (o) -> "head::tail"
             )
     );
 
     Double d = 0.0;
-    int res = match(
-            caseOf(d, 1.0), () -> d.intValue() + 1,
-            caseOf(d, 2.0), () -> d.intValue() + 2,
-            caseOf(d, Any), () -> 0
+    int res = match(d,
+            caseOf(1.0), (o) -> d.intValue() + 1,
+            caseOf(2.0), (o) -> d.intValue() + 2,
+            caseOf(Any), (o) -> 0
       );
     assertEquals(0, res);
   }
 
   @Test (expected = FunMatchException.class)
   public void testMatchException() {
-    Double o = 0.0;
-    match(
-            caseOf(o, 1.0), () -> o.intValue() + 1,
-            caseOf(o, 2.0), () -> o.intValue() + 2
+    match(0.0,
+            caseOf(1.0), (o) -> o.intValue() + 1,
+            caseOf(2.0), (o) -> o.intValue() + 2
     );
   }
 
@@ -84,6 +83,13 @@ public class FunMatchTest {
             Case((dd) -> 0, Any)
       );
     assertEquals(0, res);
+
+    res = match( 0.0,
+            doIf((dd) -> (double)dd + 1, 1.0),
+            doIf((dd) -> (double)dd + 2, 2.0),
+            doIf((dd) -> 0, Any)
+    );
+    assertEquals(0, res);
   }
 
   @Test (expected = FunMatchException.class)
@@ -101,30 +107,15 @@ public class FunMatchTest {
     int loops = 10;
     Performance.testPerform("pattern matching based on if", loops, () -> {
       new FunList<Object>(src).map(e -> {
-        if (caseObject(e, Integer.class)) return (Integer) e;
-        else if (caseObject(e, Optional.empty())) return -10;
-        else if (caseOptOf(e, Integer.class)) return (Integer) (((Optional) e).get());
-        else if (caseObject(e, 1, FunList.class)) return -3;
-        else if (caseObject(e, FunList.class)) return -1;
-        else if (caseObject(e, "x")) return 100;
-        else if (caseOptOf(e, "x")) return -100;
+        if (matches(e, Integer.class)) return (Integer) e;
+        else if (matches(e, Optional.empty())) return -10;
+        else if (matchesOptOf(e, Integer.class)) return (Integer) (((Optional) e).get());
+        else if (matches(e, 1, FunList.class)) return -3;
+        else if (matches(e, FunList.class)) return -1;
+        else if (matches(e, "x")) return 100;
+        else if (matchesOptOf(e, "x")) return -100;
         else return 0;
       });
-    });
-
-    Performance.testPerform("pattern matching based on caseOf", loops, () -> {
-      new FunList<Object>(src).map(e ->
-        match(
-          caseOf(e, Integer.class),                () -> (Integer)e,
-          caseOf(e, Optional.empty()),             () -> -10,
-          caseOf(e, Optional.class, Integer.class),() -> (Integer) (((Optional) e).get()),
-          caseOf(e, 1, FunList.class),    () -> -3,
-          caseOf(e, FunList.class),                () -> -1,
-          caseOf(e, "x"),                 () -> 100,
-          caseOf(e, Optional.class, "x"), () -> -100,
-          caseOf(e, Any),                          () -> 0
-        )
-      );
     });
 
     Performance.testPerform("pattern matching based on Case", loops, () -> {
@@ -133,12 +124,41 @@ public class FunMatchTest {
           Case( (i) -> i,                             Integer.class),
           Case( (i) -> -10,                           Optional.empty()),
           Case( (o) -> (((Optional) o).get()),        Optional.class, Integer.class),
-          Case( (i) -> -3,                   1, FunList.class),
+          Case( (i) -> -3,                   FunList.class),
           Case( (l) -> -1,                            FunList.class),
           Case( (s) -> 100,                 "x"),
           Case( (sopt) -> -100,              Optional.class, "x"),
           Case( (a) -> 0,                             Any))
         );
+    });
+
+    Performance.testPerform("pattern matching based on match-Object", loops, () -> {
+      new FunList<Object>(src).map(e ->
+              match(e,
+                      doIf( (i) -> i,                             Integer.class),
+                      doIf( (i) -> -10,                           Optional.empty()),
+                      doIf( (o) -> (((Optional) o).get()),        Optional.class, Integer.class),
+                      doIf( (i) -> -3,                   FunList.class),
+                      doIf( (l) -> -1,                            FunList.class),
+                      doIf( (s) -> 100,                 "x"),
+                      doIf( (sopt) -> -100,              Optional.class, "x"),
+                      doIf( (a) -> 0,                             Any))
+      );
+    });
+
+    Performance.testPerform("pattern matching based on caseOf", loops, () -> {
+      new FunList<Object>(src).map(e ->
+              match(e,
+                      caseOf(Integer.class),                (o) -> (Integer)o,
+                      caseOf(Optional.empty()),             (o) -> -10,
+                      caseOf(Optional.class, Integer.class),(o) -> (Integer) (((Optional) o).get()),
+                      caseOf(1, FunList.class),    (o) -> -3,
+                      caseOf(FunList.class),                (o) -> -1,
+                      caseOf("x"),                 (o) -> 100,
+                      caseOf(Optional.class, "x"), (o) -> -100,
+                      caseOf(Any),                          (o) -> 0
+              )
+      );
     });
   }
 

@@ -88,10 +88,10 @@ public class FunString implements FunObject {
     return list;
   }
 
-  public boolean matches(Object... params) {
-    return params.length == 1 && (
-            ((params[0] instanceof Class) && ((Class)params[0]).isInstance(this)) ||
-                    this.equals(params[0])
+  public boolean matches(Object first, Object... params) {
+    return params.length == 0 && (
+            ((first instanceof Class) && ((Class)first).isInstance(this)) ||
+                    this.equals(first)
     );
   }
 

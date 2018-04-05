@@ -21,25 +21,24 @@ abstract public class FunTuple implements Serializable, FunObject {
 
   public FunList<Object> toList() { return new FunList<>(Arrays.asList(values)); }
 
-  public boolean matches(Object... params) {
-    if (params.length > 0 && (params[0] instanceof Class) && ((Class)params[0]).isInstance(this)) {
-      if (params.length == 1)
+  public boolean matches(Object first, Object... params) {
+    if ((first instanceof Class) && ((Class)first).isInstance(this)) {
+      if (params.length == 0)
         return true;    // match only FunObject type
-      int last = params.length - 1;
-      if (this.size() != last)
+      if (this.size() != params.length)
         return false;   // wrong tuple size
-      for (int i=1; i<=last; i++) {
+      for (int i=0; i<params.length; i++) {
         if (params[i] instanceof Class )  {
-          if (!((Class)params[i]).isInstance(this._id(i-1)))
+          if (!((Class)params[i]).isInstance(this._id(i)))
             return false;
         } else {
-          if (!this._id(i-1).equals(params[i]))
+          if (!this._id(i).equals(params[i]))
             return false;
         }
       }
       return true;
     } else {
-      return params.length == 1 && this.equals(params[0]);
+      return params.length == 0 && this.equals(first);
     }
   }
 

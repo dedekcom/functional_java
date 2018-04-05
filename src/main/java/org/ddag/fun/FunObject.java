@@ -10,6 +10,6 @@ public interface FunObject {
 
   void print();
 
-  boolean matches(Object... params);
+  boolean matches(Object first, Object... rest);
 
 }
