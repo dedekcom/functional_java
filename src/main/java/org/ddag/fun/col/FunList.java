@@ -207,7 +207,7 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
 
   public <R> FunList<R> flatten() {
     return foldLeft(new FunList<R>(), (acc, e) -> match( e,
-            Case(Optional.class, Any), o -> acc.mAdded((R) ((Optional) o).get()),
+            Case(Optional.class, Any), o -> acc.mAdded(((Optional<R>) o).get()),
             Case(Collection.class), o -> acc.mAddedCol((Collection<? extends R>) o),
             Case(Optional.empty()), o -> acc,
             Case(Any), o -> acc.mAdded((R) o)
