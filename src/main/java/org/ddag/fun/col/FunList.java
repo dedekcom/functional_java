@@ -40,6 +40,31 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
 
   public FunList(Collection<? extends T> c) {    super(c);  }
 
+  /*
+    Mutable methods that change current list
+   */
+  public FunList<T> mTail() {   this.removeFirst();    return this;  }
+
+  public FunList<T> mPushed(T el) {    this.push(el);    return this;  }
+
+  public FunList<T> mAdded(T el) {    this.add(el);    return this;  }
+
+  public FunList<T> mRemoved(T el) {    this.remove(el);    return this;  }
+
+  public FunList<T> mReversed() {    Collections.reverse(this);    return this;  }
+
+  // more safe mutable way to get head::tail in O(1)
+  public Tuple2<T, FunList<T>> mHeadTail() { return new Tuple2<>(this.head(), this.mTail()); }
+
+  public FunList<T> mSortWith(BiFunction<T, T, Integer> compare)  {    this.sort(compare::apply);    return this;  }
+
+  public FunList<T> mAddedCol(Collection<? extends T> col) {    this.addAll(col);    return this;  }
+
+
+  /*
+    Immutable methods that create new lists
+   */
+
   public <R> FunList<R> map(Function<? super T, R> fun) {
     FunList<R> r = new FunList<>();
     for (T e: this) {
@@ -91,44 +116,15 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
     return r;
   }
 
-  public Optional<T> find(Predicate<? super T> predicate) {
-    for (T e: this) {
-      if (predicate.test(e))
-        return Optional.of(e);
-    }
-    return Optional.empty();
-  }
-
-  public boolean exists(Predicate<? super T> predicate) { return this.find(predicate).isPresent(); }
-
-    // more safe mutable way to get head::tail in O(1)
-  public Tuple2<T, FunList<T>> mHeadTail() { return new Tuple2<>(this.head(), this.mTail()); }
-
-  public T head()     { return this.getFirst(); }
-
-  public Optional<T>  headOpt() { return this.isEmpty() ? Optional.empty() : Optional.of(this.getFirst()); }
-
   public FunList<T> tail() {    return new FunList<>(this).mTail();  }
 
   public FunList<T> distinct() { return foldLeft(new FunList<>(), (list, e) -> list.contains(e) ? list : list.mAdded(e) ); }
-
-  public int count(Predicate<? super T> predicate) { return foldLeft(0, (sum, el) -> predicate.test(el) ? sum + 1 : sum);  }
-
-  public FunList<T> mTail() {   this.removeFirst();    return this;  }
-
-  public void print() {    System.out.println(this.toString());  }
 
   public FunList<T> pushed(T el) {    return new FunList<>(this).mPushed(el);  }
 
   public FunList<T> added(T el) {    return new FunList<>(this).mAdded(el);  }
 
   public FunList<T> removed(T el) {    return new FunList<>(this).mRemoved(el);  }
-
-  public FunList<T> mPushed(T el) {    this.push(el);    return this;  }
-
-  public FunList<T> mAdded(T el) {    this.add(el);    return this;  }
-
-  public FunList<T> mRemoved(T el) {    this.remove(el);    return this;  }
 
   public FunList<T> take(int n)     {    return this.slice(0, n);  }
 
@@ -140,30 +136,35 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
 
   public FunList<T> reversed() {    return foldLeft(new FunList<>(), (list, el) -> list.mPushed(el));  }
 
-  public FunList<T> mReversed() {    Collections.reverse(this);    return this;  }
-
   public FunList<T> duplicate() { return new FunList<>(this); }
 
-  public <R> R foldLeft(R initial, BiFunction<R,? super T, R> fun) {
-    for (T el: this)  {
-      initial = fun.apply(initial, el);
-    }
-    return initial;
-  }
-
-  public Number sum() {    return this.foldLeft(Fumeric.zero(), (sum, el) -> Fumeric.sum(sum, ((Number)el)));  }
-
-  public double avg() {    return Fumeric.div(this.sum(), Double.valueOf(this.size())).doubleValue();  }
-
   public FunList<T> sortWith(BiFunction<T, T, Integer> compare)  {    return new FunList<>(this).mSortWith(compare);  }
-
-  public FunList<T> mSortWith(BiFunction<T, T, Integer> compare)  {    this.sort(compare::apply);    return this;  }
 
   public <T extends Comparable<? super T>> FunList<T> sorted() {
     FunList<T> list = new FunList<>();
     this.forEach(e -> list.add((T)e));
     list.sort(Comparator.naturalOrder());
     return list;
+  }
+
+  public FunList<Tuple2<T, Integer>> zipWithIndex() { return this.mapWithIndex(Tuple2::new); }
+
+  public <U> FunList<Tuple2<T, U>> zip(List<U> list) {
+    return foldLeft( T2(new FunList<Tuple2<T, U>>(), list.iterator()),
+            (acc, el) -> acc._2().hasNext() ? T2(acc._1().mAdded(T2(el, acc._2().next())), acc._2()) : acc
+    )._1();
+  }
+
+  public FunList<T> addedCol(Collection<? extends T> list) {    return new FunList<>(this).mAddedCol(list);  }
+
+  public <R> FunList<R> flatten() {
+    return foldLeft(new FunList<R>(), (acc, e) -> match( e,
+            Case(Optional.class, Any), o -> acc.mAdded(((Optional<R>) o).get()),
+            Case(Collection.class), o -> acc.mAddedCol((Collection<? extends R>) o),
+            Case(Optional.empty()), o -> acc,
+            Case(Any), o -> acc.mAdded((R) o)
+            )
+    );
   }
 
   public Tuple2<FunList<T>,FunList<T>> partition(Predicate<? super T> predicate) {
@@ -181,19 +182,39 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
     return new Tuple2<>(r1, r2);
   }
 
-  public FunList<Tuple2<T, Integer>> zipWithIndex() { return this.mapWithIndex(Tuple2::new); }
-
-  public <U> FunList<Tuple2<T, U>> zip(List<U> list) {
-    return foldLeft( T2(new FunList<Tuple2<T, U>>(), list.iterator()),
-            (acc, el) -> acc._2().hasNext() ? T2(acc._1().mAdded(T2(el, acc._2().next())), acc._2()) : acc
-            )._1();
-  }
-
   public Tuple2<FunList<T>,FunList<T>> splitAt(int n) { return this.partition((e, i) -> i < n); }
 
-  public FunList<T> addedCol(Collection<? extends T> list) {    return new FunList<>(this).mAddedCol(list);  }
 
-  public FunList<T> mAddedCol(Collection<? extends T> col) {    this.addAll(col);    return this;  }
+  /*
+    Methods that return or compute values from list
+   */
+
+  public <R> R foldLeft(R initial, BiFunction<R,? super T, R> fun) {
+    for (T el: this)  {
+      initial = fun.apply(initial, el);
+    }
+    return initial;
+  }
+
+  public Optional<T> find(Predicate<? super T> predicate) {
+    for (T e: this) {
+      if (predicate.test(e))
+        return Optional.of(e);
+    }
+    return Optional.empty();
+  }
+
+  public boolean exists(Predicate<? super T> predicate) { return this.find(predicate).isPresent(); }
+
+  public T head()     { return this.getFirst(); }
+
+  public Optional<T>  headOpt() { return this.isEmpty() ? Optional.empty() : Optional.of(this.getFirst()); }
+
+  public int count(Predicate<? super T> predicate) { return foldLeft(0, (sum, el) -> predicate.test(el) ? sum + 1 : sum);  }
+
+  public Number sum() {    return this.foldLeft(Fumeric.zero(), (sum, el) -> Fumeric.sum(sum, ((Number)el)));  }
+
+  public double avg() {    return Fumeric.div(this.sum(), Double.valueOf(this.size())).doubleValue();  }
 
   public FunString mkFunString(String separator) {  return new FunString( mkString(separator) );  }
 
@@ -201,21 +222,18 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
     return foldLeft( new StringBuilder(""), (acc, el) -> el == getLast() ? acc.append(el) : acc.append(el).append(separator)).toString();
   }
 
-  public <R> FunList<R> flatten() {
-    return foldLeft(new FunList<R>(), (acc, e) -> match( e,
-            Case(Optional.class, Any), o -> acc.mAdded(((Optional<R>) o).get()),
-            Case(Collection.class), o -> acc.mAddedCol((Collection<? extends R>) o),
-            Case(Optional.empty()), o -> acc,
-            Case(Any), o -> acc.mAdded((R) o)
-            )
-    );
-  }
-
   public boolean isHeadTail()       { return this.size() > 0;  }
   public boolean isHeadNil()        { return this.size() == 1; }
   public boolean isHeadTailNotNil() { return this.size() > 1; }
   public boolean isNil()            { return this.size() == 0; }
   public boolean nonEmpty()         { return this.size() != 0; }
+
+
+  /*
+    Implementation of interfaces and static methods
+   */
+
+  public void print() {    System.out.println(this.toString());  }
 
   public boolean matches(Object first, Object... params) {
     if (params.length == 0) {
