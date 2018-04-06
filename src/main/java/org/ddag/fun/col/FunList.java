@@ -120,6 +120,11 @@ public class FunList<T> extends LinkedList<T> implements FunObject, FunMatching 
     return r;
   }
 
+  // creates unmodifiable copy of the list - to use only within recursive algorithms
+  public FunSharedList<T> toSharedList()  { return new FunSharedList<T>(this);  }
+
+  // don't use within recursive algorithms because it creates new collections every time
+  // use FunSharedList instead
   public FunList<T> tail() {    return new FunList<>(this).mTail();  }
 
   public FunList<T> distinct() { return foldLeft(new FunList<>(), (list, e) -> list.contains(e) ? list : list.mAdded(e) ); }
@@ -194,8 +199,6 @@ public class FunList<T> extends LinkedList<T> implements FunObject, FunMatching 
   /*
     Methods that return or compute values from list
    */
-
-  public FunListIterated<T> getIterated()  { return new FunListIterated<T>(this);  }
 
   public <R> R foldLeft(R initial, BiFunction<R,? super T, R> fun) {
     for (T el: this)  {

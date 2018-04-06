@@ -10,7 +10,7 @@ import org.ddag.fun.Fumeric;
 import org.ddag.fun.col.FunList;
 import static org.ddag.fun.col.FunList.Nil;
 import org.ddag.fun.FunString;
-import org.ddag.fun.col.FunListIterated;
+import org.ddag.fun.col.FunSharedList;
 import org.ddag.fun.tuple.FunTuple;
 import static org.ddag.fun.tuple.FunTuple.T2;
 import org.ddag.fun.tuple.Tuple2;
@@ -177,12 +177,12 @@ public class FunListTest {
   public void testFunSubList() {
     FunList<Integer> list = FunList.of(1, 2, 3, 4, 5);
 
-    assertEquals(list.head(), list.getIterated().head());
-    assertEquals(list.tail(), list.getIterated().tail().toList());
-    assertEquals(list.sum(), sum(list.getIterated(), 0));
+    assertEquals(list.head(), list.toSharedList().head());
+    assertEquals(list.tail(), list.toSharedList().tail().toList());
+    assertEquals(list.sum(), sum(list.toSharedList(), 0));
   }
 
-  private int sum(FunListIterated<Integer> list, int sum) {
+  private int sum(FunSharedList<Integer> list, int sum) {
     return list.isEmpty() ? sum : sum(list.tail(), sum + list.head());
   }
 }
