@@ -34,7 +34,7 @@ import java.util.function.Predicate;
   list.filter(e -> e > 0).mPushed(10).mReversed();
  */
 public class FunList<T> extends LinkedList<T> implements FunObject {
-  public static FunList Nil() { return new FunList(); }
+  public static List Nil = Collections.emptyList();
 
   public FunList() { super(); }
 
@@ -105,9 +105,7 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
 
   public Optional<T>  headOpt() { return this.isEmpty() ? Optional.empty() : Optional.of(this.getFirst()); }
 
-  public FunList<T> tail() {
-    return new FunList<>(this).mTail();
-  }
+  public FunList<T> tail() {    return new FunList<>(this).mTail();  }
 
   public FunList<T> distinct() { return foldLeft(new FunList<>(), (list, e) -> list.contains(e) ? list : list.mAdded(e) ); }
 
@@ -241,7 +239,7 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
         testOb = params[i];
         i++;
       } while(i<=last);
-      if (params[last].equals(Nil()))  {   // test Nil on the last position of the pattern
+      if (params[last].equals(Nil))  {   // test Nil on the last position of the pattern
         return !it.hasNext();
       } else {    // test tail
         return (params[last] instanceof Class && ((Class) params[last]).isInstance(this));

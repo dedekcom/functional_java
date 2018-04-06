@@ -38,7 +38,7 @@ public class FunMatchTest {
             match( list,
                     Case(5), (o) -> "5",
                     Case(FunString.class), (o) -> "fun string",
-                    Case(1, 2, Nil()), (o) -> "1::2::Nil",
+                    Case(1, 2, Nil), (o) -> "1::2::Nil",
                     Case(Any, FunList.class), (o) -> "head::tail"
             )
     );
