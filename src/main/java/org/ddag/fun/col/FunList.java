@@ -46,15 +46,15 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
   /*
     Mutable methods that change current list
    */
-  public FunList<T> mTail() {   this.removeFirst();    return this;  }
+  public FunList<T> mTail()           {    this.removeFirst();    return this;  }
 
-  public FunList<T> mPushed(T el) {    this.push(el);    return this;  }
+  public FunList<T> mPushed(T el)     {    this.push(el);    return this;  }
 
-  public FunList<T> mAdded(T el) {    this.add(el);    return this;  }
+  public FunList<T> mAdded(T el)      {    this.add(el);    return this;  }
 
-  public FunList<T> mRemoved(T el) {    this.remove(el);    return this;  }
+  public FunList<T> mRemoved(T el)    {    this.remove(el);    return this;  }
 
-  public FunList<T> mReversed() {    Collections.reverse(this);    return this;  }
+  public FunList<T> mReversed()       {    Collections.reverse(this);    return this;  }
 
   // more safe mutable way to get head::tail in O(1)
   public Tuple2<T, FunList<T>> mHeadTail() { return new Tuple2<>(this.head(), this.mTail()); }
@@ -193,6 +193,8 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
   /*
     Methods that return or compute values from list
    */
+
+  public FunListIterated<T> getIterated()  { return new FunListIterated<T>(this);  }
 
   public <R> R foldLeft(R initial, BiFunction<R,? super T, R> fun) {
     for (T el: this)  {
