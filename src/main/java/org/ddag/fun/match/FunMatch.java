@@ -6,8 +6,6 @@
 
 package org.ddag.fun.match;
 
-import org.ddag.fun.FunObject;
-
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -39,8 +37,8 @@ public interface FunMatch {
       else if ( matches(e, "x") )                   return "string: x";
    */
   static boolean matches(Object o, Object first, Object... params) {
-    if (FunObject.class.isInstance(o))  {
-      return ((FunObject)o).matches(first, params);
+    if (FunMatching.class.isInstance(o))  {
+      return ((FunMatching)o).matches(first, params);
     } else if (params.length == 0) {
       return (first instanceof Class) ? ((Class) first).isInstance(o) : o.equals(first);
     } else {

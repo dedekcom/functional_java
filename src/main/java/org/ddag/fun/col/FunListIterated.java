@@ -17,9 +17,7 @@ public class FunListIterated<T> {
     this.iterator = iterator;
   }
 
-  FunListIterated(FunList<T> list) {
-    this(list, list.listIterator());
-  }
+  FunListIterated(FunList<T> list) {    this(list, list.listIterator());  }
 
   public boolean isEmpty() { return !iterator.hasNext(); }
 

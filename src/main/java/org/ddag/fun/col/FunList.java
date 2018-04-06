@@ -10,6 +10,7 @@ import org.ddag.fun.FunObject;
 import org.ddag.fun.FunString;
 import static org.ddag.fun.match.FunMatch.match;
 import static org.ddag.fun.match.FunMatch.Case;
+import org.ddag.fun.match.FunMatching;
 import org.ddag.fun.tuple.Tuple2;
 import static org.ddag.fun.tuple.FunTuple.T2;
 
@@ -34,7 +35,7 @@ import java.util.function.Predicate;
   list.filter(e -> e > 0).mPushed(10).mReversed();
  */
 @SuppressWarnings("WeakerAccess")
-public class FunList<T> extends LinkedList<T> implements FunObject {
+public class FunList<T> extends LinkedList<T> implements FunObject, FunMatching {
   public static List Nil = Collections.emptyList();
 
   public FunList() { super(); }

@@ -6,12 +6,13 @@
 package org.ddag.fun;
 
 import org.ddag.fun.col.FunList;
+import org.ddag.fun.match.FunMatching;
 
 import java.util.Arrays;
 import java.util.Optional;
 
 @SuppressWarnings({"WeakerAccess", "unused"})
-public class FunString implements FunObject {
+public class FunString implements FunObject, FunMatching {
   private String str;
 
   public FunString()           {this.set(""); }

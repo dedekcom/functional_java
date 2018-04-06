@@ -6,6 +6,7 @@
 package org.ddag.fun.col;
 
 import org.ddag.fun.FunObject;
+import org.ddag.fun.match.FunMatching;
 import org.ddag.fun.tuple.Tuple2;
 
 import java.util.Arrays;
@@ -20,7 +21,7 @@ import java.util.function.BiFunction;
  */
 
 @SuppressWarnings("WeakerAccess")
-public class FunMap<K, V> extends LinkedHashMap<K, V> implements FunObject {
+public class FunMap<K, V> extends LinkedHashMap<K, V> implements FunObject, FunMatching {
   private final static FunMap emptyMap = new FunMap();
 
   public FunMap() { super(); }

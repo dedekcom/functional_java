@@ -7,12 +7,12 @@ package org.ddag.fun.tuple;
 
 import org.ddag.fun.FunObject;
 import org.ddag.fun.col.FunList;
+import org.ddag.fun.match.FunMatching;
 
-import java.io.Serializable;
 import java.util.Arrays;
 
 @SuppressWarnings("WeakerAccess")
-abstract public class FunTuple implements Serializable, FunObject {
+abstract public class FunTuple implements FunObject, FunMatching {
   protected Object[] values;
 
   protected void setSize(int size) { values = new Object[size]; }
