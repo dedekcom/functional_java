@@ -11,6 +11,9 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+/*
+  Set of static methods for pattern matching
+ */
 public interface FunMatch {
 
   static boolean matchesOptOf(Object o, Object value) {

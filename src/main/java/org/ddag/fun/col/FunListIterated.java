@@ -5,39 +5,39 @@
  */
 package org.ddag.fun.col;
 
-
-import java.util.ListIterator;
-
+@SuppressWarnings("unchecked")
 public class FunListIterated<T> {
-  private ListIterator<T> iterator;
-  private FunList<T> list;
+  private Object[] listCopy;
+  private int idHead;
 
-  private FunListIterated(FunList<T> list, ListIterator<T> iterator) {
-    this.list = list;
-    this.iterator = iterator;
+  FunListIterated(FunList<T> list) {
+    listCopy = list.toArray();
+    idHead = 0;
   }
 
-  FunListIterated(FunList<T> list) {    this(list, list.listIterator());  }
+  private FunListIterated(Object[] list, int index) {
+    listCopy = list;
+    idHead = index;
+  }
 
-  public boolean isEmpty() { return !iterator.hasNext(); }
+  public boolean isEmpty() { return idHead >= listCopy.length; }
 
-  public boolean nonEmpty() { return iterator.hasNext(); }
+  public boolean nonEmpty() { return !isEmpty(); }
 
   public T head()           {
-    T h = iterator.next();
-    iterator.previous();
-    return h;
+    return (T)listCopy[idHead];
   }
 
   public FunListIterated<T> tail() {
-    return new FunListIterated<>(list, list.listIterator(iterator.nextIndex()+1));
+    return new FunListIterated<>(listCopy, idHead+1);
   }
 
   public FunList<T> toList() {
     FunList<T> list = new FunList<>();
-    while(iterator.hasNext()) {
-      list.add(iterator.next());
+    for(int i = idHead; i < listCopy.length; i++) {
+      list.add((T)listCopy[i]);
     }
     return list;
   }
+
 }
