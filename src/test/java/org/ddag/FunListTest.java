@@ -11,11 +11,12 @@ import org.ddag.fun.col.FunList;
 import static org.ddag.fun.col.FunList.Nil;
 import org.ddag.fun.FunString;
 import org.ddag.fun.col.FunSharedList;
+import org.ddag.fun.func.TailRecursive;
 import org.ddag.fun.tuple.FunTuple;
 
-import static org.ddag.fun.func.FunRecFunc.Continue;
-import static org.ddag.fun.func.FunRecFunc.Return;
-import static org.ddag.fun.func.FunRecFunc.runRec;
+import static org.ddag.fun.func.TailRecursive.Continue;
+import static org.ddag.fun.func.TailRecursive.Return;
+import static org.ddag.fun.func.TailRecursive.tailRec;
 import static org.ddag.fun.tuple.FunTuple.T2;
 import org.ddag.fun.tuple.Tuple2;
 import org.junit.Test;
@@ -176,7 +177,7 @@ public class FunListTest {
     });
 
     Performance.testPerform("tail recursive", loops, () -> {
-      runRec(0, new FunList<>(src).toSharedList(),
+        tailRec(0, new FunList<>(src).toSharedList(),
               (sum, col) -> col.isEmpty() ? Return(sum) : Continue(Integer.parseInt(col.head()) + sum, col.tail()) );
     });
 
