@@ -101,6 +101,9 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
 
   public boolean exists(Predicate<? super T> predicate) { return this.find(predicate).isPresent(); }
 
+    // more safe mutable way to get head::tail in O(1)
+  public Tuple2<T, FunList<T>> mHeadTail() { return new Tuple2<>(this.head(), this.mTail()); }
+
   public T head()     { return this.getFirst(); }
 
   public Optional<T>  headOpt() { return this.isEmpty() ? Optional.empty() : Optional.of(this.getFirst()); }
@@ -139,12 +142,7 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
 
   public FunList<T> mReversed() {    Collections.reverse(this);    return this;  }
 
-  public <R> R fold(R initial, BiFunction<R, T, R> fun) {    return _fold(this, initial, fun);  }
-
-  private <R> R _fold(FunList<T> list, R result, BiFunction<R, T, R> fun)  {
-    if (list.isEmpty()) return result;
-    else return _fold(list.tail(), fun.apply(result, list.head()), fun);
-  }
+  public FunList<T> duplicate() { return new FunList<>(this); }
 
   public <R> R foldLeft(R initial, BiFunction<R,? super T, R> fun) {
     for (T el: this)  {

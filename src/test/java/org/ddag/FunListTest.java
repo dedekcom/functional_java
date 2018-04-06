@@ -29,7 +29,7 @@ public class FunListTest {
   public void testBasicFunListOps() {
 
     FunList<Integer> i1 = FunList.of(1,2,5,-2,3,-10, 4);
-    assertTrue( i1.fold(0, (acc, id) -> acc + id) == 3);
+    assertTrue( i1.foldLeft(0, (acc, id) -> acc + id) == 3);
     assertTrue ( i1.sum().intValue() == 3);
     assertTrue (i1.partition(e -> e > 0)._2().equals(FunList.of(-2, -10)));
 
