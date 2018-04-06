@@ -19,6 +19,7 @@ import java.util.function.BiFunction;
   methods starting with 'm' are mutable - it makes faster computing but causes side effects
  */
 
+@SuppressWarnings("WeakerAccess")
 public class FunMap<K, V> extends LinkedHashMap<K, V> implements FunObject {
   private final static FunMap emptyMap = new FunMap();
 

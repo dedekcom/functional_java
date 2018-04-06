@@ -61,6 +61,7 @@ public interface FunMatch {
     return new FunGetIf(executeIfMatches, firstPattern, pattern);
   }
 
+  @SuppressWarnings("unchecked")
   static <R> R match(Object o, FunGetIf firstCase, FunGetIf... cases) {
     Optional<Object> res = firstCase.getOpt(o);
     if (res.isPresent()) return (R)res.get();

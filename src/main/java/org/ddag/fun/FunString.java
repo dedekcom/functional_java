@@ -10,6 +10,7 @@ import org.ddag.fun.col.FunList;
 import java.util.Arrays;
 import java.util.Optional;
 
+@SuppressWarnings({"WeakerAccess", "unused"})
 public class FunString implements FunObject {
   private String str;
 
@@ -30,14 +31,9 @@ public class FunString implements FunObject {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    } else if (o instanceof FunString) {
-      return this.get().equals(((FunString) o).get());
-    } else if (o instanceof String) {
-      return this.get().equals(o);
-    } else
-      return false;
+    if (this == o) return true;
+    else if (o instanceof FunString) return this.get().equals(((FunString) o).get());
+    else return (o instanceof String && this.str.equals(o));
   }
 
   public FunString set(String s)   { str = s; return this; }
@@ -86,7 +82,7 @@ public class FunString implements FunObject {
   public FunList<Character> toList() {
     FunList<Character> list = new FunList<>();
     char[] chars = str.toCharArray();
-    for (char c: chars) { list.add(new Character(c)); }
+    for (char c: chars) { list.add(c); }
     return list;
   }
 

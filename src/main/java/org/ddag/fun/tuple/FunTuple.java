@@ -11,6 +11,7 @@ import org.ddag.fun.col.FunList;
 import java.io.Serializable;
 import java.util.Arrays;
 
+@SuppressWarnings("WeakerAccess")
 abstract public class FunTuple implements Serializable, FunObject {
   protected Object[] values;
 

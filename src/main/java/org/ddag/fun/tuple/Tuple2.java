@@ -5,6 +5,7 @@
  */
 package org.ddag.fun.tuple;
 
+@SuppressWarnings({"WeakerAccess","unchecked"})
 public class Tuple2<T1, T2> extends FunTuple {
 
   public Tuple2(T1 val1, T2 val2) {

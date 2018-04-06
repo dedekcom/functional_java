@@ -33,12 +33,15 @@ import java.util.function.Predicate;
   use them after methods which always create a new instance i.e.:
   list.filter(e -> e > 0).mPushed(10).mReversed();
  */
+@SuppressWarnings("WeakerAccess")
 public class FunList<T> extends LinkedList<T> implements FunObject {
   public static List Nil = Collections.emptyList();
 
   public FunList() { super(); }
 
   public FunList(Collection<? extends T> c) {    super(c);  }
+
+  public FunList(T[] c) { super(Arrays.asList(c));  }
 
   /*
     Mutable methods that change current list
@@ -134,12 +137,13 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
 
   public FunList<T> drop(int n) {    return this.slice(n, this.size());  }
 
-  public FunList<T> reversed() {    return foldLeft(new FunList<>(), (list, el) -> list.mPushed(el));  }
+  public FunList<T> reversed() {    return foldLeft(new FunList<>(), FunList::mPushed);  }
 
   public FunList<T> duplicate() { return new FunList<>(this); }
 
   public FunList<T> sortWith(BiFunction<T, T, Integer> compare)  {    return new FunList<>(this).mSortWith(compare);  }
 
+  @SuppressWarnings("unchecked")
   public <T extends Comparable<? super T>> FunList<T> sorted() {
     FunList<T> list = new FunList<>();
     this.forEach(e -> list.add((T)e));
@@ -157,6 +161,7 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
 
   public FunList<T> addedCol(Collection<? extends T> list) {    return new FunList<>(this).mAddedCol(list);  }
 
+  @SuppressWarnings("unchecked")
   public <R> FunList<R> flatten() {
     return foldLeft(new FunList<R>(), (acc, e) -> match( e,
             Case(Optional.class, Any), o -> acc.mAdded(((Optional<R>) o).get()),
@@ -179,7 +184,7 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
       if (fun.apply(e, id)) r1.add(e); else r2.add(e);
       id ++;
     }
-    return new Tuple2<>(r1, r2);
+    return T2(r1, r2);
   }
 
   public Tuple2<FunList<T>,FunList<T>> splitAt(int n) { return this.partition((e, i) -> i < n); }
@@ -214,7 +219,7 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
 
   public Number sum() {    return this.foldLeft(Fumeric.zero(), (sum, el) -> Fumeric.sum(sum, ((Number)el)));  }
 
-  public double avg() {    return Fumeric.div(this.sum(), Double.valueOf(this.size())).doubleValue();  }
+  public double avg() {    return Fumeric.div(this.sum(), (double)this.size()).doubleValue();  }
 
   public FunString mkFunString(String separator) {  return new FunString( mkString(separator) );  }
 
@@ -265,7 +270,7 @@ public class FunList<T> extends LinkedList<T> implements FunObject {
 
   @SafeVarargs
   public static <T> FunList<T> of(T... params) {
-    return new FunList<>(Arrays.asList(params));
+    return new FunList<>(params);
   }
 
   public static <T> FunList<T> ofSize(int n, T value) {

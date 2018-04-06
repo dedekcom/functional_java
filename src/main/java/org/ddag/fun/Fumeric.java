@@ -12,7 +12,7 @@ public class Fumeric {
 
   private enum Operation { Plus, Minus, Multiply, Divide, Modulo }
 
-  public static Number zero() { return Integer.valueOf(0); }
+  public static Number zero() { return 0; }
 
   public static Number sum(Number n1, Number n2) { return opNumber(n1, n2, Operation.Plus); }
   public static Number sub(Number n1, Number n2) { return opNumber(n1, n2, Operation.Minus); }
@@ -43,7 +43,7 @@ public class Fumeric {
       case Multiply: return n1 * n2;
       case Divide: return n1 / n2;
       case Modulo: return n1 % n2;
-      default: return Double.valueOf(0);
+      default: return 0.0;
     }
   }
 
@@ -54,7 +54,7 @@ public class Fumeric {
       case Multiply: return n1 * n2;
       case Divide: return n1 / n2;
       case Modulo: return n1 % n2;
-      default: return Float.valueOf(0);
+      default: return 0.0F;
     }
   }
 
@@ -65,7 +65,7 @@ public class Fumeric {
       case Multiply: return n1 * n2;
       case Divide: return n1 / n2;
       case Modulo: return n1 % n2;
-      default: return Integer.valueOf(0);
+      default: return 0;
     }
   }
 
@@ -76,7 +76,7 @@ public class Fumeric {
       case Multiply: return n1 * n2;
       case Divide: return n1 / n2;
       case Modulo: return n1 % n2;
-      default: return Long.valueOf(0);
+      default: return 0L;
     }
   }
 
