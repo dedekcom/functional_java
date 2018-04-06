@@ -12,6 +12,10 @@ import static org.ddag.fun.col.FunList.Nil;
 import org.ddag.fun.FunString;
 import org.ddag.fun.col.FunSharedList;
 import org.ddag.fun.tuple.FunTuple;
+
+import static org.ddag.fun.func.FunRecFunc.Continue;
+import static org.ddag.fun.func.FunRecFunc.Return;
+import static org.ddag.fun.func.FunRecFunc.runRec;
 import static org.ddag.fun.tuple.FunTuple.T2;
 import org.ddag.fun.tuple.Tuple2;
 import org.junit.Test;
@@ -169,6 +173,11 @@ public class FunListTest {
     Performance.testPerform("mapWithIndex.sum", loops, () -> { new FunList<>(src).mapWithIndex((el, id) -> id).sum(); });
     Performance.testPerform("map.foldLeft", loops, () -> {
       new FunList<>(src).map(s -> Fumeric.getInteger(s).get()).foldLeft(0, (acc, e) -> acc + e);
+    });
+
+    Performance.testPerform("tail recursive", loops, () -> {
+      runRec(0, new FunList<>(src).toSharedList(),
+              (sum, col) -> col.isEmpty() ? Return(sum) : Continue(Integer.parseInt(col.head()) + sum, col.tail()) );
     });
 
   }
