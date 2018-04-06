@@ -6,7 +6,6 @@
 
 package org.ddag.fun.func;
 
-
 import org.ddag.fun.tuple.FunTuple;
 
 @FunctionalInterface

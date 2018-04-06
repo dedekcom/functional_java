@@ -47,7 +47,7 @@ public interface FunRecFunc {
     return new Tuple6<>(true, result, arg1, null, null, null);
   }
 
-  static <R, T1, T2> Tuple6<Boolean, R, T1, T2, Object, Object> Continue(R result, T1 arg1, T2 arg2) {
+  static <R, T1, T2> FunTuple Continue(R result, T1 arg1, T2 arg2) {
     return new Tuple6<>(true, result, arg1, arg2, null, null);
   }
 
