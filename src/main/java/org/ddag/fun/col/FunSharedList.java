@@ -9,6 +9,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
+import java.util.function.Consumer;
 
 /*
   This is shared unmodifiable List which should be used only temporary within recursive algorithms.
@@ -58,7 +60,9 @@ public class FunSharedList<T> implements List<T> {
     return list;
   }
 
-  public List<T> subList(int start, int stop) {    return new FunSharedList<>(listCopy, idHead+start, stop);  }
+  public List<T> subList(int fromIndex, int toIndex) {
+    return new FunSharedList<>(listCopy, idHead+fromIndex, idHead+toIndex);
+  }
 
   public Object[] toArray() { return listCopy; }
 
@@ -81,12 +85,12 @@ public class FunSharedList<T> implements List<T> {
   public boolean contains(Object object) {    return indexOf(object) != -1;  }
 
   @Override
-  public Iterator<T> iterator() {    throw new UnsupportedOperationException();  }
+  public Iterator<T> iterator() {    return this.listIterator();  }
 
   @Override
-  public ListIterator<T> listIterator() {    throw new UnsupportedOperationException();  }
+  public ListIterator<T> listIterator() {    return this.listIterator(0);  }
 
-  public ListIterator<T> listIterator(int pos) {    throw new UnsupportedOperationException();  }
+  public ListIterator<T> listIterator(int pos) {    return new ListIter<>(pos);  }
 
   public void clear() { throw new UnsupportedOperationException(); }
 
@@ -111,4 +115,71 @@ public class FunSharedList<T> implements List<T> {
   public <R> R[] toArray(R[] a) { throw new UnsupportedOperationException(); }
 
   public boolean containsAll(Collection<?> c) {    throw new UnsupportedOperationException();  }
+
+  public boolean equals(Object o) {
+    if (o == this)
+      return true;
+    if (!(o instanceof List))
+      return false;
+
+    ListIterator<T> e1 = listIterator();
+    ListIterator<?> e2 = ((List<?>) o).listIterator();
+    while (e1.hasNext() && e2.hasNext()) {
+      T o1 = e1.next();
+      Object o2 = e2.next();
+      if (!(o1==null ? o2==null : o1.equals(o2)))
+        return false;
+    }
+    return !(e1.hasNext() || e2.hasNext());
+  }
+
+  private class ListIter<E> implements ListIterator<E> {
+    int lastReturned;
+    int next;
+
+    ListIter(int index) {
+      index += idHead;
+      next = (index  >= idLimit) ? idLimit : index;
+    }
+
+    public boolean hasNext() {      return next < idLimit;    }
+
+    public E next() {
+      if (!hasNext())
+        throw new NoSuchElementException();
+
+      lastReturned = next;
+      next++;
+      return (E)listCopy[lastReturned];
+    }
+
+    public boolean hasPrevious() {
+      return next > idHead;
+    }
+
+    public E previous() {
+      if (!hasPrevious())
+        throw new NoSuchElementException();
+
+      lastReturned = next;
+      next--;
+      return (E)listCopy[lastReturned];
+    }
+
+    public int nextIndex() {
+      return next;
+    }
+
+    public int previousIndex() {
+      return next - 1;
+    }
+
+    public void remove() {      throw new UnsupportedOperationException();    }
+
+    public void set(E e) {      throw new UnsupportedOperationException();   }
+
+    public void add(E e) {      throw new UnsupportedOperationException();   }
+
+    public void forEachRemaining(Consumer<? super E> action) {  throw new UnsupportedOperationException(); }
+  }
 }
