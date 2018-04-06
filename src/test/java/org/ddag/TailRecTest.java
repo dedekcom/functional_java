@@ -6,6 +6,7 @@
 
 package org.ddag;
 
+import org.ddag.fun.FunString;
 import org.ddag.fun.col.FunList;
 
 import static junit.framework.TestCase.assertEquals;
@@ -38,4 +39,17 @@ public class TailRecTest {
                       col.isEmpty() ? Return(result) : Continue(result.mAdded(s + col.head()), col.tail(), s) ) );
   }
 
+  @Test
+  public void tailRecFibo() {
+    //for (int i=0; i < 10; i++) {
+    int i = 10000;
+      FunString.of("fibo number ", i, " is ", fibo(i)).print();
+    //}
+  }
+
+  int fibo(int n) {
+    return tailRec(0, 1, n, (first, second, limit) ->
+            limit > 0 ? Continue( second, first + second, limit -1) : Return(first)
+    );
+  }
 }
