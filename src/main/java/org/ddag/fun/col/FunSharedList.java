@@ -41,7 +41,7 @@ public class FunSharedList<T> implements List<T> {
 
   public T get(int id)      {
     id += idHead;
-    if (id >= idLimit)
+    if (id >= idLimit || id < 0)
       throw new IndexOutOfBoundsException();
     return (T)listCopy[id];
   }
