@@ -33,7 +33,7 @@ public class FunSharedList<T> implements List<T> {
     idHead = idStart > idLimit ? idLimit : idStart;
   }
 
-  public boolean isEmpty() { return idHead >= listCopy.length; }
+  public boolean isEmpty() { return idHead >= idLimit; }
 
   public boolean nonEmpty() { return !isEmpty(); }
 
