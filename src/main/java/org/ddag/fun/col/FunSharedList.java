@@ -19,13 +19,13 @@ import java.util.function.Consumer;
 
   The only reason why the FunSharedList was implemented was O(1) tail() method.
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "WeakerAccess"})
 public class FunSharedList<T> implements List<T>, FunMatching {
   private Object[] listCopy;
   private int idHead;
   private int idLimit;
 
-  FunSharedList(FunList<T> list) {
+  public FunSharedList(List<T> list) {
     listCopy = list.toArray();
     idLimit = listCopy.length;
     idHead = 0;
@@ -66,7 +66,15 @@ public class FunSharedList<T> implements List<T>, FunMatching {
     return new FunSharedList<>(listCopy, idHead+fromIndex, idHead+toIndex);
   }
 
-  public Object[] toArray() { return listCopy; }
+  public Object[] toArray() {
+    if (idHead==0 && idLimit == listCopy.length)
+      return listCopy;
+    Object[] result = new Object[this.size()];
+    for (int i=idHead; i<idLimit; i++)  {
+      result[i-idHead] = listCopy[i];
+    }
+    return result;
+  }
 
   public int indexOf(Object object) {
     for (int i=idHead; i < idLimit; i++) {
