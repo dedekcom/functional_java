@@ -247,31 +247,7 @@ public class FunList<T> extends LinkedList<T> implements FunObject, FunMatching 
   public void print() {    System.out.println(this.toString());  }
 
   public boolean matches(Object first, Object... params) {
-    if (params.length == 0) {
-      return ((first instanceof Class) && ((Class)first).isInstance(this)) || this.equals(first);
-    } else {
-      Iterator it = this.iterator();
-      int last = params.length - 1;
-      Object testOb = first;
-      int i = 0;
-      do {
-        if (i >= this.size())
-          return false;   // more elements in pattern than in a list
-        Object n = it.next();
-        if (testOb instanceof Class) {
-          if (!((Class)testOb).isInstance(n))
-            return false;
-        }  else if (!n.equals(testOb))
-          return false;
-        testOb = params[i];
-        i++;
-      } while(i<=last);
-      if (params[last].equals(Nil))  {   // test Nil on the last position of the pattern
-        return !it.hasNext();
-      } else {    // test tail
-        return (params[last] instanceof Class && ((Class) params[last]).isInstance(this));
-      }
-    }
+    return MatchList.matches(this, first, params);
   }
 
   @SafeVarargs

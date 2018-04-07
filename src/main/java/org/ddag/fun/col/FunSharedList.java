@@ -5,6 +5,8 @@
  */
 package org.ddag.fun.col;
 
+import org.ddag.fun.match.FunMatching;
+
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -18,7 +20,7 @@ import java.util.function.Consumer;
   The only reason why the FunSharedList was implemented was O(1) tail() method.
  */
 @SuppressWarnings("unchecked")
-public class FunSharedList<T> implements List<T> {
+public class FunSharedList<T> implements List<T>, FunMatching {
   private Object[] listCopy;
   private int idHead;
   private int idLimit;
@@ -92,6 +94,9 @@ public class FunSharedList<T> implements List<T> {
 
   public ListIterator<T> listIterator(int pos) {    return new ListIter<>(pos);  }
 
+  /*
+    Unsupported writeable methods
+   */
   public void clear() { throw new UnsupportedOperationException(); }
 
   public boolean add(T e) { throw new UnsupportedOperationException(); }
@@ -115,6 +120,15 @@ public class FunSharedList<T> implements List<T> {
   public <R> R[] toArray(R[] a) { throw new UnsupportedOperationException(); }
 
   public boolean containsAll(Collection<?> c) {    throw new UnsupportedOperationException();  }
+
+
+  /*
+      Support of matching and iterator
+   */
+
+  public boolean matches(Object first, Object... params) {
+    return MatchList.matches(this, first, params);
+  }
 
   public boolean equals(Object o) {
     if (o == this)
