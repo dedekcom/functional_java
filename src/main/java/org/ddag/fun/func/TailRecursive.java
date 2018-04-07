@@ -77,6 +77,16 @@ public interface TailRecursive {
     return new Result4<>(true, result, arg1, arg2, arg3);
   }
 
+  abstract class Result<R> {
+    boolean continueRecursion;
+    R result;
+
+    Result(boolean bContinue, R result) {
+      this.result = result;
+      this.continueRecursion = bContinue;
+    }
+  }
+
   class Result1<R> extends Result<R> {
     Result1(boolean bContinue, R result) {
       super(bContinue, result);

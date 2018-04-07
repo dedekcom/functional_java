@@ -10,6 +10,6 @@ package org.ddag.fun.func;
 @FunctionalInterface
 public interface RecFun2<R, T> {
 
-  Result<R> apply(R initialResult, T arg1);
+  TailRecursive.Result<R> apply(R initialResult, T arg1);
 
 }

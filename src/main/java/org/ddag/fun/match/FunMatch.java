@@ -24,21 +24,6 @@ public interface FunMatch {
       return false;
   }
 
-  /*
-    Possible cases:
-      if (caseObject(o, FunTuple.class))               return "tuple";
-      else if ( matches(o, FunTuple.class, 5, String.class))               return "tuple2<Int: 5, String>";
-      else if ( matches(o, 5) )                     return "int: 5";
-      else if ( matches(o, FunMap.of()) )           return "empty map";
-      else if ( matches(o, FunMap.class) )          return "map";
-      else if ( matches(o, "x", FunList.of()) )     return "h::Nil";
-      else if ( matches(o, "x", FunList.class) )    return "h::tail";
-      else if ( matches(o, FunList.of()) )          return "Nil";
-      else if ( matches(e, Integer.class))          return "int";
-      else if ( matches(e, Optional.empty()))       return "Optional: empty";
-      else if ( matches(e, Optional.class, Integer.class))     return "Optional<Integer>";
-      else if ( matches(e, "x") )                   return "string: x";
-   */
   static boolean matches(Object o, Object first, Object... params) {
     if (FunMatching.class.isInstance(o))  {
       return ((FunMatching)o).matches(first, params);
@@ -58,6 +43,8 @@ public interface FunMatch {
   /*
     generic matching
  */
+
+  // apply function that returns Object if pattern matches
   static FunGetIf getIf(Function<Object, Object> executeIfMatches, Object firstPattern, Object... pattern) {
     return new FunGetIf(executeIfMatches, firstPattern, pattern);
   }
@@ -74,6 +61,7 @@ public interface FunMatch {
     throw new FunMatchException();
   }
 
+  // execute void function if pattern matches
   static FunRunIf runIf(Consumer<Object> executeIfMatches, Object firstPattern, Object... pattern) {
     return new FunRunIf(executeIfMatches, firstPattern, pattern);
   }
@@ -88,60 +76,12 @@ public interface FunMatch {
     throw new FunMatchException();
   }
 
-  final class FunGetIf {
-    private Object first;
-    private Object[] args;
-    private Function<Object, Object> fun;
-
-    FunGetIf(Function<Object, Object> fun, Object firstArg, Object... args) {
-      this.first = firstArg;
-      this.fun = fun;
-      this.args = args;
-    }
-
-    Optional<Object> getOpt(Object o) {
-      return FunMatch.matches(o, first, args) ? Optional.of(fun.apply(o)) : Optional.empty();
-    }
-  }
-
-  final class FunRunIf {
-    private Object first;
-    private Object[] args;
-    private Consumer<Object> fun;
-
-    FunRunIf(Consumer<Object> fun, Object firstArg, Object... args) {
-      this.first = firstArg;
-      this.fun = fun;
-      this.args = args;
-    }
-
-    boolean get(Object o) {
-      if (FunMatch.matches(o, first, args)) {
-        fun.accept(o);
-        return true;
-      } else
-        return false;
-    }
-  }
-
   /*
     matching with types
    */
 
   // calling Case(...) is the only allowed way to create object FunCase
   static Supplier<FunCase> Case(Object firstParam, Object... params) { return () -> new FunCase(firstParam, params); }
-
-  final class FunCase {
-    private Object first;
-    private Object[] args;
-
-    FunCase(Object firstArg, Object... args) {
-      this.first = firstArg;
-      this.args = args;
-    }
-
-    boolean get(Object o) {    return FunMatch.matches(o, first, args);  }
-  }
 
   static <T, R> R match(T o, Supplier<FunCase> p1, Function<T, R> fun1, Supplier<FunCase> p2, Function<T, R> fun2) {
     if (p1.get().get(o)) return fun1.apply(o);
@@ -347,5 +287,53 @@ public interface FunMatch {
     else if (p9.get().get(o)) fun9.accept(o);
     else if (p10.get().get(o)) fun10.accept(o);
     else throw new FunMatchException();
+  }
+
+  final class FunGetIf {
+    private Object first;
+    private Object[] args;
+    private Function<Object, Object> fun;
+
+    FunGetIf(Function<Object, Object> fun, Object firstArg, Object... args) {
+      this.first = firstArg;
+      this.fun = fun;
+      this.args = args;
+    }
+
+    Optional<Object> getOpt(Object o) {
+      return FunMatch.matches(o, first, args) ? Optional.of(fun.apply(o)) : Optional.empty();
+    }
+  }
+
+  final class FunRunIf {
+    private Object first;
+    private Object[] args;
+    private Consumer<Object> fun;
+
+    FunRunIf(Consumer<Object> fun, Object firstArg, Object... args) {
+      this.first = firstArg;
+      this.fun = fun;
+      this.args = args;
+    }
+
+    boolean get(Object o) {
+      if (FunMatch.matches(o, first, args)) {
+        fun.accept(o);
+        return true;
+      } else
+        return false;
+    }
+  }
+
+  final class FunCase {
+    private Object first;
+    private Object[] args;
+
+    FunCase(Object firstArg, Object... args) {
+      this.first = firstArg;
+      this.args = args;
+    }
+
+    boolean get(Object o) {    return FunMatch.matches(o, first, args);  }
   }
 }

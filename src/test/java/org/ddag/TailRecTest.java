@@ -39,8 +39,8 @@ public class TailRecTest {
                       col.isEmpty() ? Return(result) : Continue(result.mAdded(s + col.head()), col.tail(), s) ) );
   }
 
-  int failedFibo = -1;
-  int countFibos;
+  private int failedFibo = -1;
+  private int countFibos;
   @Test
   public void tailRecPerformance() {
     int loops = 100;
@@ -68,13 +68,13 @@ public class TailRecTest {
 
   }
 
-  int fibo(int n) {
+  private int fibo(int n) {
     return tailRec(0, 1, n, (first, second, limit) ->
             limit > 0 ? Continue( second, first + second, limit -1) : Return(first)
     );
   }
 
-  int fiboClassic(int first, int second, int n) {
+  private int fiboClassic(int first, int second, int n) {
       countFibos++;
       return (n > 0) ? fiboClassic(second, first + second, n - 1) : first;
   }
