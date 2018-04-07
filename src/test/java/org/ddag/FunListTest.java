@@ -23,6 +23,7 @@ import static org.ddag.fun.match.FunMatch.match;
 import static org.ddag.fun.match.FunMatch.matches;
 import static org.ddag.fun.match.FunMatch.matchesOptOf;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
@@ -153,6 +154,55 @@ public class FunListTest {
     assertTrue(FunList.of(1, 2, 3, 4).matches(FunList.of(2,3,4).pushed(1)));
 
     assertEquals(FunList.of(), Nil);
+  }
+
+  @Test
+  public void testSharedListMatch() {
+    FunSharedList<String> sl = FunList.of("a", "b", "2", "3", "d", "b", "2").toSharedList();
+
+    assertTrue (sl.matches(List.class)) ;
+    assertTrue (sl.matches(String.class, List.class));
+    assertTrue (sl.matches("a", "b", List.class));
+    assertTrue (!sl.matches("a", "b", Nil));
+
+    assertTrue(matches(Optional.empty(), Optional.empty()));
+
+    assertTrue (FunList.of(1).toSharedList().tail().matches(Nil));
+
+    assertTrue (FunList.of(1).toSharedList().matches(1, Nil));
+
+    assertTrue(FunList.of(1, 2, "3", new Tuple2<>("a", 5)).toSharedList().
+            matches(Integer.class, Integer.class, String.class, FunTuple.class, Nil));
+
+    assertTrue(FunList.of(1, 2, "3", new Tuple2<>("a", 5)).toSharedList().
+            matches(Integer.class, Integer.class, String.class, FunTuple.class, List.class));
+
+    FunList<String> el = new FunList<>();
+    String s = match(el.toSharedList(), o -> {
+      if ( matches(o, "x", Nil)) return "h::Nil";
+      else if ( matches(o, "x", FunList.class)) return "h::tail";
+      else if ( matches(o, Nil)) return "Nil";
+      else return "unknown";
+    } );
+    assertEquals(s, "Nil");
+
+    String s2 = match(FunList.of("x").toSharedList(), o -> {
+      if ( matches(o, Nil)) return "Nil";
+      else if ( matches(o, "x", List.class)) return "h::tail";
+      else return "unknown";
+    } );
+    assertEquals(s2, "h::tail");
+
+    String s3 = match( FunList.of("x", 2).toSharedList(), o -> {
+      if ( matches(o, "x", Nil)) return "h::Nil";
+      else if ( matches(o, "x", FunSharedList.class)) return "h::tail";
+      else if ( matches(o, Nil)) return "Nil";
+      else return "unknown";
+    } );
+    assertEquals(s3, "h::tail");
+
+    assertTrue(FunList.of(1, 2, 3, 4).toSharedList().matches(FunList.of(2,3,4).pushed(1)));
+
   }
 
   @Test
