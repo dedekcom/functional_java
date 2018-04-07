@@ -25,6 +25,12 @@ public class FunSharedList<T> implements List<T>, FunMatching {
   private int idHead;
   private int idLimit;
 
+  public FunSharedList(FunSharedList<T> list) {
+    listCopy = list.listCopy;
+    idLimit = list.idLimit;
+    idHead = list.idHead;
+  }
+
   public FunSharedList(List<T> list) {
     listCopy = list.toArray();
     idLimit = listCopy.length;
