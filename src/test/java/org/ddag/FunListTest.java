@@ -11,7 +11,6 @@ import org.ddag.fun.col.FunList;
 import static org.ddag.fun.col.FunList.Nil;
 import org.ddag.fun.FunString;
 import org.ddag.fun.col.FunSharedList;
-import org.ddag.fun.func.TailRecursive;
 import org.ddag.fun.tuple.FunTuple;
 
 import static org.ddag.fun.func.TailRecursive.Continue;
@@ -188,7 +187,7 @@ public class FunListTest {
     FunList<Integer> list = FunList.of(1, 2, 3, 4, 5);
 
     assertEquals(list.head(), list.toSharedList().head());
-    assertEquals(list.tail(), list.toSharedList().tail().toList());
+    assertEquals(list.tail(), list.toSharedList().tail().toFunList());
     assertEquals(list.sum(), sum(list.toSharedList(), 0));
   }
 

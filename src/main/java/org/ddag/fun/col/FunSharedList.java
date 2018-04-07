@@ -54,7 +54,7 @@ public class FunSharedList<T> implements List<T>, FunMatching {
 
   public FunSharedList<T> tail() {   return new FunSharedList<>(listCopy, idHead+1, idLimit);  }
 
-  public FunList<T> toList() {
+  public FunList<T> toFunList() {
     FunList<T> list = new FunList<>();
     for(int i = idHead; i < idLimit; i++) {
       list.add((T)listCopy[i]);
