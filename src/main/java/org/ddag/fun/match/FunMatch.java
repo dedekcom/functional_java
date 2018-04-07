@@ -88,11 +88,60 @@ public interface FunMatch {
     throw new FunMatchException();
   }
 
+  final class FunGetIf {
+    private Object first;
+    private Object[] args;
+    private Function<Object, Object> fun;
+
+    FunGetIf(Function<Object, Object> fun, Object firstArg, Object... args) {
+      this.first = firstArg;
+      this.fun = fun;
+      this.args = args;
+    }
+
+    Optional<Object> getOpt(Object o) {
+      return FunMatch.matches(o, first, args) ? Optional.of(fun.apply(o)) : Optional.empty();
+    }
+  }
+
+  final class FunRunIf {
+    private Object first;
+    private Object[] args;
+    private Consumer<Object> fun;
+
+    FunRunIf(Consumer<Object> fun, Object firstArg, Object... args) {
+      this.first = firstArg;
+      this.fun = fun;
+      this.args = args;
+    }
+
+    boolean get(Object o) {
+      if (FunMatch.matches(o, first, args)) {
+        fun.accept(o);
+        return true;
+      } else
+        return false;
+    }
+  }
+
   /*
     matching with types
    */
 
+  // calling Case(...) is the only allowed way to create object FunCase
   static Supplier<FunCase> Case(Object firstParam, Object... params) { return () -> new FunCase(firstParam, params); }
+
+  final class FunCase {
+    private Object first;
+    private Object[] args;
+
+    FunCase(Object firstArg, Object... args) {
+      this.first = firstArg;
+      this.args = args;
+    }
+
+    boolean get(Object o) {    return FunMatch.matches(o, first, args);  }
+  }
 
   static <T, R> R match(T o, Supplier<FunCase> p1, Function<T, R> fun1, Supplier<FunCase> p2, Function<T, R> fun2) {
     if (p1.get().get(o)) return fun1.apply(o);
