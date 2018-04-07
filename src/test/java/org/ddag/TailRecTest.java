@@ -39,17 +39,43 @@ public class TailRecTest {
                       col.isEmpty() ? Return(result) : Continue(result.mAdded(s + col.head()), col.tail(), s) ) );
   }
 
+  int failedFibo = -1;
+  int countFibos;
   @Test
-  public void tailRecFibo() {
-    //for (int i=0; i < 10; i++) {
-    int i = 10000;
-      FunString.of("fibo number ", i, " is ", fibo(i)).print();
-    //}
+  public void tailRecPerformance() {
+    int loops = 100;
+    int n = 100000;
+    FunString.of("fibo number ", n, " is ", fibo(n)).print();
+
+    Performance.testPerform("tail rec fibonacci", loops, () -> {
+      int f = fibo(n);
+    } );
+
+    Performance.testPerform("classic rec fibonacci", loops, () -> {
+      int f = 0;
+      try {
+        countFibos = 0;
+        f = fiboClassic(0, 1, n);
+      } catch (StackOverflowError sof) {
+        if (failedFibo == -1)
+          failedFibo = countFibos;
+      }
+    } );
+
+    if (failedFibo > -1) {
+      System.out.println("classic recursive fibo failed on n = " + failedFibo);
+    }
+
   }
 
   int fibo(int n) {
     return tailRec(0, 1, n, (first, second, limit) ->
             limit > 0 ? Continue( second, first + second, limit -1) : Return(first)
     );
+  }
+
+  int fiboClassic(int first, int second, int n) {
+      countFibos++;
+      return (n > 0) ? fiboClassic(second, first + second, n - 1) : first;
   }
 }
