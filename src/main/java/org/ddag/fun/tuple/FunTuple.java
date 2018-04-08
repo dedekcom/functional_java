@@ -21,8 +21,6 @@ abstract public class FunTuple implements FunObject, FunMatching {
 
   public Object _id(int id) { return values[id]; }
 
-  public void print() { System.out.println(this.toString()); }
-
   public FunList<Object> toList() { return new FunList<>(Arrays.asList(values)); }
 
   public boolean matches(Object first, Object... params) {

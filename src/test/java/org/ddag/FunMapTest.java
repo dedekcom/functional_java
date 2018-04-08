@@ -7,6 +7,7 @@ package org.ddag;
 
 import org.ddag.fun.col.FunList;
 import org.ddag.fun.col.FunMap;
+import static org.ddag.fun.col.FunMap.Map;
 import org.ddag.fun.match.FunMatch;
 import static org.ddag.fun.tuple.FunTuple.T2;
 import org.ddag.fun.tuple.Tuple2;
@@ -63,5 +64,7 @@ public class FunMapTest {
       else if (FunMatch.matches(o, FunMap.class)) return "map";
       else return "unknown";
     }), "empty map");
+
+    assertEquals(FunMap.of(), Map());
   }
 }

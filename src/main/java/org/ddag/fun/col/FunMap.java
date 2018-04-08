@@ -10,6 +10,7 @@ import org.ddag.fun.match.FunMatching;
 import org.ddag.fun.tuple.Tuple2;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -22,15 +23,12 @@ import java.util.function.BiFunction;
 
 @SuppressWarnings("WeakerAccess")
 public class FunMap<K, V> extends LinkedHashMap<K, V> implements FunObject, FunMatching {
-  private final static FunMap emptyMap = new FunMap();
+  private static Map emptyMap = Collections.emptyMap();
+  public static Map Map() { return emptyMap; }
 
   public FunMap() { super(); }
 
   public FunMap(Map<? extends K, ? extends V> m) { super(m); }
-
-  public void print() {
-    System.out.println(this.toString());
-  }
 
   public <R> FunMap<K, R> transform(BiFunction<K, V, R> fun) {
     FunMap<K, R> m = new FunMap<>();
@@ -69,7 +67,7 @@ public class FunMap<K, V> extends LinkedHashMap<K, V> implements FunObject, FunM
     return new FunMap<>(this).mUpdated(key, value);
   }
 
-  public static FunMap of() { return emptyMap; }
+  public static FunMap of() { return new FunMap(); }
 
   @SafeVarargs
   public static <K, V> FunMap<K, V> of(Tuple2<K, V>... params) {

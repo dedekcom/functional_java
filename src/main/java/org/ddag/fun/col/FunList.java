@@ -36,6 +36,7 @@ import java.util.function.Predicate;
 @SuppressWarnings("WeakerAccess")
 public class FunList<T> extends LinkedList<T> implements FunObject, FunMatching {
   public static List Nil = Collections.emptyList();
+  public static List List() { return Nil; }
 
   public FunList() { super(); }
 
@@ -242,8 +243,6 @@ public class FunList<T> extends LinkedList<T> implements FunObject, FunMatching 
   /*
     Implementation of interfaces and static methods
    */
-
-  public void print() {    System.out.println(this.toString());  }
 
   public boolean matches(Object first, Object... params) {
     return MatchList.matches(this, first, params);

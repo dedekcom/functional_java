@@ -8,6 +8,6 @@ package org.ddag.fun;
 public interface FunObject {
   Object Any = Object.class;
 
-  void print();
+  default void print() { System.out.println(this.toString()); }
 
 }
