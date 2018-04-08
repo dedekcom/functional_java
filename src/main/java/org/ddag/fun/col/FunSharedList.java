@@ -108,6 +108,16 @@ public class FunSharedList<T> implements List<T>, FunMatching {
 
   public ListIterator<T> listIterator(int pos) {    return new ListIter<>(pos);  }
 
+  public boolean containsAll(Collection<?> c) {
+    for (Object e: c) {
+      if (!this.contains(e))
+        return false;
+    }
+    return true;
+  }
+
+
+
   /*
     Unsupported writeable methods
    */
@@ -132,9 +142,6 @@ public class FunSharedList<T> implements List<T>, FunMatching {
   public boolean addAll(int n, Collection<? extends T> c) {    throw new UnsupportedOperationException();  }
 
   public <R> R[] toArray(R[] a) { throw new UnsupportedOperationException(); }
-
-  public boolean containsAll(Collection<?> c) {    throw new UnsupportedOperationException();  }
-
 
   /*
       Support of matching and iterator
