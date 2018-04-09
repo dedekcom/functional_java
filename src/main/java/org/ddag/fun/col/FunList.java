@@ -22,7 +22,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 /*
@@ -34,7 +33,7 @@ import java.util.function.Predicate;
   list.filter(e -> e > 0).mPushed(10).mReversed();
  */
 @SuppressWarnings("WeakerAccess")
-public class FunList<T> extends LinkedList<T> implements FunObject, FunMatching {
+public class FunList<T> extends LinkedList<T> implements FunObject, FunMatching, ListProducer<T> {
   public static List Nil = Collections.emptyList();
   public static List List() { return Nil; }
 
@@ -65,60 +64,6 @@ public class FunList<T> extends LinkedList<T> implements FunObject, FunMatching 
   public FunList<T> mAddedCol(Collection<? extends T> col) {    this.addAll(col);    return this;  }
 
 
-  /*
-    Immutable methods that create new lists
-   */
-
-  public <R> FunList<R> map(Function<? super T, R> fun) {
-    FunList<R> r = new FunList<>();
-    for (T e: this) {
-      r.add(fun.apply(e));
-    }
-    return r;
-  }
-
-  public <R> FunList<R> mapWithIndex(BiFunction<? super T, Integer, R> fun) {
-    FunList<R> r = new FunList<>();
-    int id = 0;
-    for (T e: this) {
-      r.add(fun.apply(e, id));
-      id ++;
-    }
-    return r;
-  }
-
-  public FunList<T> filter(Predicate<? super T> predicate) {
-    FunList<T> r = new FunList<>();
-    for (T e: this) {
-      if (predicate.test(e))
-        r.add(e);
-    }
-    return r;
-  }
-
-  public FunList<T> filterWithIndex(BiFunction<? super T, Integer, Boolean> fun) {    return filterWithIndex(fun, this.size());  }
-
-  public FunList<T> filterWithIndex(BiFunction<? super T, Integer, Boolean> fun, final int limit) {
-    FunList<T> r = new FunList<>();
-    int id = 0;
-    for (T e: this) {
-      if (id >= limit)
-        return r;
-      if (fun.apply(e, id))
-        r.add(e);
-      id ++;
-    }
-    return r;
-  }
-
-  public FunList<T> filterNot(Predicate<? super T> predicate) {
-    FunList<T> r = new FunList<>();
-    for (T e: this) {
-      if (!predicate.test(e))
-        r.add(e);
-    }
-    return r;
-  }
 
   // creates unmodifiable copy of the list - to use only within recursive algorithms
   public FunSharedList<T> toSharedList()  { return new FunSharedList<T>(this);  }
@@ -245,7 +190,7 @@ public class FunList<T> extends LinkedList<T> implements FunObject, FunMatching 
    */
 
   public boolean matches(Object first, Object... params) {
-    return MatchList.matches(this, first, params);
+    return ListMatches.matches(this, first, params);
   }
 
   @SafeVarargs

@@ -7,6 +7,7 @@ package org.ddag.fun.col;
 
 import org.ddag.fun.match.FunMatching;
 
+import java.util.AbstractList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.function.Consumer;
   The only reason why the FunSharedList was implemented was O(1) tail() method.
  */
 @SuppressWarnings({"unchecked", "WeakerAccess"})
-public class FunSharedList<T> implements List<T>, FunMatching {
+public class FunSharedList<T> extends AbstractList<T> implements ListProducer<T>, FunMatching {
   private Object[] listCopy;
   private int idHead;
   private int idLimit;
@@ -82,22 +83,6 @@ public class FunSharedList<T> implements List<T>, FunMatching {
     return result;
   }
 
-  public int indexOf(Object object) {
-    for (int i=idHead; i < idLimit; i++) {
-      if (object.equals(listCopy[i]))
-        return i - idHead;
-    }
-    return -1;
-  }
-
-  public int lastIndexOf(Object object) {
-    for (int i=idLimit-1; i >= idHead; i--) {
-      if (object.equals(listCopy[i]))
-        return i - idHead;
-    }
-    return -1;
-  }
-
   public boolean contains(Object object) {    return indexOf(object) != -1;  }
 
   @Override
@@ -108,16 +93,6 @@ public class FunSharedList<T> implements List<T>, FunMatching {
 
   public ListIterator<T> listIterator(int pos) {    return new ListIter<>(pos);  }
 
-  public boolean containsAll(Collection<?> c) {
-    for (Object e: c) {
-      if (!this.contains(e))
-        return false;
-    }
-    return true;
-  }
-
-
-
   /*
     Unsupported writeable methods
    */
@@ -127,11 +102,7 @@ public class FunSharedList<T> implements List<T>, FunMatching {
 
   public void add(int pos, T e) { throw new UnsupportedOperationException(); }
 
-  public T set(int pos, T e) { throw new UnsupportedOperationException(); }
-
   public boolean remove(Object o) { throw new UnsupportedOperationException(); }
-
-  public T remove(int pos) { throw new UnsupportedOperationException(); }
 
   public boolean addAll(Collection<? extends T> c) {    throw new UnsupportedOperationException();  }
 
@@ -143,29 +114,14 @@ public class FunSharedList<T> implements List<T>, FunMatching {
 
   public <R> R[] toArray(R[] a) { throw new UnsupportedOperationException(); }
 
+  protected void removeRange(int fromIndex, int toIndex) {  throw new UnsupportedOperationException();  }
+
   /*
       Support of matching and iterator
    */
 
   public boolean matches(Object first, Object... params) {
-    return MatchList.matches(this, first, params);
-  }
-
-  public boolean equals(Object o) {
-    if (o == this)
-      return true;
-    if (!(o instanceof List))
-      return false;
-
-    ListIterator<T> e1 = listIterator();
-    ListIterator<?> e2 = ((List<?>) o).listIterator();
-    while (e1.hasNext() && e2.hasNext()) {
-      T o1 = e1.next();
-      Object o2 = e2.next();
-      if (!(o1==null ? o2==null : o1.equals(o2)))
-        return false;
-    }
-    return !(e1.hasNext() || e2.hasNext());
+    return ListMatches.matches(this, first, params);
   }
 
   private class ListIter<E> implements ListIterator<E> {

@@ -8,7 +8,7 @@ package org.ddag.fun.col;
 import java.util.Iterator;
 import java.util.List;
 
-public interface MatchList {
+public interface ListMatches {
 
   static <T> boolean matches(List<T> list, Object first, Object... params) {
     if (params.length == 0) {
