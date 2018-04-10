@@ -62,7 +62,7 @@ public class FunSharedList<T> extends AbstractList<T> implements FunObject, FunL
 
   public FunList<T> tail() {   return new FunSharedList<>(listCopy, idHead+1, idLimit);  }
 
-  public FunLinkedList<T> toFunList() {
+  public FunLinkedList<T> toFunLinkedList() {
     FunLinkedList<T> list = new FunLinkedList<>();
     for(int i = idHead; i < idLimit; i++) {
       list.add((T)listCopy[i]);
