@@ -46,6 +46,12 @@ public class FunLinkedList<T> extends LinkedList<T> implements FunObject, FunLis
 
   public FunLinkedList<T> mReversed()       {    Collections.reverse(this);    return this;  }
 
+  public FunLinkedList<T> pushed(T el)      {    return new FunLinkedList<>(this).mPushed(el);  }
+
+  public FunLinkedList<T> added(T el)       {    return new FunLinkedList<>(this).mAdded(el);  }
+
+  public FunLinkedList<T> removed(T el)     {    return new FunLinkedList<>(this).mRemoved(el);  }
+
   // more safe mutable way to get head::tail in O(1)
   public Tuple2<T, FunLinkedList<T>> mHeadTail() { return new Tuple2<>(this.head(), this.mTail()); }
 

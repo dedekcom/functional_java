@@ -86,12 +86,6 @@ public interface FunList<T> extends List<T>, FunMatching {
     return initial;
   }
 
-  default FunLinkedList<T> pushed(T el) {    return new FunLinkedList<>(this).mPushed(el);  }
-
-  default FunLinkedList<T> added(T el) {    return new FunLinkedList<>(this).mAdded(el);  }
-
-  default FunLinkedList<T> removed(T el) {    return new FunLinkedList<>(this).mRemoved(el);  }
-
   default FunLinkedList<T> reversed() {    return foldLeft(new FunLinkedList<>(), FunLinkedList::mPushed);  }
 
   default FunLinkedList<T> sortWith(BiFunction<T, T, Integer> compare)  {    return new FunLinkedList<>(this).mSortWith(compare);  }
