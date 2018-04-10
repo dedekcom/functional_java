@@ -7,7 +7,7 @@
 package org.ddag;
 
 import org.ddag.fun.FunString;
-import org.ddag.fun.col.FunList;
+import org.ddag.fun.col.FunLinkedList;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.ddag.fun.func.TailRecursive.tailRec;
@@ -22,7 +22,7 @@ public class TailRecTest {
 
   @Test
   public void testRecFun() {
-    int s = tailRec(0, FunList.of(1, 2, 3, 4).toSharedList(),
+    int s = tailRec(0, FunLinkedList.of(1, 2, 3, 4).toSharedList(),
               (sum, col) ->
                     col.isEmpty() ? Return(sum) : Continue(col.head() + sum, col.tail()) );
 
@@ -33,8 +33,8 @@ public class TailRecTest {
 
   @Test
   public void testRecFun2() {
-    assertEquals( FunList.of("a1", "a2", "a3", "a4"),
-            tailRec(FunList.of(), FunList.of(1, 2, 3, 4).toSharedList(), "a",
+    assertEquals( FunLinkedList.of("a1", "a2", "a3", "a4"),
+            tailRec(FunLinkedList.of(), FunLinkedList.of(1, 2, 3, 4).toSharedList(), "a",
               (result, col, s) ->
                       col.isEmpty() ? Return(result) : Continue(result.mAdded(s + col.head()), col.tail(), s) ) );
   }

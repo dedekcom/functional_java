@@ -5,6 +5,7 @@
  */
 package org.ddag.fun.col;
 
+import org.ddag.fun.FunObject;
 import org.ddag.fun.match.FunMatching;
 
 import java.util.AbstractList;
@@ -21,7 +22,7 @@ import java.util.function.Consumer;
   The only reason why the FunSharedList was implemented was O(1) tail() method.
  */
 @SuppressWarnings({"unchecked", "WeakerAccess"})
-public class FunSharedList<T> extends AbstractList<T> implements ListProducer<T>, FunMatching {
+public class FunSharedList<T> extends AbstractList<T> implements FunObject, FunList<T> {
   private Object[] listCopy;
   private int idHead;
   private int idLimit;
@@ -59,10 +60,10 @@ public class FunSharedList<T> extends AbstractList<T> implements ListProducer<T>
 
   public int size()         { return idLimit - idHead; }
 
-  public FunSharedList<T> tail() {   return new FunSharedList<>(listCopy, idHead+1, idLimit);  }
+  public FunList<T> tail() {   return new FunSharedList<>(listCopy, idHead+1, idLimit);  }
 
-  public FunList<T> toFunList() {
-    FunList<T> list = new FunList<>();
+  public FunLinkedList<T> toFunList() {
+    FunLinkedList<T> list = new FunLinkedList<>();
     for(int i = idHead; i < idLimit; i++) {
       list.add((T)listCopy[i]);
     }
@@ -116,13 +117,6 @@ public class FunSharedList<T> extends AbstractList<T> implements ListProducer<T>
 
   protected void removeRange(int fromIndex, int toIndex) {  throw new UnsupportedOperationException();  }
 
-  /*
-      Support of matching and iterator
-   */
-
-  public boolean matches(Object first, Object... params) {
-    return ListMatches.matches(this, first, params);
-  }
 
   private class ListIter<E> implements ListIterator<E> {
     int lastReturned;

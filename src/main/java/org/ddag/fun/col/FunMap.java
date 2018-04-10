@@ -36,8 +36,8 @@ public class FunMap<K, V> extends LinkedHashMap<K, V> implements FunObject, FunM
     return m;
   }
 
-  public FunList<Tuple2<K, V>> toList() {
-    FunList<Tuple2<K,V>> list = new FunList<>();
+  public FunLinkedList<Tuple2<K, V>> toList() {
+    FunLinkedList<Tuple2<K,V>> list = new FunLinkedList<>();
     this.forEach((key, value) -> list.add(new Tuple2<>(key, value)));
     return list;
   }

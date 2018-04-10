@@ -6,7 +6,7 @@
 package org.ddag.fun.tuple;
 
 import org.ddag.fun.FunObject;
-import org.ddag.fun.col.FunList;
+import org.ddag.fun.col.FunLinkedList;
 import org.ddag.fun.match.FunMatching;
 
 import java.util.Arrays;
@@ -21,7 +21,7 @@ abstract public class FunTuple implements FunObject, FunMatching {
 
   public Object _id(int id) { return values[id]; }
 
-  public FunList<Object> toList() { return new FunList<>(Arrays.asList(values)); }
+  public FunLinkedList<Object> toList() { return new FunLinkedList<>(Arrays.asList(values)); }
 
   public boolean matches(Object first, Object... params) {
     if ((first instanceof Class) && ((Class)first).isInstance(this)) {

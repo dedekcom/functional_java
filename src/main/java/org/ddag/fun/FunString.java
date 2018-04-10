@@ -5,7 +5,7 @@
  */
 package org.ddag.fun;
 
-import org.ddag.fun.col.FunList;
+import org.ddag.fun.col.FunLinkedList;
 import org.ddag.fun.match.FunMatching;
 
 import java.util.Arrays;
@@ -78,10 +78,10 @@ public class FunString implements FunObject, FunMatching {
 
   public void print() { System.out.println(str); }
 
-  public FunList<String> split(String regex) {    return new FunList<>(Arrays.asList(str.split(regex)));  }
+  public FunLinkedList<String> split(String regex) {    return new FunLinkedList<>(Arrays.asList(str.split(regex)));  }
 
-  public FunList<Character> toList() {
-    FunList<Character> list = new FunList<>();
+  public FunLinkedList<Character> toList() {
+    FunLinkedList<Character> list = new FunLinkedList<>();
     char[] chars = str.toCharArray();
     for (char c: chars) { list.add(c); }
     return list;

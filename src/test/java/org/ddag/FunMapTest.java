@@ -5,7 +5,7 @@
  */
 package org.ddag;
 
-import org.ddag.fun.col.FunList;
+import org.ddag.fun.col.FunLinkedList;
 import org.ddag.fun.col.FunMap;
 import static org.ddag.fun.col.FunMap.Map;
 import org.ddag.fun.match.FunMatch;
@@ -25,7 +25,7 @@ public class FunMapTest {
 
     FunMap<String, Object> fm = FunMap.of(T2("ctyp", "fmtrait"), T2("almsum", 5));
     FunMap<String, Object> m = FunMap.of(T2("netype", "f8"), T2("name", "fsp3000c"),
-            T2("fm", fm), T2("layers", FunList.of("ots", "oms", "ety6")));
+            T2("fm", fm), T2("layers", FunLinkedList.of("ots", "oms", "ety6")));
     m.print();
 
     FunMap<String,Object> m2 = m.transform((k, v) -> {
@@ -38,7 +38,7 @@ public class FunMapTest {
     m2.print();
 
     assertTrue ( m2.toList().map(pair -> pair._2()).equals(
-            FunList.of("F8", "fsp3000c", new FunMap<>(fm), FunList.of("ots", "oms", "ety6") ) ) );
+            FunLinkedList.of("F8", "fsp3000c", new FunMap<>(fm), FunLinkedList.of("ots", "oms", "ety6") ) ) );
 
     FunMap<String, Object> fm2 = FunMap.of(T2("almsum", 5), T2("ctyp", "fmtrait"));
 
@@ -50,7 +50,7 @@ public class FunMapTest {
     FunMap<String, Object> m = FunMap.of(T2("k1", 1), T2("k2", 2));
 
     assertEquals(FunMatch.match(m, o -> {
-      if (FunMatch.matches(o, FunList.class)) return "list";
+      if (FunMatch.matches(o, FunLinkedList.class)) return "list";
       else if (FunMatch.matches(o, 5)) return "int";
       else if (FunMatch.matches(o, FunMap.of())) return "empty map";
       else if (FunMatch.matches(o, FunMap.class)) return "map";
@@ -58,7 +58,7 @@ public class FunMapTest {
     }), "map");
 
     assertEquals(FunMatch.match(new FunMap<String, Object>(), o -> {
-      if (FunMatch.matches(o, FunList.class)) return "list";
+      if (FunMatch.matches(o, FunLinkedList.class)) return "list";
       else if (FunMatch.matches(o, 5)) return "int";
       else if (FunMatch.matches(o, FunMap.of())) return "empty map";
       else if (FunMatch.matches(o, FunMap.class)) return "map";

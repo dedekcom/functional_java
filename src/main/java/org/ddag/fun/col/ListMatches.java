@@ -30,7 +30,7 @@ public interface ListMatches {
         testOb = params[i];
         i++;
       } while(i<=last);
-      if (params[last].equals(FunList.Nil))  {   // test Nil on the last position of the pattern
+      if (params[last].equals(FunLinkedList.Nil))  {   // test Nil on the last position of the pattern
         return !it.hasNext();
       } else {    // test tail
         return (params[last] instanceof Class && ((Class) params[last]).isInstance(list));

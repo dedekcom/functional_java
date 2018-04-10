@@ -6,7 +6,7 @@
 package org.ddag;
 
 import org.ddag.fun.Fumeric;
-import org.ddag.fun.col.FunList;
+import org.ddag.fun.col.FunLinkedList;
 import org.junit.Test;
 
 import java.util.Optional;
@@ -15,7 +15,7 @@ public class FumericTest {
 
   @Test
   public void testBasicFumericOperations() {
-    FunList<Number> l = FunList.of(3.14, 1, 0, 2);
+    FunLinkedList<Number> l = FunLinkedList.of(3.14, 1, 0, 2);
     Number sum = l.sum();
     System.out.println(sum.getClass() + ", " + sum);
   }

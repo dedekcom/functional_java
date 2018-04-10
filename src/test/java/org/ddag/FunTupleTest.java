@@ -5,7 +5,7 @@
  */
 package org.ddag;
 
-import org.ddag.fun.col.FunList;
+import org.ddag.fun.col.FunLinkedList;
 import static org.ddag.fun.match.FunMatch.match;
 import static org.ddag.fun.match.FunMatch.matches;
 import org.ddag.fun.FunObject;
@@ -34,7 +34,7 @@ public class FunTupleTest {
 
   @Test
   public void testTupleMatch() {
-    FunList<FunTuple> list = FunList.of(new Tuple2<>(1, "a"), new Tuple1<>(2), new Tuple3<>(3, "c", "cc"),
+    FunLinkedList<FunTuple> list = FunLinkedList.of(new Tuple2<>(1, "a"), new Tuple1<>(2), new Tuple3<>(3, "c", "cc"),
             new Tuple2<>("4", 'd'), new Tuple1<>(10));
     list.map(e -> {
       if (e.matches(FunTuple.class, Integer.class, String.class)) {
