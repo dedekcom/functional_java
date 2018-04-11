@@ -58,6 +58,7 @@ public class FunUnmodifLinkedListTest {
     assertEquals(FunList.of(1,2,3,4,5), l2);
     assertEquals(FunList.of(1,2,3,4,6), l3);
     assertEquals(FunList.of(1,2,3,4,5,6,7), l4);
+    assertEquals(FunList.of(), l1.tail().tail().tail().tail());
   }
 
   @Test(expected = NoSuchElementException.class)

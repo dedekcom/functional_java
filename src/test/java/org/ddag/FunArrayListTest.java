@@ -6,6 +6,7 @@
 
 package org.ddag;
 
+import junit.framework.TestCase;
 import org.ddag.fun.col.FunList;
 import org.ddag.fun.col.FunUnmodifArrayList;
 import org.junit.Test;
@@ -57,6 +58,7 @@ public class FunArrayListTest {
     assertEquals(FunList.of(1,2,3,4,5), l2);
     assertEquals(FunList.of(1,2,3,4,6), l3);
     assertEquals(FunList.of(1,2,3,4,5,6,7), l4);
+    assertEquals(FunList.of(), l1.tail().tail().tail().tail());
   }
 
   @Test(expected = NoSuchElementException.class)

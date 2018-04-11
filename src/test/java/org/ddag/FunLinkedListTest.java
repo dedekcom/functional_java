@@ -258,40 +258,41 @@ public class FunLinkedListTest {
     FunList<Integer> list = FunList.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10 );
     FunList<Integer> list2 = list.toFunLinkedList();
 
-    TestCase.assertEquals(FunList.of(3, 4, 5, 6, 7, 8, 9, 10).toFunLinkedList(), list.toFunLinkedList().tail().tail());
+    assertEquals(FunList.of(3, 4, 5, 6, 7, 8, 9, 10).toFunLinkedList(), list.toFunLinkedList().tail().tail());
 
-    TestCase.assertEquals(FunList.of(4, 5, 6), list.toFunLinkedList().tail().tail().subList(1,4));
+    assertEquals(FunList.of(4, 5, 6), list.toFunLinkedList().tail().tail().subList(1,4));
 
-    TestCase.assertEquals(FunList.of(), list.toFunLinkedList().subList(8,8));
+    assertEquals(FunList.of(), list.toFunLinkedList().subList(8,8));
 
-    TestCase.assertEquals(list.toFunLinkedList().toString(), list.toString());
+    assertEquals(list.toFunLinkedList().toString(), list.toString());
 
-    TestCase.assertEquals(list.toFunLinkedList().filterNot(p -> p >= 2), list.subList(0, 1));
+    assertEquals(list.toFunLinkedList().filterNot(p -> p >= 2), list.subList(0, 1));
 
-    TestCase.assertTrue(!list.toFunLinkedList().contains(0));
+    assertTrue(!list.toFunLinkedList().contains(0));
 
-    TestCase.assertTrue(list.toFunLinkedList().containsAll(FunList.of(4,5,6,7)));
+    assertTrue(list.toFunLinkedList().containsAll(FunList.of(4,5,6,7)));
 
-    TestCase.assertTrue(list.toFunLinkedList().indexOf(3) == 2);
+    assertTrue(list.toFunLinkedList().indexOf(3) == 2);
 
-    TestCase.assertEquals(FunList.of(3,4,5,6), FunList.of(4, 5, 6).toFunLinkedList().pushed(3));
+    assertEquals(FunList.of(3,4,5,6), FunList.of(4, 5, 6).toFunLinkedList().pushed(3));
 
-    TestCase.assertEquals(FunList.of(3,5,6), FunList.of(3, 4, 5, 6).toFunLinkedList().removed(4));
-    TestCase.assertEquals(FunList.of(4,5,6), FunList.of(3, 4, 5, 6).toFunLinkedList().removed(3));
-    TestCase.assertEquals(FunList.of(3,4,5), FunList.of(3, 4, 5, 6).toFunLinkedList().removed(6));
+    assertEquals(FunList.of(3,5,6), FunList.of(3, 4, 5, 6).toFunLinkedList().removed(4));
+    assertEquals(FunList.of(4,5,6), FunList.of(3, 4, 5, 6).toFunLinkedList().removed(3));
+    assertEquals(FunList.of(3,4,5), FunList.of(3, 4, 5, 6).toFunLinkedList().removed(6));
 
-    TestCase.assertEquals(FunList.of(1, 2, 3,4,5), FunList.of(5,4,3,2,1).toFunLinkedList().reversed());
+    assertEquals(FunList.of(1, 2, 3,4,5), FunList.of(5,4,3,2,1).toFunLinkedList().reversed());
 
-    TestCase.assertEquals(list, list.toFunLinkedList().slice(0,list.size()-2).added(9).added(10));
-    TestCase.assertEquals(list2, list);
+    assertEquals(list, list.toFunLinkedList().slice(0,list.size()-2).added(9).added(10));
+    assertEquals(list2, list);
 
     FunLinkedList<Integer> l1 = FunList.of(1,2,3,4).toFunLinkedList();
     FunList<Integer> l2 = l1.added(5);
     FunList<Integer> l3 = l1.added(6);
     FunList<Integer> l4 = l1.addedCol(FunList.of(5,6,7));
-    TestCase.assertEquals(FunList.of(1,2,3,4), l1);
-    TestCase.assertEquals(FunList.of(1,2,3,4,5), l2);
-    TestCase.assertEquals(FunList.of(1,2,3,4,6), l3);
-    TestCase.assertEquals(FunList.of(1,2,3,4,5,6,7), l4);
+    assertEquals(FunList.of(1,2,3,4), l1);
+    assertEquals(FunList.of(1,2,3,4,5), l2);
+    assertEquals(FunList.of(1,2,3,4,6), l3);
+    assertEquals(FunList.of(1,2,3,4,5,6,7), l4);
+    assertEquals(FunList.of(), l1.tail().tail().tail().tail());
   }
 }
