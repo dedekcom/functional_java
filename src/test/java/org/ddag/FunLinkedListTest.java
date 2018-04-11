@@ -13,6 +13,7 @@ import static org.ddag.fun.col.FunLinkedList.Nil;
 import org.ddag.fun.FunString;
 import org.ddag.fun.col.FunList;
 import org.ddag.fun.col.FunUnmodifArrayList;
+import org.ddag.fun.col.FunUnmodifLinkedList;
 import org.ddag.fun.tuple.FunTuple;
 
 import static org.ddag.fun.func.TailRecursive.Continue;
@@ -205,33 +206,6 @@ public class FunLinkedListTest {
     assertEquals(s3, "h::tail");
 
     assertTrue(FunList.of(1, 2, 3, 4).toUnmodifArrayList().matches(FunList.of(2,3,4).pushed(1)));
-
-  }
-
-  @Test
-  public void testFunListPerformance() {
-    FunLinkedList<String> src = FunList.ofSize(100000, "").mapWithIndex((e, id) -> Integer.toString(id));
-
-    int loops = 10;
-    Performance.testPerform("\n\nPrepare FunList performance test", loops, () -> { ; });
-    Performance.testPerform("reversed.sorted", loops, () -> { new FunLinkedList<>(src).reversed().sorted(); });
-    Performance.testPerform("mReversed.mSortWith", loops, () -> { new FunLinkedList<>(src).mReversed().mSortWith((e1, e2) -> e1.compareTo(e2)); });
-
-    Performance.testPerform("flatten", loops, () -> { new FunLinkedList<>(src).flatten(); });
-
-    Performance.testPerform("\nslice(1/4-3/4)", loops, () -> { new FunLinkedList<>(src).slice(src.size()/4,
-            3*src.size()/4); });
-
-    Performance.testPerform("\nzipWithIndex.map.sum", loops, () -> { new FunLinkedList<>(src).zipWithIndex().map(t -> t._2()).sum(); });
-    Performance.testPerform("mapWithIndex.sum", loops, () -> { new FunLinkedList<>(src).mapWithIndex((el, id) -> id).sum(); });
-    Performance.testPerform("map.foldLeft", loops, () -> {
-      new FunLinkedList<>(src).map(s -> Fumeric.getInteger(s).get()).foldLeft(0, (acc, e) -> acc + e);
-    });
-
-    Performance.testPerform("tail recursive", loops, () -> {
-        tailRec(0, new FunLinkedList<>(src).toUnmodifArrayList(),
-              (sum, col) -> col.isEmpty() ? Return(sum) : Continue(Integer.parseInt(col.head()) + sum, col.tail()) );
-    });
 
   }
 

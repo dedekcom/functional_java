@@ -6,7 +6,6 @@
 
 package org.ddag;
 
-import org.ddag.fun.col.FunLinkedList;
 import org.ddag.fun.col.FunList;
 import org.ddag.fun.col.FunUnmodifLinkedList;
 import org.junit.Test;
