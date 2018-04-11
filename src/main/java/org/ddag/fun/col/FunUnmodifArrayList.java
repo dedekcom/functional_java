@@ -5,9 +5,6 @@
  */
 package org.ddag.fun.col;
 
-import org.ddag.fun.FunObject;
-import org.ddag.fun.match.FunMatching;
-
 import java.util.AbstractList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -19,35 +16,72 @@ import java.util.function.Consumer;
 /*
   This is shared unmodifiable List which should be used only temporary within recursive algorithms.
 
-  The only reason why the FunSharedList was implemented was O(1) tail() method.
+  The only reason why the FunUnmodifArrayList was implemented was O(1) tail() method.
  */
 @SuppressWarnings({"unchecked", "WeakerAccess"})
-public class FunSharedList<T> extends AbstractList<T> implements FunObject, FunList<T> {
+public class FunUnmodifArrayList<T> extends AbstractList<T> implements FunList<T> {
   private Object[] listCopy;
   private int idHead;
   private int idLimit;
 
-  public FunSharedList(FunSharedList<T> list) {
+  public FunUnmodifArrayList(FunUnmodifArrayList<T> list) {
     listCopy = list.listCopy;
     idLimit = list.idLimit;
     idHead = list.idHead;
   }
 
-  public FunSharedList(List<T> list) {
-    listCopy = list.toArray();
+  public FunUnmodifArrayList(Object[] ar) {
+    listCopy = ar;
+    idHead = 0;
+    idLimit = listCopy.length;
+  }
+
+  public FunUnmodifArrayList(Collection<? extends T> c) {
+    listCopy = c.toArray();
     idLimit = listCopy.length;
     idHead = 0;
   }
 
-  private FunSharedList(Object[] list, int idStart, int idStop) {
+  private FunUnmodifArrayList(Object[] list, int idStart, int idStop) {
     listCopy = list;
     idLimit = idStop > list.length ? list.length : idStop;
     idHead = idStart > idLimit ? idLimit : idStart;
   }
 
-  public boolean isEmpty() { return idHead >= idLimit; }
+  public FunList<T> added(T el) {
+    Object[] o = new Object[this.size()+1];
+    copyArray(o,  0, idHead, idLimit);
+    o[this.size()] = el;
+    return new FunUnmodifArrayList<>(o, 0, o.length);
+  }
 
-  public boolean nonEmpty() { return !isEmpty(); }
+  public FunList<T> pushed(T el) {
+    Object[] o = new Object[this.size()+1];
+    copyArray(o,  1,idHead, idLimit);
+    o[0] = el;
+    return new FunUnmodifArrayList<>(o, 0, o.length);
+  }
+
+  public FunList<T> removed(T el) {
+    int id = indexOf(el);
+    if (id != -1) {
+      Object[] o = new Object[this.size()-1];
+      copyArray(o,0,  idHead, id);
+      copyArray(o, id,idHead + id + 1, idLimit);
+      return new FunUnmodifArrayList<>(o, 0, o.length);
+    } else
+      return new FunUnmodifArrayList<>(this);
+  }
+
+  public FunList<T> reversed() {
+    Object[] o = new Object[this.size()];
+    for (int i = idHead; i<idLimit; i++) {
+      o[i-idHead] = listCopy[idLimit-1-i];
+    }
+    return new FunUnmodifArrayList<>(o);
+  }
+
+  public boolean isEmpty() { return idHead >= idLimit; }
 
   public T head()           { return get(0);  }
 
@@ -60,7 +94,7 @@ public class FunSharedList<T> extends AbstractList<T> implements FunObject, FunL
 
   public int size()         { return idLimit - idHead; }
 
-  public FunList<T> tail() {   return new FunSharedList<>(listCopy, idHead+1, idLimit);  }
+  public FunList<T> tail() {   return new FunUnmodifArrayList<>(listCopy, idHead+1, idLimit);  }
 
   public FunLinkedList<T> toFunLinkedList() {
     FunLinkedList<T> list = new FunLinkedList<>();
@@ -71,17 +105,21 @@ public class FunSharedList<T> extends AbstractList<T> implements FunObject, FunL
   }
 
   public List<T> subList(int fromIndex, int toIndex) {
-    return new FunSharedList<>(listCopy, idHead+fromIndex, idHead+toIndex);
+    return new FunUnmodifArrayList<>(listCopy, idHead+fromIndex, idHead+toIndex);
   }
 
   public Object[] toArray() {
-    if (idHead==0 && idLimit == listCopy.length)
-      return listCopy;
     Object[] result = new Object[this.size()];
     for (int i=idHead; i<idLimit; i++)  {
       result[i-idHead] = listCopy[i];
     }
     return result;
+  }
+
+  private void copyArray(Object[] result, int destFrom, int srcFrom, int srcTo) {
+    for (int i=srcFrom; i<srcTo; i++)  {
+      result[destFrom + i - srcFrom] = listCopy[i];
+    }
   }
 
   public boolean contains(Object object) {    return indexOf(object) != -1;  }

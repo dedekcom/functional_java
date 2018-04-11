@@ -16,6 +16,7 @@ import static org.ddag.fun.FunObject.Any;
 
 import org.ddag.fun.col.FunLinkedList;
 import org.ddag.fun.FunString;
+import org.ddag.fun.col.FunList;
 import org.ddag.fun.match.FunMatchException;
 import org.junit.Test;
 
@@ -33,13 +34,13 @@ public class FunMatchTest {
     );
     assertEquals (s, "is int");
 
-    FunLinkedList<Integer> list = FunLinkedList.of(1, 2, 3, 4, 5);
+    FunList<Integer> list = FunList.of(1, 2, 3, 4, 5);
     assertEquals("head::tail",
             match( list,
                     Case(5), (o) -> "5",
                     Case(FunString.class), (o) -> "fun string",
                     Case(1, 2, Nil), (o) -> "1::2::Nil",
-                    Case(Any, FunLinkedList.class), (o) -> "head::tail"
+                    Case(Any, FunList.class), (o) -> "head::tail"
             )
     );
 
@@ -73,7 +74,7 @@ public class FunMatchTest {
 
   @Test
   public void testMatchPerformance() {
-    FunLinkedList<String> src = FunLinkedList.ofSize(100000, "").mapWithIndex((e, id) -> Integer.toString(id));
+    FunLinkedList<String> src = FunList.ofSize(100000, "").mapWithIndex((e, id) -> Integer.toString(id));
 
     int loops = 10;
     Performance.testPerform("pattern matching based on if", loops, () -> {

@@ -5,15 +5,10 @@
  */
 package org.ddag.fun.col;
 
-import org.ddag.fun.FunObject;
-import org.ddag.fun.FunString;
 import org.ddag.fun.tuple.Tuple2;
-
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
-import java.util.Optional;
 import java.util.function.BiFunction;
 
 /*
@@ -25,17 +20,43 @@ import java.util.function.BiFunction;
   list.filter(e -> e > 0).mPushed(10).mReversed();
  */
 @SuppressWarnings("WeakerAccess")
-public class FunLinkedList<T> extends LinkedList<T> implements FunObject, FunList<T> {
+public class FunLinkedList<T> extends LinkedList<T> implements FunList<T> {
 
   public FunLinkedList() { super(); }
 
   public FunLinkedList(Collection<? extends T> c) {    super(c);  }
 
-  public FunLinkedList(T[] c) { super(Arrays.asList(c));  }
+  public FunLinkedList<T> toFunLinkedList() { return this; }
 
   /*
-    Mutable methods that change current list
+    Immutable methods that create a new list
    */
+
+  public FunLinkedList<T> pushed(T el)      {    return new FunLinkedList<>(this).mPushed(el);  }
+
+  public FunLinkedList<T> added(T el)       {    return new FunLinkedList<>(this).mAdded(el);  }
+
+  public FunLinkedList<T> removed(T el)     {    return new FunLinkedList<>(this).mRemoved(el);  }
+
+  public FunLinkedList<T> duplicate() { return new FunLinkedList<>(this); }
+
+  public FunLinkedList<T> addedCol(Collection<? extends T> list) {    return new FunLinkedList<>(this).mAddedCol(list);  }
+
+  public FunList<T> reversed()  {    return foldLeft(new FunLinkedList<>(), FunLinkedList::mPushed);  }
+
+  /*
+    Implementation of interfaces and static methods
+   */
+
+  public T head()     { return this.getFirst(); }
+
+  // don't use within recursive algorithms because it creates new collections every time
+  // use Unmodified lists instead
+  public FunList<T> tail() {    return new FunLinkedList<>(this).mTail();  }
+
+  /*
+  Mutable methods that change current list
+ */
   public FunLinkedList<T> mTail()           {    this.removeFirst();    return this;  }
 
   public FunLinkedList<T> mPushed(T el)     {    this.push(el);    return this;  }
@@ -52,49 +73,5 @@ public class FunLinkedList<T> extends LinkedList<T> implements FunObject, FunLis
   public FunLinkedList<T> mSortWith(BiFunction<T, T, Integer> compare)  {    this.sort(compare::apply);    return this;  }
 
   public FunLinkedList<T> mAddedCol(Collection<? extends T> col) {    this.addAll(col);    return this;  }
-
-  // creates unmodifiable copy of the list - to use only within recursive algorithms
-  public FunSharedList<T> toSharedList()  { return new FunSharedList<>(this);  }
-
-  /*
-    Immutable methods that create a new list
-   */
-
-  public FunLinkedList<T> pushed(T el)      {    return new FunLinkedList<>(this).mPushed(el);  }
-
-  public FunLinkedList<T> added(T el)       {    return new FunLinkedList<>(this).mAdded(el);  }
-
-  public FunLinkedList<T> removed(T el)     {    return new FunLinkedList<>(this).mRemoved(el);  }
-
-  public FunLinkedList<T> duplicate() { return new FunLinkedList<>(this); }
-
-  public FunLinkedList<T> addedCol(Collection<? extends T> list) {    return new FunLinkedList<>(this).mAddedCol(list);  }
-
-  public FunString mkFunString(String separator) {  return new FunString( mkString(separator) );  }
-
-  public String mkString(String separator) {
-    return foldLeft( new StringBuilder(""), (acc, el) -> el == getLast() ? acc.append(el) : acc.append(el).append(separator)).toString();
-  }
-
-  /*
-    Implementation of interfaces and static methods
-   */
-
-  public T head()     { return this.getFirst(); }
-
-  // don't use within recursive algorithms because it creates new collections every time
-  // use FunSharedList instead
-  public FunList<T> tail() {    return new FunLinkedList<>(this).mTail();  }
-
-  @SafeVarargs
-  public static <T> FunLinkedList<T> of(T... params) {
-    return new FunLinkedList<>(params);
-  }
-
-  public static <T> FunLinkedList<T> ofSize(int n, T value) {
-    FunLinkedList<T> res = new FunLinkedList<>();
-    for (int i=0; i<n; i++) res.add(value);
-    return res;
-  }
 
 }

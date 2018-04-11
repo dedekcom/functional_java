@@ -6,6 +6,7 @@
 package org.ddag;
 
 import org.ddag.fun.col.FunLinkedList;
+import org.ddag.fun.col.FunList;
 import org.ddag.fun.col.FunMap;
 import static org.ddag.fun.col.FunMap.Map;
 import org.ddag.fun.match.FunMatch;
@@ -25,7 +26,7 @@ public class FunMapTest {
 
     FunMap<String, Object> fm = FunMap.of(T2("ctyp", "fmtrait"), T2("almsum", 5));
     FunMap<String, Object> m = FunMap.of(T2("netype", "f8"), T2("name", "fsp3000c"),
-            T2("fm", fm), T2("layers", FunLinkedList.of("ots", "oms", "ety6")));
+            T2("fm", fm), T2("layers", FunList.of("ots", "oms", "ety6")));
     m.print();
 
     FunMap<String,Object> m2 = m.transform((k, v) -> {
@@ -38,7 +39,7 @@ public class FunMapTest {
     m2.print();
 
     assertTrue ( m2.toList().map(pair -> pair._2()).equals(
-            FunLinkedList.of("F8", "fsp3000c", new FunMap<>(fm), FunLinkedList.of("ots", "oms", "ety6") ) ) );
+            FunList.of("F8", "fsp3000c", new FunMap<>(fm), FunList.of("ots", "oms", "ety6") ) ) );
 
     FunMap<String, Object> fm2 = FunMap.of(T2("almsum", 5), T2("ctyp", "fmtrait"));
 

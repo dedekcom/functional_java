@@ -6,28 +6,48 @@
 package org.ddag.fun.col;
 
 import org.ddag.fun.Fumeric;
+import org.ddag.fun.FunObject;
+import org.ddag.fun.FunString;
 import org.ddag.fun.match.FunMatching;
 import org.ddag.fun.tuple.Tuple2;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static org.ddag.fun.FunObject.Any;
 import static org.ddag.fun.match.FunMatch.Case;
 import static org.ddag.fun.match.FunMatch.match;
 import static org.ddag.fun.tuple.FunTuple.T2;
 
-public interface FunList<T> extends List<T>, FunMatching {
+public interface FunList<T> extends List<T>, FunMatching, FunObject {
 
   List Nil = Collections.emptyList();
 
   static List List() { return Nil; }
+
+  @SafeVarargs
+  static <T> FunList<T> of(T... params) {
+    return new FunUnmodifLinkedList<>(Arrays.asList(params));
+  }
+
+  static <T> FunList<T> ofSize(int n, T value) {
+    Object[] o = new Object[n];
+    for (int i=0; i<n; i++) o[i] = value;
+    return new FunUnmodifArrayList<>(o);
+  }
+
+  default FunUnmodifArrayList<T> toUnmodifArrayList()  { return new FunUnmodifArrayList<>(this);  }
+
+  default FunUnmodifLinkedList<T> toUnmodifLinkedList() { return new FunUnmodifLinkedList<>(this); }
+
+  default FunLinkedList<T> toFunLinkedList()  { return new FunLinkedList<>(this); }
 
   T head();
 
@@ -35,9 +55,19 @@ public interface FunList<T> extends List<T>, FunMatching {
 
   FunList<T> tail();
 
+  FunList<T> added(T el);
+
+  FunList<T> pushed(T el);
+
+  FunList<T> removed(T el);
+
+  FunList<T> reversed();
+
+  default boolean nonEmpty() { return !isEmpty(); }
+
   default <R> FunLinkedList<R> map(Function<? super T, R> fun) {
     FunLinkedList<R> r = new FunLinkedList<>();
-    for (T e: this) {
+    for (T e : this) {
       r.add(fun.apply(e));
     }
     return r;
@@ -62,13 +92,13 @@ public interface FunList<T> extends List<T>, FunMatching {
     return r;
   }
 
-  default FunLinkedList<T> filterWithIndex(BiFunction<? super T, Integer, Boolean> fun) {    return filterWithIndex(fun, this.size());  }
+  default FunLinkedList<T> filterWithIndex(BiFunction<? super T, Integer, Boolean> fun) {    return filterWithIndex(fun, -1);  }
 
   default FunLinkedList<T> filterWithIndex(BiFunction<? super T, Integer, Boolean> fun, final int limit) {
     FunLinkedList<T> r = new FunLinkedList<>();
     int id = 0;
     for (T e: this) {
-      if (id >= limit)
+      if (limit != -1 && id >= limit)
         return r;
       if (fun.apply(e, id))
         r.add(e);
@@ -85,8 +115,6 @@ public interface FunList<T> extends List<T>, FunMatching {
     }
     return initial;
   }
-
-  default FunLinkedList<T> reversed() {    return foldLeft(new FunLinkedList<>(), FunLinkedList::mPushed);  }
 
   default FunLinkedList<T> sortWith(BiFunction<T, T, Integer> compare)  {    return new FunLinkedList<>(this).mSortWith(compare);  }
 
@@ -108,11 +136,11 @@ public interface FunList<T> extends List<T>, FunMatching {
 
   default FunLinkedList<T> take(int n)     {    return this.slice(0, n);  }
 
-  default FunLinkedList<T> takeRight(int n) {    return this.slice(this.size() - n,  this.size());  }
+  default FunLinkedList<T> takeRight(int n) {    return this.slice(this.size() - n,  -1);  }
 
   default FunLinkedList<T> slice(final int start, final int stop) { return filterWithIndex((el, id) -> id >= start, stop);  }
 
-  default FunLinkedList<T> drop(int n) {    return this.slice(n, this.size());  }
+  default FunLinkedList<T> drop(int n) {    return this.slice(n, -1);  }
 
   default FunLinkedList<T> distinct() { return foldLeft(new FunLinkedList<>(), (list, e) -> list.contains(e) ? list : list.mAdded(e) ); }
 
@@ -159,6 +187,22 @@ public interface FunList<T> extends List<T>, FunMatching {
   }
 
   default Tuple2<FunLinkedList<T>,FunLinkedList<T>> splitAt(int n) { return this.partition((e, i) -> i < n); }
+
+  default FunString mkFunString(String separator) {  return new FunString( mkString(separator) );  }
+
+  default String mkString(String separator) {
+    StringBuilder s = new StringBuilder("");
+    Iterator<T> it = this.iterator();
+    while (it.hasNext())  {
+      T el = it.next();
+      if (it.hasNext()) {
+        s.append(el).append(separator);
+      } else {
+        s.append(el);
+      }
+    }
+    return s.toString();
+  }
 
   default boolean matches(Object first, Object... params) {
     return ListMatches.matches(this, first, params);

@@ -14,6 +14,7 @@ import static org.ddag.fun.func.TailRecursive.tailRec;
 import static org.ddag.fun.func.TailRecursive.Return;
 import static org.ddag.fun.func.TailRecursive.Continue;
 
+import org.ddag.fun.col.FunList;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
@@ -22,7 +23,7 @@ public class TailRecTest {
 
   @Test
   public void testRecFun() {
-    int s = tailRec(0, FunLinkedList.of(1, 2, 3, 4).toSharedList(),
+    int s = tailRec(0, FunList.of(1, 2, 3, 4).toUnmodifArrayList(),
               (sum, col) ->
                     col.isEmpty() ? Return(sum) : Continue(col.head() + sum, col.tail()) );
 
@@ -33,8 +34,8 @@ public class TailRecTest {
 
   @Test
   public void testRecFun2() {
-    assertEquals( FunLinkedList.of("a1", "a2", "a3", "a4"),
-            tailRec(FunLinkedList.of(), FunLinkedList.of(1, 2, 3, 4).toSharedList(), "a",
+    assertEquals( FunList.of("a1", "a2", "a3", "a4"),
+            tailRec(new FunLinkedList<>(), FunList.of(1, 2, 3, 4).toUnmodifArrayList(), "a",
               (result, col, s) ->
                       col.isEmpty() ? Return(result) : Continue(result.mAdded(s + col.head()), col.tail(), s) ) );
   }
