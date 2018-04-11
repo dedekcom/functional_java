@@ -18,52 +18,72 @@ import java.util.function.Consumer;
 public class FunUnmodifLinkedList<T> extends AbstractList<T> implements FunList<T> {
 
   Node<T> first;
+  Node<T> last;
 
   public FunUnmodifLinkedList() {}
 
+  public FunUnmodifLinkedList(FunUnmodifLinkedList<T> list) {
+    this.first = list.first;
+    this.last = list.last;
+  }
+
   public FunUnmodifLinkedList(Collection<? extends T> c) {
     Iterator<? extends T> it = c.iterator();
-    Node<T> n = null;
     while (it.hasNext()) {
-      if (n == null)  {
-        n = new Node<>(it.next(), null);
-        first = n;
+      if (last == null)  {
+        last = new Node<>(it.next(), null);
+        first = last;
       } else {
-        n.next = new Node<>(it.next(), null);
-        n = n.next;
+        last.next = new Node<>(it.next(), null);
+        last = last.next;
       }
     }
   }
 
-  private FunUnmodifLinkedList(Node<T> f) {
+  private FunUnmodifLinkedList(Node<T> f, Node<T> l) {
     this.first = f;
+    this.last = l == null ? f : l;
   }
 
+  @Override
   public boolean isEmpty() { return first == null; }
 
+  @Override
   public T head()           { return get(0);  }
 
+  @Override
+  public T last()   {
+    if (last == null)
+      throw new NoSuchElementException();
+    return last.item;
+  }
+
+  @Override
   public FunList<T> added(T el) {
-    Node<T> last = lastNode();
     Node<T> newNode = new Node<>(el, null);
     if (last == null) {
       first = newNode;
+      last = first;
     } else {
       last.next = newNode;
+      last = last.next;
     }
     return this;
   }
 
+  @Override
   public FunList<T> pushed(T el) {
     if (first == null) {
-      return new FunUnmodifLinkedList<>(new Node<>(el, null));
+      return new FunUnmodifLinkedList<>(new Node<>(el, null), last);
     } else {
-      return new FunUnmodifLinkedList<>(new Node<>(el, first));
+      return new FunUnmodifLinkedList<>(new Node<>(el, first), last);
     }
   }
 
+  @Override
   public FunList<T> removed(T el) {    return filterNot(e -> e.equals(el)).toUnmodifLinkedList();  }
 
+  @Override
   public FunList<T> reversed() {
     FunUnmodifLinkedList<T> result = new FunUnmodifLinkedList<>();
     for(T e: this) {
@@ -72,12 +92,12 @@ public class FunUnmodifLinkedList<T> extends AbstractList<T> implements FunList<
     return result;
   }
 
+  @Override
   public FunList<T> addedCol(Collection<? extends T> col) {
     FunUnmodifLinkedList<T> list1 = new FunUnmodifLinkedList(this);
     FunUnmodifLinkedList<T> list2 = new FunUnmodifLinkedList<>(col);
-    Node<T> last = list1.lastNode();
-    if (last == null) return list2;
-    last.next = list2.first;
+    if (list1.last == null) return list2;
+    list1.last.next = list2.first;
     return list1;
   }
 
@@ -91,41 +111,40 @@ public class FunUnmodifLinkedList<T> extends AbstractList<T> implements FunList<
     return f;
   }
 
-  private Node<T> lastNode() {
-    Node<T> f = first;
-    Node<T> last = f;
-    while (f != null) {
-      last = f;
-      f = f.next;
-    }
-    return last;
-  }
-
+  @Override
   public T get(int id) {
     Node<T> f = this.node(id);
     if ( f == null )
-      throw new IndexOutOfBoundsException();
+      throw new NoSuchElementException();
     else return f.item;
   }
 
+  @Override
   public int size()         {
+    if (last == null)
+      return 0;
     Node<T> f = first;
     int size = 0;
-    while (f != null) {
+    while (f != last.next) {
       size++;
       f = f.next;
     }
     return size;
   }
 
+  @Override
   public FunList<T> tail() {
-    return new FunUnmodifLinkedList<>(first != null ? first.next : null);
+    Node<T> newFirst = first != last ? first.next : null;
+    Node<T> newLast = newFirst == null ? null : last;
+    return new FunUnmodifLinkedList<>(newFirst, newLast);
   }
 
+  @Override
   public List<T> subList(int fromIndex, int toIndex) {
-    return this.filterWithIndex((e, id) -> id >= fromIndex, toIndex);
+    return this.slice(fromIndex, toIndex);
   }
 
+  @Override
   public Object[] toArray() {
     Object[] objects = new Object[this.size()];
     int i = 0;
@@ -136,6 +155,31 @@ public class FunUnmodifLinkedList<T> extends AbstractList<T> implements FunList<
     return objects;
   }
 
+  @Override
+  public FunList<T> slice(int fromIndex, int toIndex) {
+    int id = 0;
+    if (fromIndex<0) fromIndex = 0;
+    if (toIndex!=-1 && toIndex<=fromIndex)
+      return new FunUnmodifLinkedList<>();
+    Node<T> newFirst = null;
+    Node<T> newLast = null;
+    Node<T> n = first;
+    while(n != null) {
+      if (id == fromIndex)  {
+        newFirst = n;
+        newLast = n;
+      }
+      if (id == toIndex) {
+        return new FunUnmodifLinkedList<>(newFirst, newLast);
+      }
+      newLast = n;
+      n = n.next;
+      id++;
+    }
+    return new FunUnmodifLinkedList<>(newFirst, newLast);
+  }
+
+  @Override
   public boolean contains(Object object) {    return indexOf(object) != -1;  }
 
   @Override
@@ -144,6 +188,7 @@ public class FunUnmodifLinkedList<T> extends AbstractList<T> implements FunList<
   @Override
   public ListIterator<T> listIterator() {    return this.listIterator(0);  }
 
+  @Override
   public ListIterator<T> listIterator(int pos) {    return new ListItr(pos);  }
 
   /*
@@ -181,7 +226,7 @@ public class FunUnmodifLinkedList<T> extends AbstractList<T> implements FunList<
     }
 
     public boolean hasNext() {
-      return next != null;
+      return last!=null && next != last.next;
     }
 
     public T next() {

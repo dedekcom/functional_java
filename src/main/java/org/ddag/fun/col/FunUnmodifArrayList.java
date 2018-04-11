@@ -48,6 +48,7 @@ public class FunUnmodifArrayList<T> extends AbstractList<T> implements FunList<T
     idHead = idStart > idLimit ? idLimit : idStart;
   }
 
+  @Override
   public FunList<T> added(T el) {
     Object[] o = new Object[this.size()+1];
     copyArray(o,  0, idHead, idLimit);
@@ -55,6 +56,7 @@ public class FunUnmodifArrayList<T> extends AbstractList<T> implements FunList<T
     return new FunUnmodifArrayList<>(o, 0, o.length);
   }
 
+  @Override
   public FunList<T> pushed(T el) {
     Object[] o = new Object[this.size()+1];
     copyArray(o,  1,idHead, idLimit);
@@ -62,6 +64,7 @@ public class FunUnmodifArrayList<T> extends AbstractList<T> implements FunList<T
     return new FunUnmodifArrayList<>(o, 0, o.length);
   }
 
+  @Override
   public FunList<T> removed(T el) {
     int id = indexOf(el);
     if (id != -1) {
@@ -73,6 +76,7 @@ public class FunUnmodifArrayList<T> extends AbstractList<T> implements FunList<T
       return new FunUnmodifArrayList<>(this);
   }
 
+  @Override
   public FunList<T> reversed() {
     Object[] o = new Object[this.size()];
     for (int i = idHead; i<idLimit; i++) {
@@ -81,6 +85,7 @@ public class FunUnmodifArrayList<T> extends AbstractList<T> implements FunList<T
     return new FunUnmodifArrayList<>(o);
   }
 
+  @Override
   public FunList<T> addedCol(Collection<? extends T> c) {
     Object[] o = new Object[this.size() + c.size()];
     copyArray(o, 0, idHead, idLimit);
@@ -93,21 +98,30 @@ public class FunUnmodifArrayList<T> extends AbstractList<T> implements FunList<T
     return new FunUnmodifArrayList<>(o);
   }
 
+  @Override
   public boolean isEmpty() { return idHead >= idLimit; }
 
+  @Override
   public T head()           { return get(0);  }
 
+  @Override
+  public T last()   { return this.get(idLimit-1-idHead); }
+
+  @Override
   public T get(int id)      {
     id += idHead;
     if (id >= idLimit || id < 0)
-      throw new IndexOutOfBoundsException();
+      throw new NoSuchElementException();
     return (T)listCopy[id];
   }
 
+  @Override
   public int size()         { return idLimit - idHead; }
 
+  @Override
   public FunList<T> tail() {   return new FunUnmodifArrayList<>(listCopy, idHead+1, idLimit);  }
 
+  @Override
   public FunLinkedList<T> toFunLinkedList() {
     FunLinkedList<T> list = new FunLinkedList<>();
     for(int i = idHead; i < idLimit; i++) {
@@ -116,10 +130,12 @@ public class FunUnmodifArrayList<T> extends AbstractList<T> implements FunList<T
     return list;
   }
 
+  @Override
   public List<T> subList(int fromIndex, int toIndex) {
     return new FunUnmodifArrayList<>(listCopy, idHead+fromIndex, idHead+toIndex);
   }
 
+  @Override
   public Object[] toArray() {
     Object[] result = new Object[this.size()];
     for (int i=idHead; i<idLimit; i++)  {
@@ -134,6 +150,7 @@ public class FunUnmodifArrayList<T> extends AbstractList<T> implements FunList<T
     }
   }
 
+  @Override
   public boolean contains(Object object) {    return indexOf(object) != -1;  }
 
   @Override
@@ -142,7 +159,14 @@ public class FunUnmodifArrayList<T> extends AbstractList<T> implements FunList<T
   @Override
   public ListIterator<T> listIterator() {    return this.listIterator(0);  }
 
+  @Override
   public ListIterator<T> listIterator(int pos) {    return new ListIter<>(pos);  }
+
+  @Override
+  public FunList<T> slice(int fromIndex, int toIndex) {
+    if (toIndex==-1) toIndex = this.size();
+    return new FunUnmodifArrayList<>(listCopy, idHead+fromIndex, idHead+toIndex);
+  }
 
   /*
     Unsupported writeable methods

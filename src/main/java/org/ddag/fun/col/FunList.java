@@ -51,6 +51,8 @@ public interface FunList<T> extends List<T>, FunMatching, FunObject {
 
   T head();
 
+  T last();
+
   default Optional<T>  headOpt() { return this.isEmpty() ? Optional.empty() : Optional.of(this.head()); }
 
   FunList<T> tail();
@@ -136,13 +138,13 @@ public interface FunList<T> extends List<T>, FunMatching, FunObject {
     )._1();
   }
 
-  default FunLinkedList<T> take(int n)     {    return this.slice(0, n);  }
+  default FunList<T> take(int n)     {    return this.slice(0, n);  }
 
-  default FunLinkedList<T> takeRight(int n) {    return this.slice(this.size() - n,  -1);  }
+  default FunList<T> takeRight(int n) {    return this.slice(this.size() - n,  -1);  }
 
-  default FunLinkedList<T> slice(final int start, final int stop) { return filterWithIndex((el, id) -> id >= start, stop);  }
+  FunList<T> slice(final int start, final int stop);
 
-  default FunLinkedList<T> drop(int n) {    return this.slice(n, -1);  }
+  default FunList<T> drop(int n) {    return this.slice(n, -1);  }
 
   default FunLinkedList<T> distinct() { return foldLeft(new FunLinkedList<>(), (list, e) -> list.contains(e) ? list : list.mAdded(e) ); }
 

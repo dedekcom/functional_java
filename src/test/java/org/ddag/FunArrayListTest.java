@@ -8,6 +8,9 @@ package org.ddag;
 
 import org.ddag.fun.col.FunList;
 import org.junit.Test;
+
+import java.util.NoSuchElementException;
+
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 
@@ -42,4 +45,8 @@ public class FunArrayListTest {
     assertEquals(FunList.of(1, 2, 3,4,5), FunList.of(5,4,3,2,1).toUnmodifArrayList().reversed());
   }
 
+  @Test(expected = NoSuchElementException.class)
+  public void testLast() {
+    FunList.of().toUnmodifArrayList().last();
+  }
 }

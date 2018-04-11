@@ -26,38 +26,51 @@ public class FunLinkedList<T> extends LinkedList<T> implements FunList<T> {
 
   public FunLinkedList(Collection<? extends T> c) {    super(c);  }
 
+  @Override
   public FunLinkedList<T> toFunLinkedList() { return this; }
 
   /*
     Immutable methods that create a new list
    */
 
+  @Override
   public FunList<T> pushed(T el)      {    return new FunLinkedList<>(this).mPushed(el);  }
 
+  @Override
   public FunList<T> added(T el)       {    return new FunLinkedList<>(this).mAdded(el);  }
 
+  @Override
   public FunList<T> removed(T el)     {    return new FunLinkedList<>(this).mRemoved(el);  }
 
-  public FunLinkedList<T> duplicate() { return new FunLinkedList<>(this); }
-
+  @Override
   public FunList<T> addedCol(Collection<? extends T> col) {    return new FunLinkedList<>(this).mAddedCol(col);  }
 
+  @Override
   public FunList<T> reversed()  {    return foldLeft(new FunLinkedList<>(), FunLinkedList::mPushed);  }
+
+  @Override
+  public FunList<T> slice(int start, int stop) {    return filterWithIndex((el, id) -> id >= start, stop);  }
+
+  public FunLinkedList<T> duplicate() { return new FunLinkedList<>(this); }
 
   /*
     Implementation of interfaces and static methods
    */
-
+  @Override
   public T head()     { return this.getFirst(); }
+
+  @Override
+  public T last()   { return this.getLast(); }
 
   // don't use within recursive algorithms because it creates new collections every time
   // use Unmodified lists instead
+  @Override
   public FunList<T> tail() {    return new FunLinkedList<>(this).mTail();  }
 
   /*
   Mutable methods that change current list
  */
-  public FunLinkedList<T> mTail()           {    this.removeFirst();    return this;  }
+  public FunLinkedList<T> mTail()           {    this.removeFirst();   return this;  }
 
   public FunLinkedList<T> mPushed(T el)     {    this.push(el);    return this;  }
 

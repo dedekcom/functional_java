@@ -25,6 +25,7 @@ import static org.ddag.fun.match.FunMatch.matches;
 import static org.ddag.fun.match.FunMatch.matchesOptOf;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
@@ -244,5 +245,10 @@ public class FunLinkedListTest {
 
   private int sum(FunList<Integer> list, int sum) {
     return list.isEmpty() ? sum : sum(list.tail(), sum + list.head());
+  }
+
+  @Test(expected = NoSuchElementException.class)
+  public void testLast() {
+    FunList.of().toFunLinkedList().last();
   }
 }
