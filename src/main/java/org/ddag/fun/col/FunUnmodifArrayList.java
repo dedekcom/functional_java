@@ -14,9 +14,11 @@ import java.util.NoSuchElementException;
 import java.util.function.Consumer;
 
 /*
-  This is shared unmodifiable List which should be used only temporary within recursive algorithms.
-
-  The only reason why the FunUnmodifArrayList was implemented was O(1) tail() method.
+  Unmodified Array List
+  size()    : O(1)
+  pushed(x) : O(n)
+  added(x)  : O(n)
+  tail()    : O(1)
  */
 @SuppressWarnings({"unchecked", "WeakerAccess"})
 public class FunUnmodifArrayList<T> extends AbstractList<T> implements FunList<T> {

@@ -11,13 +11,24 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.function.BiFunction;
 
-/*
-  Scala-like List collection
 
-  methods starting with 'm' are mutable (they don't create a new list as a result)
+/*
+  Linked List
+  size()    : O(1)
+  pushed(x) : O(n)
+  added(x)  : O(n)
+  tail()    : O(n)
+
+  Methods starting with 'm' are mutable (they don't create a new list as a result)
    - it makes faster computing but causes side effects
   use them after methods which always create a new instance i.e.:
   list.filter(e -> e > 0).mPushed(10).mReversed();
+
+  In such case:
+  size()      : O(1)
+  mPushed(x)  : O(1)
+  mAdded(x)   : O(1)
+  mTail()     : O(1) *dangerous if called before head(), better to use Unmodifiable List
  */
 @SuppressWarnings("WeakerAccess")
 public class FunLinkedList<T> extends LinkedList<T> implements FunList<T> {
