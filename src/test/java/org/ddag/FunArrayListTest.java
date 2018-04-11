@@ -7,6 +7,7 @@
 package org.ddag;
 
 import org.ddag.fun.col.FunList;
+import org.ddag.fun.col.FunUnmodifArrayList;
 import org.junit.Test;
 
 import java.util.NoSuchElementException;
@@ -19,6 +20,7 @@ public class FunArrayListTest {
   @Test
   public void testSublists() {
     FunList<Integer> list = FunList.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10 );
+    FunList<Integer> list2 = list.toUnmodifArrayList();
 
     assertEquals(FunList.of(3, 4, 5, 6, 7, 8, 9, 10).toUnmodifArrayList(), list.toUnmodifArrayList().tail().tail());
 
@@ -43,6 +45,18 @@ public class FunArrayListTest {
     assertEquals(FunList.of(3,4,5), FunList.of(3, 4, 5, 6).toUnmodifArrayList().removed(6));
 
     assertEquals(FunList.of(1, 2, 3,4,5), FunList.of(5,4,3,2,1).toUnmodifArrayList().reversed());
+
+    assertEquals(list, list.toUnmodifArrayList().slice(0,list.size()-2).added(9).added(10));
+    assertEquals(list2, list);
+
+    FunUnmodifArrayList<Integer> l1 = FunList.of(1,2,3,4).toUnmodifArrayList();
+    FunList<Integer> l2 = l1.added(5);
+    FunList<Integer> l3 = l1.added(6);
+    FunList<Integer> l4 = l1.addedCol(FunList.of(5,6,7));
+    assertEquals(FunList.of(1,2,3,4), l1);
+    assertEquals(FunList.of(1,2,3,4,5), l2);
+    assertEquals(FunList.of(1,2,3,4,6), l3);
+    assertEquals(FunList.of(1,2,3,4,5,6,7), l4);
   }
 
   @Test(expected = NoSuchElementException.class)

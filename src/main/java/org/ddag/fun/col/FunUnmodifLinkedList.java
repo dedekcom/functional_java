@@ -22,20 +22,22 @@ public class FunUnmodifLinkedList<T> extends AbstractList<T> implements FunList<
 
   public FunUnmodifLinkedList() {}
 
-  public FunUnmodifLinkedList(FunUnmodifLinkedList<T> list) {
-    this.first = list.first;
-    this.last = list.last;
-  }
-
   public FunUnmodifLinkedList(Collection<? extends T> c) {
-    Iterator<? extends T> it = c.iterator();
-    while (it.hasNext()) {
-      if (last == null)  {
-        last = new Node<>(it.next(), null);
-        first = last;
-      } else {
-        last.next = new Node<>(it.next(), null);
-        last = last.next;
+    if (c instanceof FunUnmodifLinkedList && (
+            ((FunUnmodifLinkedList) c).last == null
+            || ((FunUnmodifLinkedList) c).last.next == null)) {
+      this.first = ((FunUnmodifLinkedList)c).first;
+      this.last = ((FunUnmodifLinkedList)c).last;
+    } else {
+      Iterator<? extends T> it = c.iterator();
+      while (it.hasNext()) {
+        if (last == null) {
+          last = new Node<>(it.next(), null);
+          first = last;
+        } else {
+          last.next = new Node<>(it.next(), null);
+          last = last.next;
+        }
       }
     }
   }
@@ -62,19 +64,21 @@ public class FunUnmodifLinkedList<T> extends AbstractList<T> implements FunList<
   public FunList<T> added(T el) {
     Node<T> newNode = new Node<>(el, null);
     if (last == null) {
-      first = newNode;
-      last = first;
+      return new FunUnmodifLinkedList<>(newNode, newNode);
     } else {
-      last.next = newNode;
-      last = last.next;
+      if (last.next == null) {
+        last.next = newNode;
+        return new FunUnmodifLinkedList<>(first, last.next);
+      } else {
+        return new FunUnmodifLinkedList<T>().addedCol(this).added(el);
+      }
     }
-    return this;
   }
 
   @Override
   public FunList<T> pushed(T el) {
     if (first == null) {
-      return new FunUnmodifLinkedList<>(new Node<>(el, null), last);
+      return new FunUnmodifLinkedList<>(new Node<>(el, null), null);
     } else {
       return new FunUnmodifLinkedList<>(new Node<>(el, first), last);
     }
@@ -98,6 +102,7 @@ public class FunUnmodifLinkedList<T> extends AbstractList<T> implements FunList<
     FunUnmodifLinkedList<T> list2 = new FunUnmodifLinkedList<>(col);
     if (list1.last == null) return list2;
     list1.last.next = list2.first;
+    list1.last = list2.last;
     return list1;
   }
 
