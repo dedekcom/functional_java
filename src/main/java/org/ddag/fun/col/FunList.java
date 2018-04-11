@@ -63,6 +63,8 @@ public interface FunList<T> extends List<T>, FunMatching, FunObject {
 
   FunList<T> reversed();
 
+  FunList<T> addedCol(Collection<? extends T> col);
+
   default boolean nonEmpty() { return !isEmpty(); }
 
   default <R> FunLinkedList<R> map(Function<? super T, R> fun) {

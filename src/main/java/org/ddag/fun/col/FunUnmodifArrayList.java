@@ -81,6 +81,18 @@ public class FunUnmodifArrayList<T> extends AbstractList<T> implements FunList<T
     return new FunUnmodifArrayList<>(o);
   }
 
+  public FunList<T> addedCol(Collection<? extends T> c) {
+    Object[] o = new Object[this.size() + c.size()];
+    copyArray(o, 0, idHead, idLimit);
+    Iterator<? extends T> it = c.iterator();
+    int id = this.size();
+    while (it.hasNext()) {
+      o[id] = it.next();
+      id++;
+    }
+    return new FunUnmodifArrayList<>(o);
+  }
+
   public boolean isEmpty() { return idHead >= idLimit; }
 
   public T head()           { return get(0);  }

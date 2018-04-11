@@ -32,15 +32,15 @@ public class FunLinkedList<T> extends LinkedList<T> implements FunList<T> {
     Immutable methods that create a new list
    */
 
-  public FunLinkedList<T> pushed(T el)      {    return new FunLinkedList<>(this).mPushed(el);  }
+  public FunList<T> pushed(T el)      {    return new FunLinkedList<>(this).mPushed(el);  }
 
-  public FunLinkedList<T> added(T el)       {    return new FunLinkedList<>(this).mAdded(el);  }
+  public FunList<T> added(T el)       {    return new FunLinkedList<>(this).mAdded(el);  }
 
-  public FunLinkedList<T> removed(T el)     {    return new FunLinkedList<>(this).mRemoved(el);  }
+  public FunList<T> removed(T el)     {    return new FunLinkedList<>(this).mRemoved(el);  }
 
   public FunLinkedList<T> duplicate() { return new FunLinkedList<>(this); }
 
-  public FunLinkedList<T> addedCol(Collection<? extends T> list) {    return new FunLinkedList<>(this).mAddedCol(list);  }
+  public FunList<T> addedCol(Collection<? extends T> col) {    return new FunLinkedList<>(this).mAddedCol(col);  }
 
   public FunList<T> reversed()  {    return foldLeft(new FunLinkedList<>(), FunLinkedList::mPushed);  }
 

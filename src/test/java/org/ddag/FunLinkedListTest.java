@@ -65,7 +65,7 @@ public class FunLinkedListTest {
     assertEquals(FunList.of(1,2,3,4,5,6,7,8), FunList.of(1, 2, 3, 4, Optional.empty(),
             Optional.of(5), FunList.of(6,7,8)).flatten());
 
-    assertEquals(l2.toFunLinkedList().pushed("x").mPushed(Optional.of("x")).map( e -> {
+    assertEquals(l2.toFunLinkedList().mPushed("x").mPushed(Optional.of("x")).map( e -> {
       if (matches(e, Integer.class))              return (Integer)e;
       else if (matches(e, Optional.empty()))      return -10;
       else if (matchesOptOf(e, Integer.class))     return (Integer)(((Optional)e).get());

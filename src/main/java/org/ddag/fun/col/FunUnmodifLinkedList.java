@@ -21,10 +21,6 @@ public class FunUnmodifLinkedList<T> extends AbstractList<T> implements FunList<
 
   public FunUnmodifLinkedList() {}
 
-  public FunUnmodifLinkedList(FunUnmodifLinkedList list) {
-    this.first = list.first;
-  }
-
   public FunUnmodifLinkedList(Collection<? extends T> c) {
     Iterator<? extends T> it = c.iterator();
     Node<T> n = null;
@@ -74,6 +70,15 @@ public class FunUnmodifLinkedList<T> extends AbstractList<T> implements FunList<
       result = (FunUnmodifLinkedList<T>)result.pushed(e);
     }
     return result;
+  }
+
+  public FunList<T> addedCol(Collection<? extends T> col) {
+    FunUnmodifLinkedList<T> list1 = new FunUnmodifLinkedList(this);
+    FunUnmodifLinkedList<T> list2 = new FunUnmodifLinkedList<>(col);
+    Node<T> last = list1.lastNode();
+    if (last == null) return list2;
+    last.next = list2.first;
+    return list1;
   }
 
   private Node<T> node(int id)      {

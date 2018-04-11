@@ -6,7 +6,6 @@
 
 package org.ddag;
 
-import org.ddag.fun.col.FunLinkedList;
 import org.ddag.fun.col.FunList;
 import org.junit.Test;
 import static junit.framework.TestCase.assertEquals;
