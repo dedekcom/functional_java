@@ -87,7 +87,11 @@ public class FunLinkedList<T> extends LinkedList<T> implements FunList<T> {
 
   public FunLinkedList<T> mAdded(T el)      {    this.add(el);    return this;  }
 
+  public FunLinkedList<T> mAddedAt(int pos, T el)    {    this.add(pos, el);    return this;  }
+
   public FunLinkedList<T> mRemoved(T el)    {    this.remove(el);    return this;  }
+
+  public FunLinkedList<T> mRemovedAt(int pos)    {    this.remove(pos);    return this;  }
 
   public FunLinkedList<T> mReversed()       {    Collections.reverse(this);    return this;  }
 
