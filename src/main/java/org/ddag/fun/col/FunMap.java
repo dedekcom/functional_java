@@ -10,10 +10,13 @@ import org.ddag.fun.match.FunMatching;
 import org.ddag.fun.tuple.Tuple2;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 /*
   Scala-like Map collection
@@ -34,6 +37,19 @@ public class FunMap<K, V> extends LinkedHashMap<K, V> implements FunObject, FunM
     FunMap<K, R> m = new FunMap<>();
     this.forEach((k, v) -> m.put(k, fun.apply(k, v)));
     return m;
+  }
+
+  public FunMap<K, V> filter(BiFunction<K, V, Boolean> predicate) {
+    FunMap<K, V> m = new FunMap<>();
+    this.forEach((k, v) -> {
+      if (predicate.apply(k, v))
+        m.put(k, v);
+    } );
+    return m;
+  }
+
+  public FunMap<K, V> filterKeys(Function<K, Boolean> predicate) {
+    return this.filter((k, v) -> predicate.apply(k));
   }
 
   public FunLinkedList<Tuple2<K, V>> toList() {

@@ -22,7 +22,7 @@ public class FunMapTest {
   @Test
   public void testScalaMap() {
     Tuple2<String, Integer> p = new Tuple2<>("k", 5);
-    p.print();
+    assertEquals(p.toString(), "(k, 5)");
 
     FunMap<String, Object> fm = FunMap.of(T2("ctyp", "fmtrait"), T2("almsum", 5));
     FunMap<String, Object> m = FunMap.of(T2("netype", "f8"), T2("name", "fsp3000c"),
@@ -44,6 +44,12 @@ public class FunMapTest {
     FunMap<String, Object> fm2 = FunMap.of(T2("almsum", 5), T2("ctyp", "fmtrait"));
 
     assertTrue(fm.equals(fm2));
+
+    assertEquals( FunMap.of(T2("1", 1), T2("2", 2), T2("3",3)).filter((k,v ) -> v ==2 ),
+            FunMap.of(T2("2", 2)) );
+
+    assertEquals( FunMap.of(T2("1", 1), T2("2", 2), T2("3",3)).filterKeys( k -> FunList.of("2","5","7").contains(k)),
+            FunMap.of(T2("2", 2)) );
   }
 
   @Test
