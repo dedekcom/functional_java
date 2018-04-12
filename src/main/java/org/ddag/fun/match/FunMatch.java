@@ -50,10 +50,10 @@ public interface FunMatch {
   }
 
   @SuppressWarnings("unchecked")
-  static <R> R match(Object o, FunGetIf firstCase, FunGetIf... cases) {
+  static <R> R match(Object o, FunGetIf firstCase, FunGetIf... nextCases) {
     Optional<Object> res = firstCase.getOpt(o);
     if (res.isPresent()) return (R)res.get();
-    for (FunGetIf c: cases) {
+    for (FunGetIf c: nextCases) {
       res = c.getOpt(o);
       if (res.isPresent())
         return (R)res.get();
@@ -61,15 +61,27 @@ public interface FunMatch {
     throw new FunMatchException();
   }
 
+  @SuppressWarnings("unchecked")
+  static <R> Optional<R> partialMatch(Object o, FunGetIf firstCase, FunGetIf... nextCases) {
+    Optional<Object> res = firstCase.getOpt(o);
+    if (res.isPresent()) return Optional.of((R)res.get());
+    for (FunGetIf c: nextCases) {
+      res = c.getOpt(o);
+      if (res.isPresent())
+        return Optional.of((R)res.get());
+    }
+    return Optional.empty();
+  }
+
   // execute void function if pattern matches
   static FunRunIf runIf(Consumer<Object> executeIfMatches, Object firstPattern, Object... pattern) {
     return new FunRunIf(executeIfMatches, firstPattern, pattern);
   }
 
-  static void match(Object o, FunRunIf firstCase, FunRunIf... cases) {
+  static void match(Object o, FunRunIf firstCase, FunRunIf... nextCases) {
     boolean res = firstCase.get(o);
     if (res) return;
-    for (FunRunIf c: cases) {
+    for (FunRunIf c: nextCases) {
       res = c.get(o);
       if (res) return;
     }

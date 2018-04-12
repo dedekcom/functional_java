@@ -6,25 +6,22 @@
 
 package org.ddag;
 
-import junit.framework.TestCase;
+
 import org.ddag.fun.Fumeric;
 import org.ddag.fun.col.FunLinkedList;
 import static org.ddag.fun.col.FunLinkedList.Nil;
 import org.ddag.fun.FunString;
 import org.ddag.fun.col.FunList;
 import org.ddag.fun.col.FunUnmodifArrayList;
-import org.ddag.fun.col.FunUnmodifLinkedList;
 import org.ddag.fun.tuple.FunTuple;
 
-import static org.ddag.fun.func.TailRecursive.Continue;
-import static org.ddag.fun.func.TailRecursive.Return;
-import static org.ddag.fun.func.TailRecursive.tailRec;
 import static org.ddag.fun.tuple.FunTuple.T2;
 import org.ddag.fun.tuple.Tuple2;
 import org.junit.Test;
 import static org.ddag.fun.match.FunMatch.match;
 import static org.ddag.fun.match.FunMatch.matches;
 import static org.ddag.fun.match.FunMatch.matchesOptOf;
+import static org.ddag.fun.match.FunMatch.getIf;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -110,6 +107,11 @@ public class FunLinkedListTest {
 
     assertEquals(FunList.of("a", "b", "z").min(), "a");
     assertTrue(FunList.of(10, 3, 333, 2, 15).max().equals(333));
+
+    assertEquals(FunList.of(1,2,3,4).collect(
+            getIf(e -> String.valueOf(e), 2),
+            getIf(e -> "four", 4)
+    ), FunList.of("2", "four"));
   }
 
   @Test

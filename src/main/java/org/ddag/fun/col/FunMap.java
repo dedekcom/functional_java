@@ -6,6 +6,7 @@
 package org.ddag.fun.col;
 
 import org.ddag.fun.FunObject;
+import org.ddag.fun.match.FunMatch;
 import org.ddag.fun.match.FunMatching;
 import org.ddag.fun.tuple.Tuple2;
 
@@ -14,6 +15,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -44,6 +46,15 @@ public class FunMap<K, V> extends LinkedHashMap<K, V> implements FunObject, FunM
     this.forEach((k, v) -> {
       if (predicate.apply(k, v))
         m.put(k, v);
+    } );
+    return m;
+  }
+
+  public <R> FunMap<K, R> collect(FunMatch.FunGetIf firstCase, FunMatch.FunGetIf... cases) {
+    FunMap<K, R> m = new FunMap<>();
+    this.forEach( (k, v) -> {
+      Optional<R> res = FunMatch.partialMatch(v, firstCase, cases);
+      res.ifPresent(newV -> m.put(k, newV));
     } );
     return m;
   }

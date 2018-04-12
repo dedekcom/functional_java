@@ -8,6 +8,7 @@ package org.ddag.fun.col;
 import org.ddag.fun.Fumeric;
 import org.ddag.fun.FunObject;
 import org.ddag.fun.FunString;
+import org.ddag.fun.match.FunMatch;
 import org.ddag.fun.match.FunMatching;
 import org.ddag.fun.tuple.Tuple2;
 
@@ -92,6 +93,15 @@ public interface FunList<T> extends List<T>, FunMatching, FunObject {
     for (T e: this) {
       if (predicate.test(e))
         r.add(e);
+    }
+    return r;
+  }
+
+  default <R> FunLinkedList<R> collect(FunMatch.FunGetIf firstCase, FunMatch.FunGetIf... cases) {
+    FunLinkedList<R> r = new FunLinkedList<>();
+    for (T e: this) {
+      Optional<R> res = FunMatch.partialMatch(e, firstCase, cases);
+      res.ifPresent(r::add);
     }
     return r;
   }

@@ -10,6 +10,7 @@ import org.ddag.fun.col.FunList;
 import org.ddag.fun.col.FunMap;
 import static org.ddag.fun.col.FunMap.Map;
 import org.ddag.fun.match.FunMatch;
+import static org.ddag.fun.match.FunMatch.getIf;
 import static org.ddag.fun.tuple.FunTuple.T2;
 import org.ddag.fun.tuple.Tuple2;
 import org.junit.Test;
@@ -37,6 +38,13 @@ public class FunMapTest {
       }
     });
     m2.print();
+
+    assertEquals( FunMap.of(T2("netype", "f7"), T2("name", "old"), T2("layers", "list") ),
+      m.collect(
+         getIf( v -> "f7", "f8"),
+         getIf( v -> "old", "fsp3000c"),
+         getIf( v -> "list", FunList.class)
+      ));
 
     assertTrue ( m2.toList().map(pair -> pair._2()).equals(
             FunList.of("F8", "fsp3000c", new FunMap<>(fm), FunList.of("ots", "oms", "ety6") ) ) );
