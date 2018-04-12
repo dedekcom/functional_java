@@ -107,6 +107,9 @@ public class FunLinkedListTest {
 
     assertEquals(FunList.of(T2(1, "a"), T2(2, "b")),  FunList.of(1, 2, 3).zip(FunList.of("a", "b")));
     assertEquals(FunList.of(T2(1, "a"), T2(2, "b")),  FunList.of(1, 2).zip(FunList.of("a", "b", "c")));
+
+    assertEquals(FunList.of("a", "b", "z").min(), "a");
+    assertTrue(FunList.of(10, 3, 333, 2, 15).max().equals(333));
   }
 
   @Test

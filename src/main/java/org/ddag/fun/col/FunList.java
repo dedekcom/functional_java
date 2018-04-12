@@ -164,6 +164,19 @@ public interface FunList<T> extends List<T>, FunMatching, FunObject {
 
   default double avg() {    return Fumeric.div(this.sum(), (double)this.size()).doubleValue();  }
 
+  /*
+    min & max throw NoSuchElementException if empty list
+   */
+  @SuppressWarnings("unchecked")
+  default <T extends Comparable<? super T>> T min() {
+    return foldLeft((T)this.head(), (min, el) -> ((T)el).compareTo(min) < 0 ? (T)el : min);
+  }
+
+  @SuppressWarnings("unchecked")
+  default <T extends Comparable<? super T>> T max() {
+    return foldLeft((T)this.head(), (max, el) -> ((T)el).compareTo(max) > 0 ? (T)el : max);
+  }
+
   @SuppressWarnings("unchecked")
   default  <R> FunLinkedList<R> flatten() {
     return foldLeft(new FunLinkedList<R>(), (acc, e) -> match( e,
