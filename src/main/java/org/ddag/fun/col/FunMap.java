@@ -33,13 +33,13 @@ public class FunMap<K, V> extends LinkedHashMap<K, V> implements FunObject, FunM
 
   public FunMap(Map<? extends K, ? extends V> m) { super(m); }
 
-  public <R> FunMap<K, R> transform(BiFunction<K, V, R> fun) {
+  public <R> FunMap<K, R> transform(BiFunction<? super K, ? super V, R> fun) {
     FunMap<K, R> m = new FunMap<>();
     this.forEach((k, v) -> m.put(k, fun.apply(k, v)));
     return m;
   }
 
-  public FunMap<K, V> filter(BiFunction<K, V, Boolean> predicate) {
+  public FunMap<K, V> filter(BiFunction<? super K,? super V, Boolean> predicate) {
     FunMap<K, V> m = new FunMap<>();
     this.forEach((k, v) -> {
       if (predicate.apply(k, v))
@@ -48,7 +48,7 @@ public class FunMap<K, V> extends LinkedHashMap<K, V> implements FunObject, FunM
     return m;
   }
 
-  public FunMap<K, V> filterKeys(Function<K, Boolean> predicate) {
+  public FunMap<K, V> filterKeys(Function<? super K, Boolean> predicate) {
     return this.filter((k, v) -> predicate.apply(k));
   }
 
