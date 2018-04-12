@@ -50,10 +50,10 @@ public class FunMap<K, V> extends LinkedHashMap<K, V> implements FunObject, FunM
     return m;
   }
 
-  public <R> FunMap<K, R> collect(FunMatch.FunGetIf firstCase, FunMatch.FunGetIf... cases) {
+  public <R> FunMap<K, R> collect(FunMatch.FunGetIf firstCase, FunMatch.FunGetIf... restCases) {
     FunMap<K, R> m = new FunMap<>();
     this.forEach( (k, v) -> {
-      Optional<R> res = FunMatch.partialMatch(v, firstCase, cases);
+      Optional<R> res = FunMatch.partialMatch(v, firstCase, restCases);
       res.ifPresent(newV -> m.put(k, newV));
     } );
     return m;
@@ -79,10 +79,10 @@ public class FunMap<K, V> extends LinkedHashMap<K, V> implements FunObject, FunM
     return this;
   }
 
-  public boolean matches(Object first, Object... params) {
-    return params.length == 0 && (
-            ((first instanceof Class) && ((Class)first).isInstance(this)) ||
-            this.equals(first)
+  public boolean matches(Object firstPattern, Object... restPatterns) {
+    return restPatterns.length == 0 && (
+            ((firstPattern instanceof Class) && ((Class) firstPattern).isInstance(this)) ||
+            this.equals(firstPattern)
     );
   }
 

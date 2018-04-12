@@ -97,10 +97,10 @@ public interface FunList<T> extends List<T>, FunMatching, FunObject {
     return r;
   }
 
-  default <R> FunLinkedList<R> collect(FunMatch.FunGetIf firstCase, FunMatch.FunGetIf... cases) {
+  default <R> FunLinkedList<R> collect(FunMatch.FunGetIf firstCase, FunMatch.FunGetIf... restCases) {
     FunLinkedList<R> r = new FunLinkedList<>();
     for (T e: this) {
-      Optional<R> res = FunMatch.partialMatch(e, firstCase, cases);
+      Optional<R> res = FunMatch.partialMatch(e, firstCase, restCases);
       res.ifPresent(r::add);
     }
     return r;
@@ -231,8 +231,8 @@ public interface FunList<T> extends List<T>, FunMatching, FunObject {
     return s.toString();
   }
 
-  default boolean matches(Object first, Object... params) {
-    return ListMatches.matches(this, first, params);
+  default boolean matches(Object firstPattern, Object... restPatterns) {
+    return ListMatches.matches(this, firstPattern, restPatterns);
   }
 
 }

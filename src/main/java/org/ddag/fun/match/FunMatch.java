@@ -24,13 +24,13 @@ public interface FunMatch {
       return false;
   }
 
-  static boolean matches(Object o, Object first, Object... params) {
+  static boolean matches(Object o, Object firstPattern, Object... restPatterns) {
     if (FunMatching.class.isInstance(o))  {
-      return ((FunMatching)o).matches(first, params);
-    } else if (params.length == 0) {
-      return (first instanceof Class) ? ((Class) first).isInstance(o) : o.equals(first);
+      return ((FunMatching)o).matches(firstPattern, restPatterns);
+    } else if (restPatterns.length == 0) {
+      return (firstPattern instanceof Class) ? ((Class) firstPattern).isInstance(o) : o.equals(firstPattern);
     } else {
-      return params.length == 1 && first.equals(Optional.class) && matchesOptOf(o, params[0]);
+      return restPatterns.length == 1 && firstPattern.equals(Optional.class) && matchesOptOf(o, restPatterns[0]);
     }
   }
 
@@ -45,15 +45,15 @@ public interface FunMatch {
  */
 
   // apply function that returns Object if pattern matches
-  static FunGetIf getIf(Function<Object, Object> executeIfMatches, Object firstPattern, Object... pattern) {
-    return new FunGetIf(executeIfMatches, firstPattern, pattern);
+  static FunGetIf getIf(Function<Object, Object> executeIfMatches, Object firstPattern, Object... restPatterns) {
+    return new FunGetIf(executeIfMatches, firstPattern, restPatterns);
   }
 
   @SuppressWarnings("unchecked")
-  static <R> R match(Object o, FunGetIf firstCase, FunGetIf... nextCases) {
+  static <R> R match(Object o, FunGetIf firstCase, FunGetIf... restCases) {
     Optional<Object> res = firstCase.getOpt(o);
     if (res.isPresent()) return (R)res.get();
-    for (FunGetIf c: nextCases) {
+    for (FunGetIf c: restCases) {
       res = c.getOpt(o);
       if (res.isPresent())
         return (R)res.get();
@@ -62,10 +62,10 @@ public interface FunMatch {
   }
 
   @SuppressWarnings("unchecked")
-  static <R> Optional<R> partialMatch(Object o, FunGetIf firstCase, FunGetIf... nextCases) {
+  static <R> Optional<R> partialMatch(Object o, FunGetIf firstCase, FunGetIf... restCases) {
     Optional<Object> res = firstCase.getOpt(o);
     if (res.isPresent()) return Optional.of((R)res.get());
-    for (FunGetIf c: nextCases) {
+    for (FunGetIf c: restCases) {
       res = c.getOpt(o);
       if (res.isPresent())
         return Optional.of((R)res.get());
@@ -74,8 +74,8 @@ public interface FunMatch {
   }
 
   // execute void function if pattern matches
-  static FunRunIf runIf(Consumer<Object> executeIfMatches, Object firstPattern, Object... pattern) {
-    return new FunRunIf(executeIfMatches, firstPattern, pattern);
+  static FunRunIf runIf(Consumer<Object> executeIfMatches, Object firstPattern, Object... restPatterns) {
+    return new FunRunIf(executeIfMatches, firstPattern, restPatterns);
   }
 
   static void match(Object o, FunRunIf firstCase, FunRunIf... nextCases) {
@@ -93,7 +93,7 @@ public interface FunMatch {
    */
 
   // calling Case(...) is the only allowed way to create object FunCase
-  static Supplier<FunCase> Case(Object firstParam, Object... params) { return () -> new FunCase(firstParam, params); }
+  static Supplier<FunCase> Case(Object firstPattern, Object... restPatterns) { return () -> new FunCase(firstPattern, restPatterns); }
 
   static <T, R> R match(T o, Supplier<FunCase> p1, Function<T, R> fun1, Supplier<FunCase> p2, Function<T, R> fun2) {
     if (p1.get().get(o)) return fun1.apply(o);

@@ -23,24 +23,24 @@ abstract public class FunTuple implements FunObject, FunMatching {
 
   public FunLinkedList<Object> toList() { return new FunLinkedList<>(Arrays.asList(values)); }
 
-  public boolean matches(Object first, Object... params) {
-    if ((first instanceof Class) && ((Class)first).isInstance(this)) {
-      if (params.length == 0)
+  public boolean matches(Object firstPattern, Object... restPatterns) {
+    if ((firstPattern instanceof Class) && ((Class) firstPattern).isInstance(this)) {
+      if (restPatterns.length == 0)
         return true;    // match only FunObject type
-      if (this.size() != params.length)
+      if (this.size() != restPatterns.length)
         return false;   // wrong tuple size
-      for (int i=0; i<params.length; i++) {
-        if (params[i] instanceof Class )  {
-          if (!((Class)params[i]).isInstance(this._id(i)))
+      for (int i = 0; i< restPatterns.length; i++) {
+        if (restPatterns[i] instanceof Class )  {
+          if (!((Class) restPatterns[i]).isInstance(this._id(i)))
             return false;
         } else {
-          if (!this._id(i).equals(params[i]))
+          if (!this._id(i).equals(restPatterns[i]))
             return false;
         }
       }
       return true;
     } else {
-      return params.length == 0 && this.equals(first);
+      return restPatterns.length == 0 && this.equals(firstPattern);
     }
   }
 
