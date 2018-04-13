@@ -1,6 +1,6 @@
 /*
  *
- * Dominik Dagiel 03.2018
+ * Dominik Dagiel 04.2018
  *
  */
 package org.ddag;
@@ -93,7 +93,7 @@ public class TypesTest {
     assertEquals( FunMap.of( T2(1, 1), T2(2, 2), T2(3, 3), T2(4, 4) ),
             mapAA.collect(
                     getIf( a -> -(a.get()+1), B.class),
-                    getIf( a -> a.get(), A.class)
+                    getIf( A::get, A.class)
             ));
   }
 
