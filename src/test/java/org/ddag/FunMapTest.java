@@ -39,9 +39,9 @@ public class FunMapTest {
     });
     m2.print();
 
-    assertEquals( FunMap.of(T2("netype", "f7"), T2("name", "old"), T2("layers", "list") ),
+    assertEquals( FunMap.of(T2("netype", "adv"), T2("name", "old"), T2("layers", "list") ),
       m.collect(
-         getIf( v -> "f7", "f8"),
+         getIf( v -> "adv", v -> FunList.of("f7","f8","f9").contains(v)),
          getIf( v -> "old", "fsp3000c"),
          getIf( v -> "list", FunList.class)
       ));
