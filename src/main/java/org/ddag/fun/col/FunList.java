@@ -97,9 +97,17 @@ public interface FunList<T> extends List<T>, FunMatching, FunObject {
     return r;
   }
 
-  default <R> FunLinkedList<R> collect(FunMatch.FunGetIf firstCase, FunMatch.FunGetIf... restCases) {
+  /* cannot use SafeVarargs than we need to copy this to each List */
+  /*default <R> FunLinkedList<R> collect(FunMatch.FunGetIf<T, R> firstCase, FunMatch.FunGetIf<T, R>... restCases) {
+    return collect(this, firstCase, restCases);
+  }*/
+
+  <R> FunLinkedList<R> collect(FunMatch.FunGetIf<T, R> firstCase, FunMatch.FunGetIf<T, R>... restCases);
+
+  @SafeVarargs
+  static <T, R> FunLinkedList<R> collect(List<T> list, FunMatch.FunGetIf<T, R> firstCase, FunMatch.FunGetIf<T, R>... restCases) {
     FunLinkedList<R> r = new FunLinkedList<>();
-    for (T e: this) {
+    for (T e: list) {
       Optional<R> res = FunMatch.partialMatch(e, firstCase, restCases);
       res.ifPresent(r::add);
     }

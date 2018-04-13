@@ -5,6 +5,8 @@
  */
 package org.ddag.fun.col;
 
+import org.ddag.fun.match.FunMatch;
+
 import java.util.AbstractList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -203,6 +205,12 @@ public class FunUnmodifLinkedList<T> extends AbstractList<T> implements FunList<
 
   @Override
   public ListIterator<T> listIterator(int pos) {    return new ListItr(pos);  }
+
+  // need to copy that to use SafeVarargs
+  @SafeVarargs
+  public final <R> FunLinkedList<R> collect(FunMatch.FunGetIf<T, R> firstCase, FunMatch.FunGetIf<T, R>... restCases) {
+    return FunList.collect(this, firstCase, restCases);
+  }
 
   /*
     Unsupported writeable methods

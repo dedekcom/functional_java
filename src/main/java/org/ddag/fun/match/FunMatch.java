@@ -9,6 +9,7 @@ package org.ddag.fun.match;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /*
@@ -44,9 +45,13 @@ public interface FunMatch {
     generic matching
  */
 
-  // apply function that returns Object if pattern matches
+  // apply function that returns result<R> if pattern matches
   static <T, R> FunGetIf<T, R> getIf(Function<T, R> executeIfMatches, Object firstPattern, Object... restPatterns) {
     return new FunGetIf<>(executeIfMatches, firstPattern, restPatterns);
+  }
+
+  static <T, R> FunGetIf<T, R> getIf(Function<T, R> executeIfMatches, Predicate<T> predicate) {
+    return new FunGetIf<>(executeIfMatches, predicate);
   }
 
   @SafeVarargs
@@ -61,7 +66,7 @@ public interface FunMatch {
     throw new FunMatchException();
   }
 
-  @SuppressWarnings("unchecked")
+  @SafeVarargs
   static <T, R> Optional<R> partialMatch(T o, FunGetIf<T, R> firstCase, FunGetIf<T, R>... restCases) {
     Optional<R> res = firstCase.getOpt(o);
     if (res.isPresent()) return res;
@@ -304,18 +309,21 @@ public interface FunMatch {
   }
 
   final class FunGetIf<T, R> {
-    private Object first;
-    private Object[] args;
     private Function<T, R> fun;
+    private Predicate<T> pred;
 
     FunGetIf(Function<T, R> fun, Object firstPattern, Object... restPatterns) {
-      this.first = firstPattern;
       this.fun = fun;
-      this.args = restPatterns;
+      this.pred = o -> FunMatch.matches(o, firstPattern, restPatterns);
+    }
+
+    FunGetIf(Function<T, R> fun, Predicate<T> predicate) {
+      this.fun = fun;
+      this.pred = predicate;
     }
 
     Optional<R> getOpt(T o) {
-      return FunMatch.matches(o, first, args) ? Optional.of(fun.apply(o)) : Optional.empty();
+      return pred.test(o) ? Optional.of(fun.apply(o)) : Optional.empty();
     }
   }
 

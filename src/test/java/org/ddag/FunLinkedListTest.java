@@ -108,10 +108,11 @@ public class FunLinkedListTest {
     assertEquals(FunList.of("a", "b", "z").min(), "a");
     assertTrue(FunList.of(10, 3, 333, 2, 15).max().equals(333));
 
-    assertEquals(FunList.of(1,2,3,4).collect(
+    assertEquals(FunList.of(1,2,3,4,6).collect(
             getIf(e -> String.valueOf(e), 2),
-            getIf(e -> "four", 4)
-    ), FunList.of("2", "four"));
+            getIf(e -> "four", 4),
+            getIf(e -> "nod", e -> e%2 != 0)
+    ), FunList.of("nod", "2", "nod", "four"));
   }
 
   @Test

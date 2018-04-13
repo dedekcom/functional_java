@@ -5,6 +5,7 @@
  */
 package org.ddag.fun.col;
 
+import org.ddag.fun.match.FunMatch;
 import org.ddag.fun.tuple.Tuple2;
 import java.util.Collection;
 import java.util.Collections;
@@ -64,9 +65,6 @@ public class FunLinkedList<T> extends LinkedList<T> implements FunList<T> {
 
   public FunLinkedList<T> duplicate() { return new FunLinkedList<>(this); }
 
-  /*
-    Implementation of interfaces and static methods
-   */
   @Override
   public T head()     { return this.getFirst(); }
 
@@ -77,6 +75,12 @@ public class FunLinkedList<T> extends LinkedList<T> implements FunList<T> {
   // use Unmodified lists instead
   @Override
   public FunList<T> tail() {    return new FunLinkedList<>(this).mTail();  }
+
+  // need to copy that to use SafeVarargs
+  @SafeVarargs
+  public final <R> FunLinkedList<R> collect(FunMatch.FunGetIf<T, R> firstCase, FunMatch.FunGetIf<T, R>... restCases) {
+    return FunList.collect(this, firstCase, restCases);
+  }
 
   /*
   Mutable methods that change current list
