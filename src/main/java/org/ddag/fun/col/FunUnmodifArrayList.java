@@ -5,8 +5,6 @@
  */
 package org.ddag.fun.col;
 
-import org.ddag.fun.match.FunMatch;
-
 import java.util.AbstractList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -170,12 +168,6 @@ public class FunUnmodifArrayList<T> extends AbstractList<T> implements FunList<T
   public FunList<T> slice(int fromIndex, int toIndex) {
     if (toIndex==-1) toIndex = this.size();
     return new FunUnmodifArrayList<>(listCopy, idHead+fromIndex, idHead+toIndex);
-  }
-
-  // need to copy that to use SafeVarargs
-  @SafeVarargs
-  public final <R> FunLinkedList<R> collect(FunMatch.FunGetIf<T, R> firstCase, FunMatch.FunGetIf<T, R>... restCases) {
-    return FunList.collect(this, firstCase, restCases);
   }
 
   /*

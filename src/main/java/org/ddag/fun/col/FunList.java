@@ -8,7 +8,8 @@ package org.ddag.fun.col;
 import org.ddag.fun.Fumeric;
 import org.ddag.fun.FunObject;
 import org.ddag.fun.FunString;
-import org.ddag.fun.match.FunMatch;
+import org.ddag.fun.match.FunMatch.FunGetIf;
+import static org.ddag.fun.match.FunMatch.partialMatch;
 import org.ddag.fun.match.FunMatching;
 import org.ddag.fun.tuple.Tuple2;
 
@@ -93,23 +94,6 @@ public interface FunList<T> extends List<T>, FunMatching, FunObject {
     for (T e: this) {
       if (predicate.test(e))
         r.add(e);
-    }
-    return r;
-  }
-
-  /* cannot use SafeVarargs than we need to copy this to each List */
-  /*default <R> FunLinkedList<R> collect(FunMatch.FunGetIf<T, R> firstCase, FunMatch.FunGetIf<T, R>... restCases) {
-    return collect(this, firstCase, restCases);
-  }*/
-
-  <R> FunLinkedList<R> collect(FunMatch.FunGetIf<T, R> firstCase, FunMatch.FunGetIf<T, R>... restCases);
-
-  @SafeVarargs
-  static <T, R> FunLinkedList<R> collect(List<T> list, FunMatch.FunGetIf<T, R> firstCase, FunMatch.FunGetIf<T, R>... restCases) {
-    FunLinkedList<R> r = new FunLinkedList<>();
-    for (T e: list) {
-      Optional<R> res = FunMatch.partialMatch(e, firstCase, restCases);
-      res.ifPresent(r::add);
     }
     return r;
   }
@@ -243,4 +227,112 @@ public interface FunList<T> extends List<T>, FunMatching, FunObject {
     return ListMatches.matches(this, firstPattern, restPatterns);
   }
 
+  @SuppressWarnings("unchecked")
+  default <R> FunLinkedList<R> collect(FunGetIf<T, R> firstCase, FunGetIf<T, R>... restCases) {
+    FunLinkedList<R> r = new FunLinkedList<>();
+    for (T e: this) {
+      Optional<R> res = partialMatch(e, firstCase, restCases);
+      res.ifPresent(r::add);
+    }
+    return r;
+  }
+
+  @SuppressWarnings("unchecked")
+  default <R> FunLinkedList<R> collect(FunGetIf<T, R> case1) {
+    FunLinkedList<R> r = new FunLinkedList<>();
+    for (T e: this) {
+      Optional<R> res = partialMatch(e, case1);
+      res.ifPresent(r::add);
+    }
+    return r;
+  }
+
+  @SuppressWarnings("unchecked")
+  default <R> FunLinkedList<R> collect(FunGetIf<T, R> case1, FunGetIf<T, R> case2) {
+    FunLinkedList<R> r = new FunLinkedList<>();
+    for (T e: this) {
+      Optional<R> res = partialMatch(e, case1, case2);
+      res.ifPresent(r::add);
+    }
+    return r;
+  }
+
+  @SuppressWarnings("unchecked")
+  default <R> FunLinkedList<R> collect(FunGetIf<T, R> case1, FunGetIf<T, R> case2, FunGetIf<T, R> case3) {
+    FunLinkedList<R> r = new FunLinkedList<>();
+    for (T e: this) {
+      Optional<R> res = partialMatch(e, case1, case2, case3);
+      res.ifPresent(r::add);
+    }
+    return r;
+  }
+
+  @SuppressWarnings("unchecked")
+  default <R> FunLinkedList<R> collect(FunGetIf<T, R> case1, FunGetIf<T, R> case2, FunGetIf<T, R> case3,
+           FunGetIf<T, R> case4) {
+    FunLinkedList<R> r = new FunLinkedList<>();
+    for (T e: this) {
+      Optional<R> res = partialMatch(e, case1, case2, case3, case4);
+      res.ifPresent(r::add);
+    }
+    return r;
+  }
+
+  @SuppressWarnings("unchecked")
+  default <R> FunLinkedList<R> collect(FunGetIf<T, R> case1, FunGetIf<T, R> case2, FunGetIf<T, R> case3,
+                                       FunGetIf<T, R> case4, FunGetIf<T, R> case5) {
+    FunLinkedList<R> r = new FunLinkedList<>();
+    for (T e: this) {
+      Optional<R> res = partialMatch(e, case1, case2, case3, case4, case5);
+      res.ifPresent(r::add);
+    }
+    return r;
+  }
+
+  @SuppressWarnings("unchecked")
+  default <R> FunLinkedList<R> collect(FunGetIf<T, R> case1, FunGetIf<T, R> case2, FunGetIf<T, R> case3,
+                                       FunGetIf<T, R> case4, FunGetIf<T, R> case5, FunGetIf<T, R> case6) {
+    FunLinkedList<R> r = new FunLinkedList<>();
+    for (T e: this) {
+      Optional<R> res = partialMatch(e, case1, case2, case3, case4, case5, case6);
+      res.ifPresent(r::add);
+    }
+    return r;
+  }
+
+  @SuppressWarnings("unchecked")
+  default <R> FunLinkedList<R> collect(FunGetIf<T, R> case1, FunGetIf<T, R> case2, FunGetIf<T, R> case3,
+                                       FunGetIf<T, R> case4, FunGetIf<T, R> case5, FunGetIf<T, R> case6,
+                                       FunGetIf<T, R> case7) {
+    FunLinkedList<R> r = new FunLinkedList<>();
+    for (T e: this) {
+      Optional<R> res = partialMatch(e, case1, case2, case3, case4, case5, case6, case7);
+      res.ifPresent(r::add);
+    }
+    return r;
+  }
+
+  @SuppressWarnings("unchecked")
+  default <R> FunLinkedList<R> collect(FunGetIf<T, R> case1, FunGetIf<T, R> case2, FunGetIf<T, R> case3,
+                                       FunGetIf<T, R> case4, FunGetIf<T, R> case5, FunGetIf<T, R> case6,
+                                       FunGetIf<T, R> case7, FunGetIf<T, R> case8) {
+    FunLinkedList<R> r = new FunLinkedList<>();
+    for (T e: this) {
+      Optional<R> res = partialMatch(e, case1, case2, case3, case4, case5, case6, case7, case8);
+      res.ifPresent(r::add);
+    }
+    return r;
+  }
+
+  @SuppressWarnings("unchecked")
+  default <R> FunLinkedList<R> collect(FunGetIf<T, R> case1, FunGetIf<T, R> case2, FunGetIf<T, R> case3,
+                                       FunGetIf<T, R> case4, FunGetIf<T, R> case5, FunGetIf<T, R> case6,
+                                       FunGetIf<T, R> case7, FunGetIf<T, R> case8, FunGetIf<T, R> case9) {
+    FunLinkedList<R> r = new FunLinkedList<>();
+    for (T e: this) {
+      Optional<R> res = partialMatch(e, case1, case2, case3, case4, case5, case6, case7, case8, case9);
+      res.ifPresent(r::add);
+    }
+    return r;
+  }
 }

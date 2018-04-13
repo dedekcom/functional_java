@@ -78,6 +78,125 @@ public interface FunMatch {
     return Optional.empty();
   }
 
+  /*
+  Needed for List.collect to suppress warnings
+   */
+  static <T, R> Optional<R> partialMatch(T o, FunGetIf<T, R> case1) {
+    return case1.getOpt(o);
+  }
+
+  static <T, R> Optional<R> partialMatch(T o, FunGetIf<T, R> case1, FunGetIf<T, R> case2) {
+    Optional<R> res = case1.getOpt(o);
+    if (res.isPresent()) return res;
+    return case2.getOpt(o);
+  }
+
+  static <T, R> Optional<R> partialMatch(T o, FunGetIf<T, R> case1, FunGetIf<T, R> case2, FunGetIf<T, R> case3) {
+    Optional<R> res = case1.getOpt(o);
+    if (res.isPresent()) return res;
+    res = case2.getOpt(o);
+    if (res.isPresent()) return res;
+    return case3.getOpt(o);
+  }
+
+  static <T, R> Optional<R> partialMatch(T o, FunGetIf<T, R> case1, FunGetIf<T, R> case2, FunGetIf<T, R> case3,
+          FunGetIf<T, R> case4) {
+    Optional<R> res = case1.getOpt(o);
+    if (res.isPresent()) return res;
+    res = case2.getOpt(o);
+    if (res.isPresent()) return res;
+    res = case3.getOpt(o);
+    if (res.isPresent()) return res;
+    return case4.getOpt(o);
+  }
+
+  static <T, R> Optional<R> partialMatch(T o, FunGetIf<T, R> case1, FunGetIf<T, R> case2, FunGetIf<T, R> case3,
+                                         FunGetIf<T, R> case4, FunGetIf<T, R> case5) {
+    Optional<R> res = case1.getOpt(o);
+    if (res.isPresent()) return res;
+    res = case2.getOpt(o);
+    if (res.isPresent()) return res;
+    res = case3.getOpt(o);
+    if (res.isPresent()) return res;
+    res = case4.getOpt(o);
+    if (res.isPresent()) return res;
+    return case5.getOpt(o);
+  }
+
+  static <T, R> Optional<R> partialMatch(T o, FunGetIf<T, R> case1, FunGetIf<T, R> case2, FunGetIf<T, R> case3,
+                                         FunGetIf<T, R> case4, FunGetIf<T, R> case5, FunGetIf<T, R> case6) {
+    Optional<R> res = case1.getOpt(o);
+    if (res.isPresent()) return res;
+    res = case2.getOpt(o);
+    if (res.isPresent()) return res;
+    res = case3.getOpt(o);
+    if (res.isPresent()) return res;
+    res = case4.getOpt(o);
+    if (res.isPresent()) return res;
+    res = case5.getOpt(o);
+    if (res.isPresent()) return res;
+    return case6.getOpt(o);
+  }
+
+  static <T, R> Optional<R> partialMatch(T o, FunGetIf<T, R> case1, FunGetIf<T, R> case2, FunGetIf<T, R> case3,
+                             FunGetIf<T, R> case4, FunGetIf<T, R> case5, FunGetIf<T, R> case6, FunGetIf<T, R> case7) {
+    Optional<R> res = case1.getOpt(o);
+    if (res.isPresent()) return res;
+    res = case2.getOpt(o);
+    if (res.isPresent()) return res;
+    res = case3.getOpt(o);
+    if (res.isPresent()) return res;
+    res = case4.getOpt(o);
+    if (res.isPresent()) return res;
+    res = case5.getOpt(o);
+    if (res.isPresent()) return res;
+    res = case6.getOpt(o);
+    if (res.isPresent()) return res;
+    return case7.getOpt(o);
+  }
+
+  static <T, R> Optional<R> partialMatch(T o, FunGetIf<T, R> case1, FunGetIf<T, R> case2, FunGetIf<T, R> case3,
+                                         FunGetIf<T, R> case4, FunGetIf<T, R> case5, FunGetIf<T, R> case6,
+                                         FunGetIf<T, R> case7, FunGetIf<T, R> case8) {
+    Optional<R> res = case1.getOpt(o);
+    if (res.isPresent()) return res;
+    res = case2.getOpt(o);
+    if (res.isPresent()) return res;
+    res = case3.getOpt(o);
+    if (res.isPresent()) return res;
+    res = case4.getOpt(o);
+    if (res.isPresent()) return res;
+    res = case5.getOpt(o);
+    if (res.isPresent()) return res;
+    res = case6.getOpt(o);
+    if (res.isPresent()) return res;
+    res = case7.getOpt(o);
+    if (res.isPresent()) return res;
+    return case8.getOpt(o);
+  }
+
+  static <T, R> Optional<R> partialMatch(T o, FunGetIf<T, R> case1, FunGetIf<T, R> case2, FunGetIf<T, R> case3,
+                                         FunGetIf<T, R> case4, FunGetIf<T, R> case5, FunGetIf<T, R> case6,
+                                         FunGetIf<T, R> case7, FunGetIf<T, R> case8, FunGetIf<T, R> case9) {
+    Optional<R> res = case1.getOpt(o);
+    if (res.isPresent()) return res;
+    res = case2.getOpt(o);
+    if (res.isPresent()) return res;
+    res = case3.getOpt(o);
+    if (res.isPresent()) return res;
+    res = case4.getOpt(o);
+    if (res.isPresent()) return res;
+    res = case5.getOpt(o);
+    if (res.isPresent()) return res;
+    res = case6.getOpt(o);
+    if (res.isPresent()) return res;
+    res = case7.getOpt(o);
+    if (res.isPresent()) return res;
+    res = case8.getOpt(o);
+    if (res.isPresent()) return res;
+    return case9.getOpt(o);
+  }
+
   // execute void function if pattern matches
   static <T> FunRunIf<T> runIf(Consumer<T> executeIfMatches, Object firstPattern, Object... restPatterns) {
     return new FunRunIf<>(executeIfMatches, firstPattern, restPatterns);

@@ -6,19 +6,19 @@
 package org.ddag.fun.col;
 
 import org.ddag.fun.FunObject;
+import static org.ddag.fun.match.FunMatch.FunGetIf;
+
 import org.ddag.fun.match.FunMatch;
 import org.ddag.fun.match.FunMatching;
 import org.ddag.fun.tuple.Tuple2;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.function.Predicate;
 
 /*
   Scala-like Map collection
@@ -51,7 +51,7 @@ public class FunMap<K, V> extends LinkedHashMap<K, V> implements FunObject, FunM
   }
 
   @SafeVarargs
-  public final <R> FunMap<K, R> collect(FunMatch.FunGetIf<V, R> firstCase, FunMatch.FunGetIf<V, R>... restCases) {
+  public final <R> FunMap<K, R> collect(FunGetIf<V, R> firstCase, FunGetIf<V, R>... restCases) {
     FunMap<K, R> m = new FunMap<>();
     this.forEach( (k, v) -> {
       Optional<R> res = FunMatch.partialMatch(v, firstCase, restCases);
@@ -98,7 +98,7 @@ public class FunMap<K, V> extends LinkedHashMap<K, V> implements FunObject, FunM
   public static FunMap of() { return new FunMap(); }
 
   @SafeVarargs
-  public static <K, V> FunMap<K, V> of(Tuple2<K, V>... params) {
+  public static <K, V> FunMap<K, V> of(Tuple2<? extends K, ? extends V>... params) {
     FunMap<K, V> m = new FunMap<>();
     Arrays.stream(params).forEach(e -> m.put(e._1(), e._2()));
     return m;
