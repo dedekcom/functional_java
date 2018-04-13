@@ -65,8 +65,8 @@ public class FunMatchTest {
   public void testMatch2() {
 
     int res = match( 0.0,
-            getIf((dd) -> (double)dd + 1, 1.0),
-            getIf((dd) -> (double)dd + 2, 2.0),
+            getIf((dd) -> dd.intValue() + 1, 1.0),
+            getIf((dd) -> dd.intValue() + 2, 2.0),
             getIf((dd) -> 0, Any)
     );
     assertEquals(0, res);
@@ -91,11 +91,11 @@ public class FunMatchTest {
     });
 
     Performance.testPerform("pattern matching based on getIf", loops, () -> {
-      new FunLinkedList<Object>(src).map(e ->
+      new FunLinkedList<>(src).map(e ->
               match(e,
                       getIf ( i -> i,                             Integer.class),
                       getIf ( i -> -10,                           Optional.empty()),
-                      getIf ( o -> (((Optional) o).get()),        Optional.class, Integer.class),
+                      getIf ( o -> -2,        Optional.class, Integer.class),
                       getIf ( i -> -3,                   FunLinkedList.class),
                       getIf ( l -> -1,                            FunLinkedList.class),
                       getIf ( s -> 100,                 "x"),
@@ -105,9 +105,9 @@ public class FunMatchTest {
     });
 
     Performance.testPerform("pattern matching based on runIf", loops, () -> {
-      new FunLinkedList<Object>(src).forEach(e ->
+      new FunLinkedList<>(src).forEach(e ->
               match(e,
-                      runIf ( i -> {},                             Integer.class),
+                      runIf ( i -> { int len = i.length();},                             Integer.class),
                       runIf ( i -> {},                           Optional.empty()),
                       runIf ( o -> {},        Optional.class, Integer.class),
                       runIf ( i -> {},                   FunLinkedList.class),
@@ -119,11 +119,11 @@ public class FunMatchTest {
     });
 
     Performance.testPerform("pattern matching based on Case", loops, () -> {
-      new FunLinkedList<Object>(src).map(e ->
+      new FunLinkedList<>(src).map(e ->
               match(e,
-                      Case (Integer.class),                 o -> (Integer)o,
+                      Case (Integer.class),                 o -> o,
                       Case (Optional.empty()),              o -> -10,
-                      Case (Optional.class, Integer.class), o -> (Integer) (((Optional) o).get()),
+                      Case (Optional.class, Integer.class), o -> -30,
                       Case (1, FunLinkedList.class), o -> -3,
                       Case (FunLinkedList.class), o -> -1,
                       Case ("x"),                 o -> 100,

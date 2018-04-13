@@ -45,45 +45,47 @@ public interface FunMatch {
  */
 
   // apply function that returns Object if pattern matches
-  static FunGetIf getIf(Function<Object, Object> executeIfMatches, Object firstPattern, Object... restPatterns) {
-    return new FunGetIf(executeIfMatches, firstPattern, restPatterns);
+  static <T, R> FunGetIf<T, R> getIf(Function<T, R> executeIfMatches, Object firstPattern, Object... restPatterns) {
+    return new FunGetIf<>(executeIfMatches, firstPattern, restPatterns);
   }
 
-  @SuppressWarnings("unchecked")
-  static <R> R match(Object o, FunGetIf firstCase, FunGetIf... restCases) {
-    Optional<Object> res = firstCase.getOpt(o);
-    if (res.isPresent()) return (R)res.get();
-    for (FunGetIf c: restCases) {
+  @SafeVarargs
+  static <T, R> R match(T o, FunGetIf<T, R> firstCase, FunGetIf<T, R>... restCases) {
+    Optional<R> res = firstCase.getOpt(o);
+    if (res.isPresent()) return res.get();
+    for (FunGetIf<T, R> c: restCases) {
       res = c.getOpt(o);
       if (res.isPresent())
-        return (R)res.get();
+        return res.get();
     }
     throw new FunMatchException();
   }
 
   @SuppressWarnings("unchecked")
-  static <R> Optional<R> partialMatch(Object o, FunGetIf firstCase, FunGetIf... restCases) {
-    Optional<Object> res = firstCase.getOpt(o);
-    if (res.isPresent()) return Optional.of((R)res.get());
-    for (FunGetIf c: restCases) {
+  static <T, R> Optional<R> partialMatch(T o, FunGetIf<T, R> firstCase, FunGetIf<T, R>... restCases) {
+    Optional<R> res = firstCase.getOpt(o);
+    if (res.isPresent()) return res;
+    for (FunGetIf<T, R> c: restCases) {
       res = c.getOpt(o);
       if (res.isPresent())
-        return Optional.of((R)res.get());
+        return res;
     }
     return Optional.empty();
   }
 
   // execute void function if pattern matches
-  static FunRunIf runIf(Consumer<Object> executeIfMatches, Object firstPattern, Object... restPatterns) {
-    return new FunRunIf(executeIfMatches, firstPattern, restPatterns);
+  static <T> FunRunIf<T> runIf(Consumer<T> executeIfMatches, Object firstPattern, Object... restPatterns) {
+    return new FunRunIf<>(executeIfMatches, firstPattern, restPatterns);
   }
 
-  static void match(Object o, FunRunIf firstCase, FunRunIf... nextCases) {
+  @SafeVarargs
+  static <T> void match(T o, FunRunIf<T> firstCase, FunRunIf<T>... nextCases) {
     boolean res = firstCase.get(o);
     if (res) return;
-    for (FunRunIf c: nextCases) {
+    for (FunRunIf<T> c: nextCases) {
       res = c.get(o);
-      if (res) return;
+      if (res)
+        return;
     }
     throw new FunMatchException();
   }
@@ -301,34 +303,34 @@ public interface FunMatch {
     else throw new FunMatchException();
   }
 
-  final class FunGetIf {
+  final class FunGetIf<T, R> {
     private Object first;
     private Object[] args;
-    private Function<Object, Object> fun;
+    private Function<T, R> fun;
 
-    FunGetIf(Function<Object, Object> fun, Object firstArg, Object... args) {
-      this.first = firstArg;
+    FunGetIf(Function<T, R> fun, Object firstPattern, Object... restPatterns) {
+      this.first = firstPattern;
       this.fun = fun;
-      this.args = args;
+      this.args = restPatterns;
     }
 
-    Optional<Object> getOpt(Object o) {
+    Optional<R> getOpt(T o) {
       return FunMatch.matches(o, first, args) ? Optional.of(fun.apply(o)) : Optional.empty();
     }
   }
 
-  final class FunRunIf {
+  final class FunRunIf<T> {
     private Object first;
     private Object[] args;
-    private Consumer<Object> fun;
+    private Consumer<T> fun;
 
-    FunRunIf(Consumer<Object> fun, Object firstArg, Object... args) {
-      this.first = firstArg;
+    FunRunIf(Consumer<T> fun, Object firstPattern, Object... restPatterns) {
+      this.first = firstPattern;
       this.fun = fun;
-      this.args = args;
+      this.args = restPatterns;
     }
 
-    boolean get(Object o) {
+    boolean get(T o) {
       if (FunMatch.matches(o, first, args)) {
         fun.accept(o);
         return true;
