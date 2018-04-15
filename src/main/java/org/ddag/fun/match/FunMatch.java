@@ -18,7 +18,7 @@ import java.util.function.Supplier;
 public interface FunMatch {
 
   static boolean matchesOptOf(Object o, Object value) {
-    if (o instanceof Optional && ((Optional)o).isPresent())  {
+    if (value != null && o instanceof Optional && ((Optional)o).isPresent())  {
       Object optVal = ((Optional)o).get();
       return (value instanceof Class) ? ((Class)value).isInstance(optVal) : optVal.equals(value);
     } else
@@ -26,7 +26,11 @@ public interface FunMatch {
   }
 
   static boolean matches(Object o, Object firstPattern, Object... restPatterns) {
-    if (FunMatching.class.isInstance(o))  {
+    if (o == null) {
+      return firstPattern == null && restPatterns.length == 0;
+    } else if (firstPattern == null) {
+      return false;
+    } if (FunMatching.class.isInstance(o))  {
       return ((FunMatching)o).matches(firstPattern, restPatterns);
     } else if (restPatterns.length == 0) {
       return (firstPattern instanceof Class) ? ((Class) firstPattern).isInstance(o) : o.equals(firstPattern);

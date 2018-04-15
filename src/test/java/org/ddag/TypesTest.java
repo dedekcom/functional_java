@@ -7,6 +7,7 @@ package org.ddag;
 
 import org.ddag.fun.col.FunList;
 import org.ddag.fun.col.FunMap;
+import org.ddag.fun.col.FunUnmodifLinkedList;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertTrue;
@@ -66,6 +67,8 @@ public class TypesTest {
 
     FunList<A> l2 = listA.filter( v -> v.get() < 0);
     assertEquals(FunList.of(new A(-3)), l2 );
+
+    assertEquals(listIA, new FunUnmodifLinkedList<>().pushed(new A(3)).pushed(new B(2)).pushed(new A(1)));
   }
 
   @Test

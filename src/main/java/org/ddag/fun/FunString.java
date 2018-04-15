@@ -32,9 +32,12 @@ public class FunString implements FunObject, FunMatching {
 
   @Override
   public boolean equals(Object o) {
+    if (o==null) return str == null;
     if (this == o) return true;
-    else if (o instanceof FunString) return this.get().equals(((FunString) o).get());
-    else return (o instanceof String && this.str.equals(o));
+    if (o instanceof FunString) {
+      return str == null ? ((FunString) o).get()==null : str.equals(((FunString) o).get());
+    }
+    return (o instanceof String && o.equals(str));
   }
 
   public FunString set(String s)   { str = s; return this; }
@@ -88,7 +91,7 @@ public class FunString implements FunObject, FunMatching {
   }
 
   public boolean matches(Object firstPattern, Object... restPatterns) {
-    return restPatterns.length == 0 && (
+    return firstPattern != null && restPatterns.length == 0 && (
             ((firstPattern instanceof Class) && ((Class) firstPattern).isInstance(this)) ||
                     this.equals(firstPattern)
     );

@@ -94,7 +94,36 @@ public class FunUnmodifLinkedList<T> extends AbstractList<T> implements FunList<
   }
 
   @Override
-  public FunList<T> removed(T el) {    return filterNot(e -> e.equals(el)).toUnmodifLinkedList();  }
+  public FunList<T> removed(T el) {
+    FunLinkedList<T> res = new FunLinkedList<>();
+    boolean bremoved = false;
+    if (el==null) {
+      for (T e : this) {
+        if (bremoved)
+          res.add(e);
+        else {
+          if (e == null) {
+            bremoved = true;
+          } else {
+            res.add(e);
+          }
+        }
+      }
+    } else {
+      for (T e : this) {
+        if (bremoved)
+          res.add(e);
+        else {
+          if (el.equals(e)) {
+            bremoved = true;
+          } else {
+            res.add(e);
+          }
+        }
+      }
+    }
+    return res;
+  }
 
   @Override
   public FunList<T> reversed() {
@@ -116,21 +145,22 @@ public class FunUnmodifLinkedList<T> extends AbstractList<T> implements FunList<
   }
 
   private Node<T> node(int id)      {
+    if (id < 0)
+      throw new NoSuchElementException();
     Node<T> f = first;
     int size = 0;
     while (f != null && size < id) {
       size++;
       f = f.next;
     }
+    if ( id > size )
+      throw new NoSuchElementException();
     return f;
   }
 
   @Override
   public T get(int id) {
-    Node<T> f = this.node(id);
-    if ( f == null )
-      throw new NoSuchElementException();
-    else return f.item;
+    return this.node(id).item;
   }
 
   @Override

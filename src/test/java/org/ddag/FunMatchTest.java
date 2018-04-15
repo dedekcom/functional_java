@@ -5,6 +5,8 @@
  */
 package org.ddag;
 
+import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertTrue;
 import static org.ddag.fun.col.FunLinkedList.Nil;
 import static org.ddag.fun.match.FunMatch.matches;
 import static org.ddag.fun.match.FunMatch.matchesOptOf;
@@ -133,5 +135,34 @@ public class FunMatchTest {
       );
     });
   }
+
+  @Test
+  public void testNulls() {
+    FunList<String> ls = FunList.of(null, "5", "z", null);
+    FunList<String> lsll = ls.toFunLinkedList();
+    FunList<String> lsual = ls.toUnmodifArrayList();
+
+    assertEquals(FunList.of("5", "z", null), ls.removed(null));
+    assertEquals(FunList.of("a", null, "5", "z", null), ls.pushed("a"));
+    assertEquals(FunList.of(null, "5", "z", null, null), ls.added(null));
+    assertTrue(ls.matches(null, FunList.class));
+    assertTrue(ls.matches(null, "5", "z", null, Nil));
+    assertFalse(ls.matches(null, null, FunList.class));
+
+    assertEquals(FunList.of("5", "z", null), lsll.removed(null));
+    assertEquals(FunList.of("a", null, "5", "z", null), lsll.pushed("a"));
+    assertEquals(FunList.of(null, "5", "z", null, null), lsll.added(null));
+    assertTrue(lsll.matches(null, FunList.class));
+    assertTrue(lsll.matches(null, "5", "z", null, Nil));
+    assertFalse(lsll.matches(null, null, FunList.class));
+
+    assertEquals(FunList.of("5", "z", null), lsual.removed(null));
+    assertEquals(FunList.of("a", null, "5", "z", null), lsual.pushed("a"));
+    assertEquals(FunList.of(null, "5", "z", null, null), lsual.added(null));
+    assertTrue(lsual.matches(null, FunList.class));
+    assertTrue(lsual.matches(null, "5", "z", null, Nil));
+    assertFalse(lsual.matches(null, null, FunList.class));
+  }
+
 
 }

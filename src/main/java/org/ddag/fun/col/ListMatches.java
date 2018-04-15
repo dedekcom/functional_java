@@ -22,7 +22,10 @@ public interface ListMatches {
         if (i >= list.size())
           return false;   // more elements in pattern than in a list
         Object n = it.next();
-        if (testOb instanceof Class) {
+        if (n==null)  {
+          if (testOb != null)
+            return false;
+        } else if (testOb instanceof Class) {
           if (!((Class)testOb).isInstance(n))
             return false;
         }  else if (!n.equals(testOb))
@@ -30,7 +33,9 @@ public interface ListMatches {
         testOb = params[i];
         i++;
       } while(i<=last);
-      if (params[last].equals(FunLinkedList.Nil))  {   // test Nil on the last position of the pattern
+      if (params[last] == null) {
+        return false;
+      } if (params[last].equals(FunLinkedList.Nil))  {   // test Nil on the last position of the pattern
         return !it.hasNext();
       } else {    // test tail
         return (params[last] instanceof Class && ((Class) params[last]).isInstance(list));

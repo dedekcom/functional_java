@@ -24,6 +24,8 @@ abstract public class FunTuple implements FunObject, FunMatching {
   public FunLinkedList<Object> toList() { return new FunLinkedList<>(Arrays.asList(values)); }
 
   public boolean matches(Object firstPattern, Object... restPatterns) {
+    if (firstPattern == null)
+      return false;
     if ((firstPattern instanceof Class) && ((Class) firstPattern).isInstance(this)) {
       if (restPatterns.length == 0)
         return true;    // match only FunObject type
@@ -55,6 +57,7 @@ abstract public class FunTuple implements FunObject, FunMatching {
 
   @Override
   public boolean equals(Object o) {
+    if (o==null) return false;
     if (this == o) return true;
     if (o instanceof FunTuple) {
       FunTuple tuple = (FunTuple) o;

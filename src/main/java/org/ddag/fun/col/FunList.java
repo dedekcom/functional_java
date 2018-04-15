@@ -269,7 +269,7 @@ public interface FunList<T> extends List<T>, FunMatching, FunObject {
 
   @SuppressWarnings("unchecked")
   default <R> FunLinkedList<R> collect(FunGetIf<T, R> case1, FunGetIf<T, R> case2, FunGetIf<T, R> case3,
-           FunGetIf<T, R> case4) {
+                                       FunGetIf<T, R> case4) {
     FunLinkedList<R> r = new FunLinkedList<>();
     for (T e: this) {
       Optional<R> res = partialMatch(e, case1, case2, case3, case4);
