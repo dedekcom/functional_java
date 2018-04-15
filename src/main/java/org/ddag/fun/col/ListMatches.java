@@ -10,13 +10,15 @@ import java.util.List;
 
 public interface ListMatches {
 
-  static <T> boolean matches(List<T> list, Object first, Object... params) {
-    if (params.length == 0) {
-      return ((first instanceof Class) && ((Class)first).isInstance(list)) || list.equals(first);
+  static <T> boolean matches(List<T> list, Object firstPattern, Object... restPatterns) {
+    if (restPatterns.length == 0) {
+      return firstPattern != null &&
+              (((firstPattern instanceof Class) && ((Class)firstPattern).isInstance(list))
+                      || list.equals(firstPattern));
     } else {
       Iterator it = list.iterator();
-      int last = params.length - 1;
-      Object testOb = first;
+      int last = restPatterns.length - 1;
+      Object testOb = firstPattern;
       int i = 0;
       do {
         if (i >= list.size())
@@ -30,15 +32,15 @@ public interface ListMatches {
             return false;
         }  else if (!n.equals(testOb))
           return false;
-        testOb = params[i];
+        testOb = restPatterns[i];
         i++;
       } while(i<=last);
-      if (params[last] == null) {
+      if (restPatterns[last] == null) {
         return false;
-      } if (params[last].equals(FunLinkedList.Nil))  {   // test Nil on the last position of the pattern
+      } if (restPatterns[last].equals(FunLinkedList.Nil))  {   // test Nil on the last position of the pattern
         return !it.hasNext();
       } else {    // test tail
-        return (params[last] instanceof Class && ((Class) params[last]).isInstance(list));
+        return (restPatterns[last] instanceof Class && ((Class) restPatterns[last]).isInstance(list));
       }
     }
   }

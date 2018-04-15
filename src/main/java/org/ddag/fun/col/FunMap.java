@@ -81,10 +81,9 @@ public class FunMap<K, V> extends LinkedHashMap<K, V> implements FunObject, FunM
   }
 
   public boolean matches(Object firstPattern, Object... restPatterns) {
-    return restPatterns.length == 0 && (
-            ((firstPattern instanceof Class) && ((Class) firstPattern).isInstance(this)) ||
-            this.equals(firstPattern)
-    );
+    return firstPattern != null && restPatterns.length == 0 &&
+            (((firstPattern instanceof Class) && ((Class) firstPattern).isInstance(this)) ||
+              this.equals(firstPattern));
   }
 
   public FunMap<K, V> removed(K key) {
