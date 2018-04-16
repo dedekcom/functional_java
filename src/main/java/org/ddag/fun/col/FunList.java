@@ -48,20 +48,19 @@ public interface FunList<T> extends List<T>, FunMatching, FunObject {
   static FunList<Integer> range(int start, int stop, int step) {
     if (step==0)
       throw new IllegalArgumentException("range step can't be 0");
-    if (start == stop)
-      return new FunUnmodifArrayList<>(new Object[0]);
-    int n = stop - start;
-    if ((n < 0 && step > 0) || (n > 0 && step < 0))
-      return new FunUnmodifArrayList<>(new Object[0]);
-    int size = Math.abs(n / step);
-    if (n % step != 0)
-      size++;
-    Integer[] ar = new Integer[size];
-    for (int i = 0; i < size; i++) {
-      ar[i] = start;
-      start += step;
+    FunLinkedList<Integer> result = new FunLinkedList<>();
+    if (step > 0) {
+      while (start < stop) {
+        result.add(start);
+        start += step;
+      }
+    } else {
+      while (start > stop) {
+        result.add(start);
+        start += step;
+      }
     }
-    return new FunUnmodifArrayList<>(ar);
+    return result;
   }
 
   static FunList<Integer> range(int start, int stop) {
