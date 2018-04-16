@@ -51,6 +51,18 @@ public class FunUnmodifLinkedList<T> extends AbstractList<T> implements FunList<
     }
   }
 
+  public FunUnmodifLinkedList(T[] ar) {
+    for (int i=0; i<ar.length; i++) {
+      if (last == null) {
+        last = new Node<>(ar[i], null);
+        first = last;
+      } else {
+        last.next = new Node<>(ar[i], null);
+        last = last.next;
+      }
+    }
+  }
+
   private FunUnmodifLinkedList(Node<T> f, Node<T> l) {
     this.first = f;
     this.last = l == null ? f : l;
