@@ -36,12 +36,13 @@ public interface FunList<T> extends List<T>, FunMatching, FunObject {
 
   @SafeVarargs
   static <T> FunList<T> of(T... params) {
-    return new FunUnmodifLinkedList<>(Arrays.asList(params));
+    return new FunUnmodifLinkedList<>(params);
   }
 
   static <T> FunList<T> ofSize(int n, T value) {
     Object[] o = new Object[n];
-    for (int i=0; i<n; i++) o[i] = value;
+    for (int i=0; i<n; i++)
+      o[i] = value;
     return new FunUnmodifArrayList<>(o);
   }
 
@@ -119,6 +120,32 @@ public interface FunList<T> extends List<T>, FunMatching, FunObject {
     FunLinkedList<T> r = new FunLinkedList<>();
     for (T e: this) {
       if (predicate.test(e))
+        r.add(e);
+    }
+    return r;
+  }
+
+  default FunLinkedList<T> takeWhile(Predicate<? super T> predicate) {
+    FunLinkedList<T> r = new FunLinkedList<>();
+    for (T e: this) {
+      if (predicate.test(e))
+        r.add(e);
+      else
+        return r;
+    }
+    return r;
+  }
+
+  default FunLinkedList<T> dropWhile(Predicate<? super T> predicate) {
+    FunLinkedList<T> r = new FunLinkedList<>();
+    boolean drop = true;
+    for (T e: this) {
+      if (drop)   {
+        if (!predicate.test(e)) {
+          drop = false;
+          r.add(e);
+        }
+      } else
         r.add(e);
     }
     return r;

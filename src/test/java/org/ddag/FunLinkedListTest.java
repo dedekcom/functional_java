@@ -113,6 +113,9 @@ public class FunLinkedListTest {
             getIf(e -> "four", 4),
             getIf(e -> "nod", e -> e%2 != 0)
     ), FunList.of("nod", "2", "nod", "four"));
+
+    assertEquals(FunList.of(1, 2), FunList.of(1,2,3,4,5).takeWhile( i -> i < 3));
+    assertEquals(FunList.of(3,4,5), FunList.of(1,2,3,4,5).dropWhile( i -> i < 3));
   }
 
   @Test
