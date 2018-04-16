@@ -20,10 +20,11 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-/*
-  Scala-like Map collection
-
-  methods starting with 'm' are mutable - it makes faster computing but causes side effects
+/**
+ *
+ * Scala-like Map collection
+ *
+ * methods starting with 'm' are mutable - it makes faster computing but causes side effects
  */
 
 @SuppressWarnings("WeakerAccess")

@@ -13,12 +13,12 @@ import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.function.Consumer;
 
-/*
-  Unmodified Array List
-  size()    : O(1)
-  pushed(x) : O(n)
-  added(x)  : O(n)
-  tail()    : O(1)
+/**
+ * Unmodified Array List
+ * size()    : O(1)
+ * pushed(x) : O(n)
+ * added(x)  : O(n)
+ * tail()    : O(1)
  */
 @SuppressWarnings({"unchecked", "WeakerAccess"})
 public class FunUnmodifArrayList<T> extends AbstractList<T> implements FunList<T> {
@@ -170,8 +170,8 @@ public class FunUnmodifArrayList<T> extends AbstractList<T> implements FunList<T
     return new FunUnmodifArrayList<>(listCopy, idHead+fromIndex, idHead+toIndex);
   }
 
-  /*
-    Unsupported writeable methods
+  /**
+   * Unsupported writeable methods
    */
   public void clear() { throw new UnsupportedOperationException(); }
 

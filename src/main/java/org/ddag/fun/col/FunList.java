@@ -13,7 +13,6 @@ import static org.ddag.fun.match.FunMatch.partialMatch;
 import org.ddag.fun.match.FunMatching;
 import org.ddag.fun.tuple.Tuple2;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -219,8 +218,8 @@ public interface FunList<T> extends List<T>, FunMatching, FunObject {
 
   default double avg() {    return Fumeric.div(this.sum(), (double)this.size()).doubleValue();  }
 
-  /*
-    min & max throw NoSuchElementException if empty list
+  /**
+   * min & max throw NoSuchElementException if empty list
    */
   @SuppressWarnings("unchecked")
   default <T extends Comparable<? super T>> T min() {

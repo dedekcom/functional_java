@@ -14,13 +14,13 @@ import java.util.NoSuchElementException;
 import java.util.function.Consumer;
 
 
-/*
-  Unmodified Linked List
-  size()    : O(n)
-  pushed(x) : O(1)
-  added(x)  : O(1) for newly created instances, and O(n) for shared
-      (last node allows to store sublists within list; adding element to the last position of the sublist is O(n))
-  tail()    : O(1)
+/**
+ * Unmodified Linked List
+ * size()    : O(n)
+ * pushed(x) : O(1)
+ * added(x)  : O(1) for newly created instances, and O(n) for shared
+ *     (last node allows to store sublists within list; adding element to the last position of the sublist is O(n))
+ * tail()    : O(1)
  */
 
 @SuppressWarnings({"unchecked", "WeakerAccess"})
@@ -246,8 +246,8 @@ public class FunUnmodifLinkedList<T> extends AbstractList<T> implements FunList<
   @Override
   public ListIterator<T> listIterator(int pos) {    return new ListItr(pos);  }
 
-  /*
-    Unsupported writeable methods
+  /**
+   * Unsupported writeable methods
    */
   public void clear() { throw new UnsupportedOperationException(); }
 
