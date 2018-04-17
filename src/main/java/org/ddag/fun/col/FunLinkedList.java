@@ -12,8 +12,9 @@ import java.util.LinkedList;
 import java.util.function.BiFunction;
 
 /**
- *
- * @param <T>
+ * @author Dominik Dagiel
+ * @see LinkedList
+ * @param <T> the type of elements held in this collection
  *
  *   Linked List
  *   size()    : O(1)

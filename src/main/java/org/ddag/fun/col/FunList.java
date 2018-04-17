@@ -27,8 +27,18 @@ import static org.ddag.fun.match.FunMatch.Case;
 import static org.ddag.fun.match.FunMatch.match;
 import static org.ddag.fun.tuple.FunTuple.T2;
 
+/**
+ * Common interface for functional lists.
+ *
+ * @author Dominik Dagiel
+ * @param <T> the type of elements held in this collection
+ */
+
 public interface FunList<T> extends List<T>, FunMatching, FunObject {
 
+  /**
+   * Nil constant represents empty list. Use in pattern matching
+   */
   List Nil = Collections.emptyList();
 
   static List List() { return Nil; }
@@ -79,11 +89,15 @@ public interface FunList<T> extends List<T>, FunMatching, FunObject {
 
   T head();
 
+  default T first() { return head(); }
+
   T last();
 
   default Optional<T>  headOpt() { return this.isEmpty() ? Optional.empty() : Optional.of(this.head()); }
 
   FunList<T> tail();
+
+  default FunList<T> rest() { return tail(); }
 
   FunList<T> added(T el);
 
