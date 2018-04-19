@@ -44,8 +44,8 @@ public class TailRecTest {
   private int countFibos;
   @Test
   public void tailRecPerformance() {
-    int loops = 100;
-    int n = 100000;
+    int loops = 100000;
+    int n = 100;
     FunString.of("fibo number ", n, " is ", fibo(n)).print();
 
     Performance.testPerform("tail rec fibonacci", loops, () -> {
@@ -56,7 +56,7 @@ public class TailRecTest {
       int f = 0;
       try {
         countFibos = 0;
-        f = fiboClassic(0, 1, n);
+        f = fiboClassic(n);
       } catch (StackOverflowError sof) {
         if (failedFibo == -1)
           failedFibo = countFibos;
@@ -74,6 +74,8 @@ public class TailRecTest {
             limit > 0 ? Continue( second, first + second, limit -1) : Return(first)
     );
   }
+
+  private int fiboClassic(int n) { return fiboClassic(0, 1, n); }
 
   private int fiboClassic(int first, int second, int n) {
       countFibos++;
