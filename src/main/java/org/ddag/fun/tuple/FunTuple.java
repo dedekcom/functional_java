@@ -48,11 +48,11 @@ abstract public class FunTuple implements FunObject, FunMatching {
 
   @Override
   public String toString() {
-    String res = "(";
+    StringBuilder res = new StringBuilder("(");
     for (int i=0; i < values.length-1; i++) {
-      res += values[i] + ", ";
+      res.append(values[i]).append(", ");
     }
-    return res + values[values.length-1] + ")";
+    return res.append(values[values.length-1]).append(")").toString();
   }
 
   @Override
