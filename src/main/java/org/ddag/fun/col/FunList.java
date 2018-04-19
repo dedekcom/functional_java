@@ -111,7 +111,7 @@ public interface FunList<T> extends List<T>, FunMatching, FunObject {
 
   default boolean nonEmpty() { return !isEmpty(); }
 
-  default <R> FunLinkedList<R> map(Function<? super T, R> fun) {
+  default <R> FunLinkedList<R> map(Function<? super T,? extends R> fun) {
     FunLinkedList<R> r = new FunLinkedList<>();
     for (T e : this) {
       r.add(fun.apply(e));
@@ -119,7 +119,7 @@ public interface FunList<T> extends List<T>, FunMatching, FunObject {
     return r;
   }
 
-  default <R> FunLinkedList<R> mapWithIndex(BiFunction<? super T, Integer, R> fun) {
+  default <R> FunLinkedList<R> mapWithIndex(BiFunction<? super T, Integer,? extends R> fun) {
     FunLinkedList<R> r = new FunLinkedList<>();
     int id = 0;
     for (T e: this) {

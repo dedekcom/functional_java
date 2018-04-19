@@ -36,7 +36,7 @@ public class FunMap<K, V> extends LinkedHashMap<K, V> implements FunObject, FunM
 
   public FunMap(Map<? extends K, ? extends V> m) { super(m); }
 
-  public <R> FunMap<K, R> transform(BiFunction<? super K, ? super V, R> fun) {
+  public <R> FunMap<K, R> transform(BiFunction<? super K, ? super V, ? extends R> fun) {
     FunMap<K, R> m = new FunMap<>();
     this.forEach((k, v) -> m.put(k, fun.apply(k, v)));
     return m;

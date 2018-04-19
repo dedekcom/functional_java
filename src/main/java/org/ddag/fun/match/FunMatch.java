@@ -432,15 +432,15 @@ public interface FunMatch {
   }
 
   final class FunGetIf<T, R> {
-    private Function<T, R> fun;
+    private Function<? super T,? extends R> fun;
     private Predicate<T> pred;
 
-    FunGetIf(Function<T, R> fun, Object firstPattern, Object... restPatterns) {
+    FunGetIf(Function<? super T,? extends R> fun, Object firstPattern, Object... restPatterns) {
       this.fun = fun;
       this.pred = o -> FunMatch.matches(o, firstPattern, restPatterns);
     }
 
-    FunGetIf(Function<T, R> fun, Predicate<T> predicate) {
+    FunGetIf(Function<? super T,? extends R> fun, Predicate<T> predicate) {
       this.fun = fun;
       this.pred = predicate;
     }
